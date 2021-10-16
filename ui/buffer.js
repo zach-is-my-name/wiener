@@ -1,5 +1,7 @@
 const blessed = require('blessed');
 const stripAnsi = require('strip-ansi');
+const isTmux = require('is-tmux');
+//console.log(isTmux);
 const { boxOptions, cursorOptions, inputFieldOptions } = require('./blessedOptions')
 const regexMarkdownHeading = /#{1,6} .+$/gm
 const regexMarkdownLink = /\[([^[]+)\]\(([^)]+)\)/gm
@@ -16,15 +18,18 @@ const render = async () => {
   screen.title = 'wiener';
 
   // Create a box perfectly centered horizontally and vertically.
-  const box = blessed.box({
-    top: 'center',
-    left: 'center',
-    width: '100%',
-    height: '100%',
-    content: renderedMarkdown,
+  const box = blessed.box(
+    Object.assign({}, boxOptions, {
+    //top: 'center',
+    //left: 'center',
+    //width: '100%',
+    //height: '100%',
     tags: true,
-    scrollable: true,
-  });
+    //scrollable: true,
+    //content: "http://example.com",
+    content: renderedMarkdown,
+    })
+  );
 
   // Append our box to the screen.
   screen.append(box);
@@ -39,11 +44,11 @@ const render = async () => {
       }),
   );
   let isLoading = false;
-  const showHelp = () => return;
-  const showSearch = () => return;
+  const showHelp = () =>  null;
+  const showSearch = () =>  null;
   
   // Quit on Escape, q, or Control-C.
-  box.key(['escape', 'q', 'C-c','g','S-g','u','d','j','k','h','l','/'], async function(ch, key) {
+  box.key(['escape', 'q', 'C-c','g','S-g','u', 'C-u','d','C-d','j','k','h','l','/'], async function(ch, key) {
     //todo implement  --
     // Mark --  m `(mark)
     // Search -- / or c-f | pop-up box results
@@ -58,20 +63,20 @@ const render = async () => {
     // Clip Line - X | pop-up box, select destination clips,
     // Clip Selection -- x | "
     // Search Global -- C-S-f | pop-up box results 
-    if (isLoading) {
-      return
-    }
-    if (ch === 'escape' || 'q' || 'C-c') {
+    //if (isLoading) {
+     // return
+    //}
+    if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
-    } else if (ch === '?') {
+    } else if (key.full === '?') {
       //show help
       cbShowHelp();
-    } else if (ch === '/') {
+    } else if (key.full === '/') {
       cbShowSearch();
     } else {
       //update cursor position
       cursor.detach()
-      updateCoordinate(ch)
+      updateCoordinate(key.full)
       renderCursor()
       screen.render()
     }
@@ -118,14 +123,14 @@ const render = async () => {
       cursorLeft = 0
     } else if (input === '$') {
       cursorLeft = (box.width) - 3
-    } else if (input === 'u') {
+    } else if (input === 'd' || input === 'C-d') {
       cursorTop += (box.height) - 2
       if (cursorTop > box.getScrollHeight()) {
         cursorTop = box.getScrollHeight() - 1
       }
       box.scrollTo(box.getScrollHeight())
       box.scrollTo(cursorTop)
-    } else if (input === 'd') {
+    } else if (input === 'u' || input === 'C-u') {
       cursorTop -= (box.height) - 1
       if (cursorTop < 0) {
         cursorTop = 0
@@ -182,17 +187,6 @@ const render = async () => {
   function setLoadingState(isLoading) {
     isLoading = isLoading
   }
-
-  //controls for box
-  
- box.key(['j','k','C-u','C-d', 'h', 'l', 'S-j'], function(ch, key) {
-   
-   switch(ch) {
-     case j: ; break;
-
-   }
-  
- })
 
   // Focus our element.
   box.focus();

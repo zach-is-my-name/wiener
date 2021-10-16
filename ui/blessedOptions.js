@@ -5,7 +5,7 @@ const boxOptions = {
   left: 'center',
   width: '100%',
   height: '100%',
-  tags: true,
+//  tags: true,
   scrollable: true,
   mouse: true,
 }

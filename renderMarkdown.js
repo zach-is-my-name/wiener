@@ -11,9 +11,9 @@ const renderMarkdown = async () => {
     // Define custom renderer
     renderer: new TerminalRenderer()
   });
-  //console.log(marked(markdown));
+  //console.log(marked(markdown))
   return marked(markdown)
 }
-
+//renderMarkdown(); 
 exports.renderMarkdown = renderMarkdown;
 
