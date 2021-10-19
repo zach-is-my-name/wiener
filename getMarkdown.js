@@ -8,10 +8,14 @@ const turndownOptions = {
 	linkStyle: 'referenced',
 }
 const turndownFilter = ['script', 'footer', 'style', 'nav', 'center'];
+
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
-
-
+turndownService.addRule("linksToObjects", {
+  filter: ["a"],
+  replacement: function (content, node, options) {
+    return (`["link", {text: "${content}", url:"${node.getAttribute('href')}" }]`)}
+ })
 
 const getMarkdown = async () => {
   const html = await getLatestWien() 

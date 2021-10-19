@@ -1,7 +1,6 @@
+
 const blessed = require('blessed');
 const stripAnsi = require('strip-ansi');
-const isTmux = require('is-tmux');
-//console.log(isTmux);
 const { boxOptions, cursorOptions, inputFieldOptions } = require('./blessedOptions')
 const regexMarkdownHeading = /#{1,6} .+$/gm
 const regexMarkdownLink = /\[([^[]+)\]\(([^)]+)\)/gm
@@ -10,6 +9,7 @@ const {renderMarkdown} = require('../renderMarkdown.js');
 
 const render = async () => {
   const renderedMarkdown = await renderMarkdown(); 
+  
   // Create a screen object.
   const screen = blessed.screen({
     smartCSR: true,
@@ -20,14 +20,14 @@ const render = async () => {
   // Create a box perfectly centered horizontally and vertically.
   const box = blessed.box(
     Object.assign({}, boxOptions, {
-    //top: 'center',
-    //left: 'center',
-    //width: '100%',
-    //height: '100%',
+    top: 'center',
+    left: 'center',
+    width: '100%',
+    height: '100%',
     tags: true,
-    //scrollable: true,
-    //content: "http://example.com",
-    content: renderedMarkdown,
+    scrollable: true,
+    content: "http://example.com",
+   content: renderedMarkdown,
     })
   );
 
@@ -81,7 +81,6 @@ const render = async () => {
       screen.render()
     }
   });
-
     box.on('click', async (mouse) => {
       // move the cursor
       cursor.detach()
@@ -158,7 +157,22 @@ const render = async () => {
       })
     )
   }
-
+ 
+/*
+  async function followInput() Promise<void> {
+    const input = blessed.textbox(inputFieldOptions)
+    this.screen.append(input)
+    this.screen.render()
+    input.focus()
+    input.readInput(async (err, value) => {
+      input.destroy()
+      if (!err && value?.length) {
+        await this.cbFollow(value as string)
+      }
+      this.screen.render()
+    })
+  }
+*/
   async function followLinkUnderCursor() {
     // check if the chunk under the cursor is a markdown link
     const lines = box.getScreenLines()
@@ -187,6 +201,7 @@ const render = async () => {
   function setLoadingState(isLoading) {
     isLoading = isLoading
   }
+
 
   // Focus our element.
   box.focus();
