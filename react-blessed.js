@@ -1,4 +1,5 @@
 const React = require('react');
+const importJsx = require('import-jsx');
 const {useState, useEffect} = require('react');
 const  blessed =  require('blessed');
 const {render} = require('react-blessed');
