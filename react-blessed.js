@@ -1,13 +1,24 @@
-const React = require('react');
-const importJsx = require('import-jsx');
+const React  = require('react');
 const {useState, useEffect} = require('react');
-const  blessed =  require('blessed');
+const importJsx = require('import-jsx');
+const blessed =  require('blessed');
 const {render} = require('react-blessed');
+const {getMarkdown} = require('./getRenderedMarkdown')
 
-function App()  {
+require('@babel/register')({
+  presets: [['@babel/preset-env'], ['@babel/preset-react']]
+});
+
+function App(props)  {
 
    const [renderedMarkdown, setRenderedMarkdown] = useState(null)
+   const [linkButtonRendered, setLinkButtonRendered] = useState(false)
+   const [linkButtonFocused, setLinkButtonFocus] = useState(false) 
 
+   const [cursorTop, setCursorTop] = useState(0) 
+   const [cursorLeft, setCursorLeft] = useState(0)
+   
+  
   useEffect( () => {
     async function getRenderedMarkdown() {
       const response = await renderMarkdown()
@@ -17,25 +28,60 @@ function App()  {
 
   }, []) 
 
-  const mainBox =  (
-    <box top="center"
+
+  const MainBox =  ( <box top="center"
          left="center"
          width="100%"
          height="100%"  
          mouse: true
          onClick={clickHandler}
-         scrollable: true > 
+         scrollable: true> 
+         renderedMarkdown 
+    </box>)
+
+     const button = (<Button 
+       top:linkButtonTop 
+       left:linkButtonLeft 
+       height: 3 
+       width:'shrink' 
+       focused:linkButtonFocused 
+       mouse:true 
+       tags: true
+       hidden:linkButtonHide >
+     -----URL----
+     </Button>)
+     
+const linkButtonPress = () => {
+  setLinkButtonRendered();
+  setLinkButtonFocused();
+}
+
+  async function followLinkUnderCursor() {
+/*
     
-    /*------ RenderedMarkDown ------*/    
-    </box>
-  )
+    // check if the chunk under the cursor is a markdown link
+    const lines = box.getScreenLines()
+    if (cursorTop >= lines.length) {
+      return
+    }
+    
+
+
+
+
+
+
+
+
+
+
 
   const clickHandler = ( async (mouse) => {
       // move the cursor
       cursor.detach()
       const { x, y } = mouse
-      cursorTop = box.childBase + y - 1
-      cursorLeft = x - 1
+      setCursorTop((box.childBase + y) - 1)
+      setCursorLeft(x - 1)
       renderCursor()
       screen.render()
 
@@ -44,8 +90,6 @@ function App()  {
     }
   )
 
-  let cursorTop = 0;
-  let cursorLeft = 0;
   let cursor = (
     <box parent: box
          width: 1
@@ -55,6 +99,16 @@ function App()  {
          style ={{fg: 'white', bg: 'white'}}>
     </box>
   )                 
+
+  const renderCursor = () => {
+    <box parent: box
+         width: 1
+         height: 1
+         top: cursorTop
+         left: cursorLeft
+         style ={{fg: 'white', bg: 'white'}}>
+    </box>
+  }
 
   let isLoading = false;
   const showHelp = () =>  null;
@@ -97,43 +151,43 @@ function App()  {
   
 const updateCoordinate = (input) => {
     if (input === 'j' || input === 'k') {
-      cursorTop = nextCursorPosition(
+      setCursorTop(nextCursorPosition(
         cursorTop,
         input === 'j',
         box.getScrollHeight(),
         1,
-      )
+      ))
       box.scrollTo(cursorTop)
     } else if (input === 'h' || input === 'l') {
-      cursorLeft = nextCursorPosition(
+      setCursorLeft(nextCursorPosition(
         cursorLeft,
         input === 'l',
         box.width,
         3,
-      )
+      ))
     } else if (input === 'g') {
-      cursorTop = 0
-      cursorLeft = 0
+      setCursorTop(0)
+      setCursorLeft(0)
       box.scrollTo(cursorTop)
     } else if (input === 'S-g') {
-      cursorTop = box.getScreenLines().length - 1
-      cursorLeft = 0
+      setCursorTop(box.getScreenLines().length - 1)
+      setCursorLeft(0)
       box.scrollTo(cursorTop)
     } else if (input === '0') {
-      cursorLeft = 0
+      setCursorLeft(0)
     } else if (input === '$') {
-      cursorLeft = (box.width) - 3
+      setCursorLeft((box.width) - 3)
     } else if (input === 'd' || input === 'C-d') {
       cursorTop += (box.height) - 2
       if (cursorTop > box.getScrollHeight()) {
-        cursorTop = box.getScrollHeight() - 1
+        setCursorTop(box.getScrollHeight() - 1)
       }
       box.scrollTo(box.getScrollHeight())
       box.scrollTo(cursorTop)
     } else if (input === 'u' || input === 'C-u') {
-      cursorTop -= (box.height) - 1
+      setCursorTop((cursorTop - (box.height)) - 1)
       if (cursorTop < 0) {
-        cursorTop = 0
+        setCursorTop(0)
       }
       box.scrollTo(0)
       box.scrollTo(cursorTop)
@@ -149,19 +203,9 @@ const updateCoordinate = (input) => {
     return position
   }
 
-  const renderCursor = () => {
-    <box parent: box
-         width: 1
-         height: 1
-         top: cursorTop
-         left: cursorLeft
-         style ={{fg: 'white', bg: 'white'}}>
-    </box>
-  }
   
   // re-implement
   async function followLinkUnderCursor() {
-    /*
     // check if the chunk under the cursor is a markdown link
     const lines = box.getScreenLines()
     if (cursorTop >= lines.length) {
@@ -187,7 +231,7 @@ const updateCoordinate = (input) => {
     const stripAnsi = require('strip-ansi');
     const regexMarkdownHeading = /#{1,6} .+$/gm
     const regexMarkdownLink = /\[([^[]+)\]\(([^)]+)\)/gm
-  */
+  
   }
 
   /*
@@ -196,10 +240,12 @@ const updateCoordinate = (input) => {
     isLoading = isLoading
   }
 */
+ }
   mainBox.focus();
 
   /* --------------------return (below)--------------------- */
     return (
+     <MainBox / > 
     );
 }
 
@@ -211,4 +257,4 @@ const screen = blessed.screen({
 
 
 const component = render(<App />, screen);
-*/
+

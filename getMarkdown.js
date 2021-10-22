@@ -14,7 +14,7 @@ turndownService.remove(turndownFilter);
 turndownService.addRule("linksToObjects", {
   filter: ["a"],
   replacement: function (content, node, options) {
-    return (`["link", {text: "${content}", url:"${node.getAttribute('href')}" }]`)}
+    return (`"`${underline}`"$${content}"`${/underline}`"<Button onPress={()=> linkButtonPress()} top:linkButtonTop left:linkButtonLeft height:3 width:'shrinkfocused:linkButtonFocused mouse:true hidden:linkButtonHidden><Button >"`${underline}`"${node.getAttribute('href')"`${/underline}`"</button></button>`)}
  })
 
 const getMarkdown = async () => {
