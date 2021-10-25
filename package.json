@@ -2,27 +2,36 @@
   "name": "wienrs",
   "version": "1.0.0",
   "description": "cli for searching https://weekinethereumnews.com",
-  "main": "index.js",
+  "main": "node index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "wien": "babel-node react-blessed.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-transform-flow-strip-types": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
+    "@babel/register": "^7.15.3",
     "chalk": "^4.1.2",
-    "commander": "^8.1.0",
-    "conf": "^10.0.2"
+    "conf": "^10.0.2",
+    "eslint": "^8.1.0",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.1-alpha-4298ddbc5-20211023",
+    "rollup": "^2.58.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
     "axios": "^0.21.4",
-    "babel-node": "0.0.1-security",
     "blessed": "^0.1.81",
-    "cheerio": "^1.0.0-rc.10",
-    "hermit": "^0.2.2",
     "import-jsx": "^4.0.0",
     "is-tmux": "^1.0.0",
     "marked": "^3.0.7",

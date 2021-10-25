@@ -14,8 +14,18 @@ turndownService.remove(turndownFilter);
 turndownService.addRule("linksToObjects", {
   filter: ["a"],
   replacement: function (content, node, options) {
-    return (`"`${underline}`"$${content}"`${/underline}`"<Button onPress={()=> linkButtonPress()} top:linkButtonTop left:linkButtonLeft height:3 width:'shrinkfocused:linkButtonFocused mouse:true hidden:linkButtonHidden><Button >"`${underline}`"${node.getAttribute('href')"`${/underline}`"</button></button>`)}
- })
+    let linkRefCount = 0
+    const linkText = "${underline}" + `${content}` + "${/underline}"
+    const ref = "ref="
+    const linkRef = `${linkRefCount}`
+    const openTags = "<OutterButton><InnerButton>${underline}"
+    const urlText = `${node.getAttribute('href')}`
+    const closeTags = " ${/underline}</InnerButton></OutterButtonn>"
+    linkRefCount++
+
+    return linkText + ref + linkRef + openTags + urlText + closeTags 
+  }
+})
 
 const getMarkdown = async () => {
   const html = await getLatestWien() 

@@ -1,23 +1,21 @@
-const React  = require('react');
-const {useState, useEffect} = require('react');
+import React from 'react';
+const {useState, useEffect, useRef} = require('react');
 const importJsx = require('import-jsx');
 const blessed =  require('blessed');
 const {render} = require('react-blessed');
-const {getMarkdown} = require('./getRenderedMarkdown')
-
-require('@babel/register')({
-  presets: [['@babel/preset-env'], ['@babel/preset-react']]
-});
+const {renderMarkdown} = require('./renderMarkdown')
 
 function App(props)  {
 
-   const [renderedMarkdown, setRenderedMarkdown] = useState(null)
-   const [linkButtonRendered, setLinkButtonRendered] = useState(false)
-   const [linkButtonFocused, setLinkButtonFocus] = useState(false) 
-
-   const [cursorTop, setCursorTop] = useState(0) 
-   const [cursorLeft, setCursorLeft] = useState(0)
-   
+  const [renderedMarkdown, setRenderedMarkdown] = useState(null)
+  const [linkButtonRendered, setLinkButtonRendered] = useState(false)
+  const [linkButtonFocused, setLinkButtonFocus] = useState(false) 
+  const [linkButtonTop, setLinkButtonTop] = useState(0)
+  const [linkButtonLeft, setLinkButtonLeft] = useState(0)
+  const [linkButtonHide, setLinkButtonHide] = useState(false)
+  const [cursorTop, setCursorTop] = useState(0) 
+  const [cursorLeft, setCursorLeft] = useState(0)
+  const mainBoxRef = useRef(); 
   
   useEffect( () => {
     async function getRenderedMarkdown() {
@@ -28,55 +26,64 @@ function App(props)  {
 
   }, []) 
 
+  //useEffect(() => {
+   // mainBoxRef.current.focus()  
+    //}, []) 
 
-  const MainBox =  ( <box top="center"
-         left="center"
-         width="100%"
-         height="100%"  
-         mouse: true
-         onClick={clickHandler}
-         scrollable: true> 
-         renderedMarkdown 
-    </box>)
+  const MainBox =  ( 
+    <box 
+      top={"center"}
+      left={"center"}
+      width={"100%"}
+      height={"100%"}  
+      mouse 
+      onClick={clickHandler}
+      scrollable> 
+      ref={mainBoxRef}
+      keys
+      onKeyPress={mainBoxKeys}
+    >
+    Cursor 
+      {renderedMarkdown}
+    </box>);
 
-     const button = (<Button 
-       top:linkButtonTop 
-       left:linkButtonLeft 
-       height: 3 
-       width:'shrink' 
-       focused:linkButtonFocused 
-       mouse:true 
-       tags: true
-       hidden:linkButtonHide >
-     -----URL----
-     </Button>)
+  const emptyBox = <box> something </box>
+
+  const OutterButton = (
+    <button 
+      top={linkButtonTop}
+      left={linkButtonLeft}
+      onPress={()=> linkButtonPress()}
+      height={3}
+      width='shrink' 
+      focused={linkButtonFocused}
+      mouse 
+      tags
+      hidden={linkButtonHide} 
+    >
+      {props.children}
+    </button>)
+
+  const InnerButton = (<button>{props.children}</button>)
      
-const linkButtonPress = () => {
-  setLinkButtonRendered();
-  setLinkButtonFocused();
-}
+  const linkButtonPress = () => {
+    setLinkButtonRendered();
+    setLinkButtonFocused();
+  }
 
-  async function followLinkUnderCursor() {
-/*
+/*  async function followLinkUnderCursor() {
     
     // check if the chunk under the cursor is a markdown link
     const lines = box.getScreenLines()
     if (cursorTop >= lines.length) {
       return
     }
-    
+ */   
 
-
-
-
-
-
-
-
-
-
-
-  const clickHandler = ( async (mouse) => {
+/*Other project Gleanings
+ * useRef()
+*/
+ async  function clickHandler (mouse) {
       // move the cursor
       cursor.detach()
       const { x, y } = mouse
@@ -88,24 +95,22 @@ const linkButtonPress = () => {
       // check if the clicked chunk is a markdown link
       await followLinkUnderCursor()
     }
-  )
+  
 
-  let cursor = (
-    <box parent: box
-         width: 1
-         height: 1
-         top: cursorTop
-         left: cursorLeft
+  const Cursor = (
+    <box width={1}
+         height={1}
+         top={cursorTop}
+         left={cursorLeft}
          style ={{fg: 'white', bg: 'white'}}>
     </box>
   )                 
 
   const renderCursor = () => {
-    <box parent: box
-         width: 1
-         height: 1
-         top: cursorTop
-         left: cursorLeft
+    <box width={1}
+         height={1}
+         top={cursorTop}
+         left={cursorLeft}
          style ={{fg: 'white', bg: 'white'}}>
     </box>
   }
@@ -114,8 +119,7 @@ const linkButtonPress = () => {
   const showHelp = () =>  null;
   const showSearch = () =>  null;
 
-  // Quit on Escape, q, or Control-C.
-  mainBox.key(['escape', 'q', 'C-c','g','S-g','u', 'C-u','d','C-d','j','k','h','l','/'], async function(ch, key) {
+   async function mainBoxKeys (ch, key) {
     //todo implement  --
     // Mark --  m `(mark)
     // Search -- / or c-f | pop-up box results
@@ -142,14 +146,13 @@ const linkButtonPress = () => {
       cbShowSearch();
     } else {
       //update cursor position
-      cursor.detach()
       updateCoordinate(key.full)
       renderCursor()
       screen.render()
     }
-  });
-  
-const updateCoordinate = (input) => {
+  };
+
+function updateCoordinate (input) {
     if (input === 'j' || input === 'k') {
       setCursorTop(nextCursorPosition(
         cursorTop,
@@ -194,7 +197,7 @@ const updateCoordinate = (input) => {
     }
   };
 
-  const nextCursorPosition = ( current, forward, maxLength, adjustment ) => {
+  function nextCursorPosition ( current, forward, maxLength, adjustment ) {
     let position = current + (forward ? 1 : -1)
     position = position < 0 ? 0 : position
     position =
@@ -206,6 +209,7 @@ const updateCoordinate = (input) => {
   
   // re-implement
   async function followLinkUnderCursor() {
+    /*
     // check if the chunk under the cursor is a markdown link
     const lines = box.getScreenLines()
     if (cursorTop >= lines.length) {
@@ -241,11 +245,11 @@ const updateCoordinate = (input) => {
   }
 */
  }
-  mainBox.focus();
 
   /* --------------------return (below)--------------------- */
     return (
-     <MainBox / > 
+      {emptyBox}
+
     );
 }
 
