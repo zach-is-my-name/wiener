@@ -6,12 +6,14 @@ const {render} = require('react-blessed');
 
 
   function Cursor(props) {
+    return (
     <box width={1}
          height={1}
          top={props.cursorTop}
          left={props.cursorLeft}
          style ={{fg: 'white', bg: 'white'}}>
     </box>
+    )
   }                 
 
 export default Cursor
