@@ -10,10 +10,8 @@ const MainBox = () =>  {
   const [cursorLeft, setCursorLeft] = useState(0)
   const [inspectObj, setInspectObj] = useState({})
   const [callTimes, setCallTimes] = useState(0)
-  const mainBoxRef = useRef(); 
-
-  useEffect(() => {
-    mainBoxRef.current.key(['escape', 'q', 'C-c','g','S-g','u', 'C-u','d','C-d','j','k','h','l','/'], async (ch, key) => {
+  const mainBoxRef = useRef(null)
+  const keyHandler = async (ch, key) => {
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
     } else {
@@ -74,14 +72,9 @@ const MainBox = () =>  {
           mainBoxRef.current.scrollTo(cursorTop)
         }
       }
-  }) , []})
+    }
+    
 
-
-
-
-//  const keyHandler = useCallback( () => {
-
- // }
 
  const clickHandler = useCallback(async (mouse) => {
       // move the cursor
@@ -118,6 +111,10 @@ const MainBox = () =>  {
 
   }, []) 
 
+  const basicHandler = (ch, key) => {
+    console.log("something")
+  }
+
   return (
     <box 
       top={"center"}
@@ -127,7 +124,8 @@ const MainBox = () =>  {
       focused={true}
       keyable={true}
       input={true}
-      //onKeypress={keyHandler}
+      //onKeypress={basicHandler}
+      onKeypress={keyHandler}
       mouse 
       onClick={clickHandler}
       scrollable={true}
