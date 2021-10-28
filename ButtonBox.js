@@ -5,28 +5,31 @@ const blessed =  require('blessed');
 const {render} = require('react-blessed');
 const {renderMarkdown} = require('./renderMarkdown')
 import Cursor from './Cursor'
+import LinkButton from './LinkButton'
 
-function OutterButton() {
+function ButtonBox(props) {
 
   return (
-    <button 
-      top={linkButtonTop}
-      left={linkButtonLeft}
-      onPress={()=> linkButtonPress()}
+    <box 
+      onPress={linkBoxPress}
       height={3}
       width='shrink' 
       focused={linkButtonFocused}
       mouse 
-      tags
+      tags={true}
       hidden={linkButtonHide} 
+      ref={props.ref} 
+      url={props.url}
     >
       {props.children}
-    </button>)
+      <LinkButton url={props} / > 
+    </box>
   )
+  
 
 }
 
-
+export default ButtonBox
 
 
 

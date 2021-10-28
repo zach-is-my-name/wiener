@@ -1,6 +1,6 @@
 const TurndownService = require('turndown');
 const {getLatestWien} = require('./getLatestWien.js');
-
+import {replacementFunction} from './replacementFunction'
 //turndown 
 const turndownOptions = {
   headingStyle: 'atx',
@@ -13,18 +13,7 @@ const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
 turndownService.addRule("linksToObjects", {
   filter: ["a"],
-  replacement: function (content, node, options) {
-    let linkRefCount = 0
-    const linkText = "${underline}" + `${content}` + "${/underline}"
-    const ref = "ref="
-    const linkRef = `${linkRefCount}`
-    const openTags = "<OutterButton><InnerButton>${underline}"
-    const urlText = `${node.getAttribute('href')}`
-    const closeTags = " ${/underline}</InnerButton></OutterButtonn>"
-    linkRefCount++
-
-    return linkText + ref + linkRef + openTags + urlText + closeTags 
-  }
+  replacement: replacementFunction 
 })
 
 const getMarkdown = async () => {

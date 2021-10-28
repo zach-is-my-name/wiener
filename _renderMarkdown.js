@@ -1,6 +1,6 @@
 const marked = require('marked');
 const TerminalRenderer = require('marked-terminal');
-const {getMarkdown} = require('./getMarkdown.js');
+const {getMarkdown} = require('./_getMarkdown.js');
 
 
 const renderMarkdown = async () => {

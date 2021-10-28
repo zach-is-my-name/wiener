@@ -1,21 +1,18 @@
-import React from 'react';
-const {useState, useEffect, useRef, useCallback} = require('react');
-const {renderMarkdown} = require('./_renderMarkdown')
-import JsxParser from 'react-jsx-parser'
-import blessed from 'blessed'
-import Cursor from './Cursor'
-import ButtonBox from './ButtonBox'
-import LinkButton from './LinkButton'
 
-const MainBox = () =>  {
-  const mainBoxRef = useRef(null)
-  const [renderedMarkdown, setRenderedMarkdown] = useState(null)
-  const [cursorTop, setCursorTop] = useState(0) 
-  const [cursorLeft, setCursorLeft] = useState(0)
-  const [linkButtonRendered, setLinkButtonRendered] = useState(null)
-  const [linkButtonFocused, setLinkButtonFocused] = useState(null)
+ export const clickHandler = async (mouse) => {
+      // move the cursor
+      //cursor.detach()
+      const { x, y } = mouse
+      setCursorTop((mainBoxRef.current.childBase + y) - 1)
+      setCursorLeft(x - 1)
+      //renderCursor()
+      //screen.render()
 
-  const keyHandler = async (ch, key) => {
+      // check if the clicked chunk is a markdown link
+      await followLinkUnderCursor()
+ }
+
+export const keyHandler = async (ch, key) => {
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
 
@@ -24,6 +21,7 @@ const MainBox = () =>  {
     }
 
     function nextCursorPosition( current, forward, maxLength, adjustment )  {
+      setCallTimes(prev => prev +1)
       let position = current + (forward ? 1 : -1)
       position = position < 0 ? 0 : position
       position =
@@ -77,83 +75,4 @@ const MainBox = () =>  {
         }
       }
     }
-
-  const clickHandler = async (mouse) => {
-      // move the cursor
-      //cursor.detach()
-      const { x, y } = mouse
-      setCursorTop((mainBoxRef.current.childBase + y) - 1)
-      setCursorLeft(x - 1)
-      //renderCursor()
-      //screen.render()
-
-      // check if the clicked chunk is a markdown link
-      await followLinkUnderCursor()
- }
-
-  useEffect( () => {
-    async function getRenderedMarkdown() {
-      const response = await renderMarkdown()
-      setRenderedMarkdown(response);
-    }
-    getRenderedMarkdown()
-  }, []) 
-
-  const linkButtonPress = useCallback( () => {
-    //setLinkButtonRendered();
-    //setLinkButtonFocused();
-  }, [])
-
-  return (
-    <box 
-      top={"center"}
-      left={"center"}
-      width={"100%"}
-      height={"100%"}  
-      tags
-      focused={true}
-      keyable={true}
-      input={true}
-      onKeypress={keyHandler}
-      mouse 
-      onClick={clickHandler}
-      scrollable={true}
-      ref={mainBoxRef}
-    >
-    <JsxParser
-      components={{ButtonBox, LinkButton}}
-      jsx={renderedMarkdown}
-      reenderInWrapper={false}
-    />
-
-    <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
-    </box>
-  );
-// {typeof renderedMarkdown === 'string' && parse(renderedMarkdown) }
-}
-
-export default MainBox
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
