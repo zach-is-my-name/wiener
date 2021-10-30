@@ -1,18 +1,7 @@
-const blessed = require('blessed');
+const {markdown} = require('./markdown.js')
 
+typeof markdown 
 
-const screen = blessed.screen({
-  smartCSR: true
-});
+console.log(markdown)
 
-screen.render()
-
- let button = blessed.button() 
- //input = blessed.input
- console.log('BUTTON', button)
-screen.destroy()
-
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-  return process.exit(0);
-});
 

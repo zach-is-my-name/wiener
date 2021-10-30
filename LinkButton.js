@@ -6,7 +6,7 @@ const {render} = require('react-blessed');
 const {renderMarkdown} = require('./renderMarkdown')
 import Cursor from './Cursor'
 
-function LinkButton() {
+function LinkButton(props) {
   return(
     <button>{props.children}</button>
   )

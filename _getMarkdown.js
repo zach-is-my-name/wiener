@@ -1,7 +1,6 @@
 const TurndownService = require('turndown');
 const {getLatestWien} = require('./getLatestWien.js');
-//const {replacementFunction} = require('./replacementFunction')
-//turndown 
+
 const turndownOptions = {
   headingStyle: 'atx',
   bulletListMarker: '*',
@@ -14,21 +13,17 @@ turndownService.remove(turndownFilter);
 turndownService.addRule("linksToObjects", {
   filter: ["a"],
   replacement: function replacementFunction (content, node, options) {
-    let linkRefCount = 0
-    const linkText =   `[${content}]`;
-    const url = `(${node.getAttribute('href')})`
-    const buttonBoxOpen = `<ButtonBox url={${url}} refProp={link${linkRefCount++}}>`
-    const linkButtonOpen = `<LinkButton>`
-    const underlineOpen = "{underline}"
 
-    const underlineClose = " {/underline}"
+    const linkText = `${content}`;
+    const url = `${node.getAttribute('href')}`
+
+    const buttonBoxOpen = `<ButtonBox>${linkText}`
+    const linkButtonOpen = `<LinkButton>`
+
     const linkButtonClose ="</LinkButton>" 
     const buttonBoxClose = "</ButtonBox>"
 
-    const openTags = buttonBoxOpen + linkButtonOpen 
-    const closeTags =  linkButtonClose + buttonBoxClose  
-
-    return  openTags + linkText +  closeTags 
+    return  buttonBoxOpen + linkButtonOpen + url + linkButtonClose + buttonBoxClose  
   }
 })
 
@@ -40,6 +35,9 @@ const getMarkdown = async () => {
 }
 
 exports.getMarkdown = getMarkdown;
+
+//`<ButtonBox ref={N}>Example<LinkButton>http://example.com</LinkButton></ButtonBox>`
+
 
 //<ButtonBox  url={${}}>
 

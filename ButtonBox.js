@@ -1,34 +1,28 @@
 import React from 'react';
-const {useState, useEffect, useRef} = require('react');
-const importJsx = require('import-jsx');
-const blessed =  require('blessed');
-const {render} = require('react-blessed');
-const {renderMarkdown} = require('./renderMarkdown')
-import Cursor from './Cursor'
 import LinkButton from './LinkButton'
 
 function ButtonBox(props) {
 
   return (
     <box 
-      onPress={linkBoxPress}
+      //onPress={linkBoxPress}
       height={3}
       width='shrink' 
-      focused={linkButtonFocused}
+      //focused={linkButtonFocused}
       mouse 
       tags={true}
-      hidden={linkButtonHide} 
-      ref={props.ref} 
-      url={props.url}
+      hidden={true} 
+      //ref={props.refProp} 
+     // url={props.url}
     >
-      {props.children}
-      <LinkButton url={props} / > 
+    {props.children}
+    <LinkButton /> 
     </box>
   )
   
 
 }
-
+// <LinkButton url={props} / > 
 export default ButtonBox
 
 
