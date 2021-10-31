@@ -8,11 +8,11 @@ const renderMarkdown = async () => {
   const markdown = await getMarkdown(); 
 
   marked.setOptions({
-    // Define custom renderer
+     //Define custom renderer
     renderer: new TerminalRenderer()
   });
   return marked(markdown)
 }
-//renderMarkdown(); 
+renderMarkdown(); 
 exports.renderMarkdown = renderMarkdown;
 

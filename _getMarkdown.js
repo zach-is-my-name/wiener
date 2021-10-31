@@ -14,16 +14,11 @@ turndownService.addRule("linksToObjects", {
   filter: ["a"],
   replacement: function replacementFunction (content, node, options) {
 
-    const linkText = `${content}`;
-    const url = `${node.getAttribute('href')}`
+     
+    const linkObj = JSON.stringify({linkText: `${content}`, url: `${node.getAttribute('href')}`})
 
-    const buttonBoxOpen = `<ButtonBox>${linkText}`
-    const linkButtonOpen = `<LinkButton>`
 
-    const linkButtonClose ="</LinkButton>" 
-    const buttonBoxClose = "</ButtonBox>"
-
-    return  buttonBoxOpen + linkButtonOpen + url + linkButtonClose + buttonBoxClose  
+    return linkObj 
   }
 })
 

@@ -5,7 +5,9 @@
   "main": "node index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "wien": "babel-node react-blessed.js"
+    "wien": "babel-node react-blessed.js",
+    "nm": "nodemon index.js"
+
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "eslint": "^8.1.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.1-alpha-4298ddbc5-20211023",
+    "nodemon": "^2.0.14",
     "rollup": "^2.58.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",

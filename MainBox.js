@@ -96,8 +96,7 @@ const MainBox = () =>  {
   useEffect( () => {
     async function _getMarkdown() {
       const response = await getMarkdown()
-      const parsedMarkdown = extractJsx(response);
-      setMarkdown(parsedMarkdown);
+      setMarkdown(response);
     }
     _getMarkdown()
   }, []) 
@@ -106,6 +105,8 @@ const MainBox = () =>  {
     //setLinkButtonRendered();
     //setLinkButtonFocused();
   }, [])
+
+  //console.log(markdown && extractJsx(markdown)) 
 
   return(
     <box 
@@ -123,43 +124,27 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     >
-    {markdown && markdown}
+    {markdown && extractJsx(markdown)}
     <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
   )
 }
 
  function extractJsx(string) { 
-  
-  const regexLinkButton = /(\<LinkButton\>.+?<\/LinkButton\>)/g
+   const regex = /(\{"linkText":".+?","url":"https?:\/\/.+?"\})/g
+   const replaceResult = reactStringReplace(string, regex, (match, index) => {     const urlRegex = /"url":"(https?:\/\/.+?)"/
+     const url = match.match(urlRegex)[1]
+     const linkTextRegex = /\{"linkText":(.+?)"/
+     const linkText = match.match(linkTextRegex)[1]
 
-  const replaceFunctLinkButton =  (match, index) => { 
+     return (<ButtonBox key={index}>{linkText}<LinkButton keyProp={index}>{url}</LinkButton></ButtonBox>)
+   
+   }
+   )  
 
-    const linkUrlRegex = /\>(.+?)\</
-    const linkUrl = match.match(linkUrlRegex)[1]
+   return replaceResult
+ }
 
-    return <LinkButton key={index}>{linkUrl}</LinkButton>
-  }
-
-  let replaceResult = reactStringReplace(string, regexLinkButton, replaceFunctLinkButton)   
-
-  const regexButtonBox = /(\<ButtonBox\>.+?\<LinkButton\>.+?\<\/LinkButton\>\<\/ButtonBox\>)/g
-
-  const replaceFunctButtonBox = (match, index) => {
-    const regexChildren = /\<ButtonBox\>.+?(\<LinkButton\>.+?\<\/LinkButton\>)\<\/ButtonBox\>/
-    const regexLinkText=  /\<ButtonBox\>(.+?)\<LinkButton\>.+?\<\/LinkButton\>\<\/ButtonBox\>/
-
-    const children = match.match(regexChildren)[1] 
-
-    const linkText = match.match(regexLinkText)[1]
-    return <ButtonBox key={index} refProp={index}>{linkText} + {children}</ButtonBox> 
-  };
-  
-  replaceResult = reactStringReplace(replaceResult, regexButtonBox, replaceFunctButtonBox)   
-
-
-  return replaceResult
-}
 
 export default MainBox
 

@@ -8,7 +8,7 @@ import Cursor from './Cursor'
 
 function LinkButton(props) {
   return(
-    <button>{props.children}</button>
+    <button key={props.keyProp}>{props.children}</button>
   )
 }
 
