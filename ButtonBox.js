@@ -4,15 +4,14 @@ import LinkButton from './LinkButton'
 function ButtonBox(props) {
 
   return (
-    <box 
-    >
-    <LinkButton /> 
-    </box>
+    <>
+    {props.linkText}
+    <LinkButton url={props.url} /> 
+    </>
   )
   
 
 }
-// <LinkButton url={props} / > 
 export default ButtonBox
 
 

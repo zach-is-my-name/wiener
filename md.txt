@@ -1,4 +1,4 @@
-  const markdown = ` Week in Ethereum News                               
+   Week in Ethereum News                               
 
 # {"linkText":"Week in Ethereum News","url":"https://weekinethereumnews.com/"}
 
@@ -155,6 +155,6 @@ Upcoming dates of note (new/changes in bold):
 
 Did you get forwarded this newsletter? {"linkText":"Sign up","url":"https://weekinethereum.substack.com/subscribe#about"} to receive it weekly
 
-{"linkText":"RSS","url":"https://weekinethereumnews.com/feed/"}`
+{"linkText":"RSS","url":"https://weekinethereumnews.com/feed/"}
 
 

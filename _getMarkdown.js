@@ -13,10 +13,7 @@ turndownService.remove(turndownFilter);
 turndownService.addRule("linksToObjects", {
   filter: ["a"],
   replacement: function replacementFunction (content, node, options) {
-
-     
     const linkObj = JSON.stringify({linkText: `${content}`, url: `${node.getAttribute('href')}`})
-
 
     return linkObj 
   }
@@ -25,16 +22,13 @@ turndownService.addRule("linksToObjects", {
 const getMarkdown = async () => {
   const html = await getLatestWien() 
   const markdown = await turndownService.turndown(html);
-  //console.log('markdown', markdown)
   return markdown;
 }
 
 exports.getMarkdown = getMarkdown;
 
-//`<ButtonBox ref={N}>Example<LinkButton>http://example.com</LinkButton></ButtonBox>`
 
 
-//<ButtonBox  url={${}}>
 
 
 

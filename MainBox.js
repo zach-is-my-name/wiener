@@ -1,12 +1,25 @@
 import React from 'react';
-const {useState, useEffect, useRef, useCallback} = require('react');
-const reactStringReplace = require('react-string-replace')
-//const {renderMarkdown} = require('./_renderMarkdown')
-const {getMarkdown} = require('./_getMarkdown')
+import  {useState, useEffect, useRef, useCallback} from 'react';
+import ansiRegex from 'ansi-regex'
+import reactStringReplace from 'react-string-replace'
+import processString from 'react-process-string'
+import {renderMarkdown} from './renderMarkdown'
 import blessed from 'blessed'
 import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
+
+const regex = ansiRegex({onlyFirst: true});
+
+function hasAnsi(string) {
+	return regex.test(string);
+}
+
+
+ (async () => { 
+   let rm = await renderMarkdown()
+   console.log(rm.match(ansiRegex()))
+})()
 
 const MainBox = () =>  {
   const [markdown, setMarkdown] = useState(null)
@@ -15,6 +28,22 @@ const MainBox = () =>  {
   const [linkButtonRendered, setLinkButtonRendered] = useState(null)
   const [linkButtonFocused, setLinkButtonFocused] = useState(null)
   const mainBoxRef = useRef(null)
+
+  const clickHandler = async (mouse) => {
+    // move the cursor
+    //cursor.detach()
+    const { x, y } = mouse
+    setCursorTop((mainBoxRef.current.childBase + y) - 1)
+    setCursorLeft(x - 1)
+    //renderCursor()
+    //screen.render()
+
+    // check if the clicked chunk is a markdown link
+    await followLinkUnderCursor()
+  }
+
+  const linkButtonPress = useCallback( () => {
+  }, [])
 
   const keyHandler = async (ch, key) => {
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
@@ -80,35 +109,16 @@ const MainBox = () =>  {
     }
   }
 
-  const clickHandler = async (mouse) => {
-    // move the cursor
-    //cursor.detach()
-    const { x, y } = mouse
-    setCursorTop((mainBoxRef.current.childBase + y) - 1)
-    setCursorLeft(x - 1)
-    //renderCursor()
-    //screen.render()
-
-    // check if the clicked chunk is a markdown link
-    await followLinkUnderCursor()
-  }
-
   useEffect( () => {
-    async function _getMarkdown() {
-      const response = await getMarkdown()
+    async function getMarkdown() {
+      const response = await renderMarkdown()
       setMarkdown(response);
     }
-    _getMarkdown()
+    getMarkdown()
   }, []) 
 
-  const linkButtonPress = useCallback( () => {
-    //setLinkButtonRendered();
-    //setLinkButtonFocused();
-  }, [])
-
-  //console.log(markdown && extractJsx(markdown)) 
-
   return(
+    
     <box 
     top={"center"}
     left={"center"}
@@ -124,21 +134,24 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     >
-    {markdown && extractJsx(markdown)}
+    <layout width={"100%"} height={"100%"}>
+    {""}
     <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
+    </layout> 
     </box>
+    
   )
 }
 
  function extractJsx(string) { 
-   const regex = /(\{"linkText":".+?","url":"https?:\/\/.+?"\})/g
-   const replaceResult = reactStringReplace(string, regex, (match, index) => {     const urlRegex = /"url":"(https?:\/\/.+?)"/
+   const regex = /(\{"linkText":".+?","url":"https?:\/\/.+?"\})/gm
+   const replaceResult = reactStringReplace(string, regex, (match, index) => {     
+     const urlRegex = /"url":"(https?:\/\/.+?)"/
      const url = match.match(urlRegex)[1]
      const linkTextRegex = /\{"linkText":(.+?)"/
      const linkText = match.match(linkTextRegex)[1]
-
-     return (<ButtonBox key={index}>{linkText}<LinkButton keyProp={index}>{url}</LinkButton></ButtonBox>)
-   
+       
+     return <ButtonBox url={url} linkText={linkText} key={index} />
    }
    )  
 

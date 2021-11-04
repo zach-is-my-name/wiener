@@ -25,6 +25,8 @@ const screen = blessed.screen({
   title: 'wiener',
 });
 
+screen.log()
+
 
 const component = render(<App />, screen);
 

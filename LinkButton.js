@@ -8,7 +8,7 @@ import Cursor from './Cursor'
 
 function LinkButton(props) {
   return(
-    <button key={props.keyProp}>{props.children}</button>
+    <button shrink={true}>{props.url}</button>
   )
 }
 
