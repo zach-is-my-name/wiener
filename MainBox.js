@@ -4,25 +4,26 @@ import ansiRegex from 'ansi-regex'
 import reactStringReplace from 'react-string-replace'
 import processString from 'react-process-string'
 import {renderMarkdown} from './renderMarkdown'
+//import secondRenderMarkdown from './secondRenderMarkdown'
 import blessed from 'blessed'
 import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
-
 const regex = ansiRegex({onlyFirst: true});
-
+const stripAnsi = require('strip-ansi');
 function hasAnsi(string) {
 	return regex.test(string);
 }
 
-
+/*
  (async () => { 
    let rm = await renderMarkdown()
    console.log(rm.match(ansiRegex()))
 })()
-
+*/
 const MainBox = () =>  {
   const [markdown, setMarkdown] = useState(null)
+  const [jsx, setJsx] = useState(null)
   const [cursorTop, setCursorTop] = useState(0) 
   const [cursorLeft, setCursorLeft] = useState(0)
   const [linkButtonRendered, setLinkButtonRendered] = useState(null)
@@ -109,13 +110,25 @@ const MainBox = () =>  {
     }
   }
 
+
   useEffect( () => {
     async function getMarkdown() {
       const response = await renderMarkdown()
-      setMarkdown(response);
+      
+      let config = [{
+        regex: /\{"linkText":"(.+?)","url":"(https?:\/\/.+?)"\}/gm,
+        fn: (key, result) => {
+          return (<ButtonBox url={`${result[2]}`} linkText={`${result[1]}`} key={key} />)
+        }
+      }]
+      
+      const processedString = processString(config)(stripAnsi(response))
+
+      setMarkdown(processedString);
     }
     getMarkdown()
   }, []) 
+
 
   return(
     
@@ -124,6 +137,7 @@ const MainBox = () =>  {
     left={"center"}
     width={"100%"}
     height={"100%"}  
+    align={"left"}
     tags
     focused={true}
     keyable={true}
@@ -134,30 +148,36 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     >
-    <layout width={"100%"} height={"100%"}>
-    {""}
-    <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
+    <layout width={"100%"} height={"100%"} border={{type: 'line', fg: 'blue'} } >
+    {markdown}
     </layout> 
+    <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
     
   )
+  
 }
+/*
 
+
+*/
+ 
+ /*
  function extractJsx(string) { 
    const regex = /(\{"linkText":".+?","url":"https?:\/\/.+?"\})/gm
-   const replaceResult = reactStringReplace(string, regex, (match, index) => {     
+   const replaceResult = reactStringReplace(string, regex, ((match, index) => {     
      const urlRegex = /"url":"(https?:\/\/.+?)"/
      const url = match.match(urlRegex)[1]
      const linkTextRegex = /\{"linkText":(.+?)"/
      const linkText = match.match(linkTextRegex)[1]
-       
-     return <ButtonBox url={url} linkText={linkText} key={index} />
-   }
+     
+    return <ButtonBox url={url} linkText={linkText} key={index} />
+   })
    )  
-
+   //console.log("booky")
+  // console.log(replaceResult)
    return replaceResult
- }
-
+ }*/
 
 export default MainBox
 

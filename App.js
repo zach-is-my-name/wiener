@@ -20,7 +20,7 @@ function App(props) {
 }
 
 const screen = blessed.screen({
-  autoPadding: true,
+//  autoPadding: true,
   smartCSR: true,
   title: 'wiener',
 });

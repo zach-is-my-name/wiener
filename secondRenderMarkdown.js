@@ -1,11 +1,7 @@
 const marked = require('marked');
 const TerminalRenderer = require('marked-terminal');
-const {getMarkdown} = require('./getMarkdown.js');
 
-
-const renderMarkdown = async () => {
-
-  const markdown = await getMarkdown(); 
+const secondRenderMarkdown = () => {
 
   marked.setOptions({
     
@@ -14,5 +10,5 @@ const renderMarkdown = async () => {
   return marked(markdown)
 }
 
-exports.renderMarkdown = renderMarkdown
+export {renderMarkdown} 
 
