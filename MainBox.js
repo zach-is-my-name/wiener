@@ -114,7 +114,8 @@ const MainBox = () =>  {
   useEffect( () => {
     async function getMarkdown() {
       const response = await renderMarkdown()
-      
+
+     /* 
       let config = [{
         regex: /\{"linkText":"(.+?)","url":"(https?:\/\/.+?)"\}/gm,
         fn: (key, result) => {
@@ -123,12 +124,12 @@ const MainBox = () =>  {
       }]
       
       const processedString = processString(config)(stripAnsi(response))
+*/
 
-      setMarkdown(processedString);
+      setMarkdown(response);
     }
     getMarkdown()
   }, []) 
-
 
   return(
     
@@ -148,7 +149,7 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     >
-    <layout width={"100%"} height={"100%"} border={{type: 'line', fg: 'blue'} } >
+    <layout align={"left"} width={"100%"} height={"100%"} border={{type: 'line', fg: 'blue'} } wrap={true} >
     {markdown}
     </layout> 
     <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
@@ -157,27 +158,7 @@ const MainBox = () =>  {
   )
   
 }
-/*
-
-
-*/
  
- /*
- function extractJsx(string) { 
-   const regex = /(\{"linkText":".+?","url":"https?:\/\/.+?"\})/gm
-   const replaceResult = reactStringReplace(string, regex, ((match, index) => {     
-     const urlRegex = /"url":"(https?:\/\/.+?)"/
-     const url = match.match(urlRegex)[1]
-     const linkTextRegex = /\{"linkText":(.+?)"/
-     const linkText = match.match(linkTextRegex)[1]
-     
-    return <ButtonBox url={url} linkText={linkText} key={index} />
-   })
-   )  
-   //console.log("booky")
-  // console.log(replaceResult)
-   return replaceResult
- }*/
 
 export default MainBox
 
