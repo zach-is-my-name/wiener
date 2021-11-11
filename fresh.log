@@ -1,0 +1,323 @@
+09:27:42.649 INFO     Week in Ethereum News                               
+
+
+
+  
+
+  
+  
+
+## [Week in Ethereum News  
+November 6, 2021](https://weekinethereumnews.com/week-in-ethereum-news-november-6-2021/)
+
+###### **Eth News and Links**
+
+**Mainnet execution layer**
+
+*   PoW switch off ]8;;https://www.youtube.com/watch?v=_kfS9jAUY6g&t=18scommunity call]8;;:
+    *   average block times change from ~13s to 12s, contracts may have ]8;;https://twitter.com/TimBeiko/status/1456644168986419200hardcoded ~13s assumption]8;;
+    *   Dankrad’s slides on ]8;;https://docs.google.com/presentation/d/1MUVaFyd9ce3hPQ5L-UhqVSfxf1ajMYFbkActkp5xNKI/edit#slide=id.p1finding the safe head of the chain]8;;
+*   Erigon ]8;;https://github.com/ledgerwatch/erigon/releases/tag/v2021.11.01v2021.11.01]8;;: first beta release, not downgradeable
+
+**EIPs/Standards**
+
+*   ]8;;https://eips.ethereum.org/EIPS/eip-4399EIP4399]8;;: Supplant DIFFICULTY opcode with RANDOM
+
+**Proof of Stake consensus layer**
+
+*   Danny Ryan’s ]8;;https://blog.ethereum.org/2021/11/02/finalized-no-31/Finalized PoS update]8;;: proposed forkchoice fixes can mitigate 3 liveness & reorg attacks and won’t delay switching off PoW 
+*   Tweet thread of ]8;;https://twitter.com/casparschwa/status/1454511836267692039reorgs in PoS and mitigation strategies]8;;
+*   Latest ]8;;https://hackmd.io/@benjaminion/eth2_news/https%3A%2F%2Fhackmd.io%2F%40benjaminion%2Fwnie2_211105What’s New in Eth2]8;;
+*   ]8;;https://youtu.be/9U_xj_zCMYg?t=63). Notes from [Ben Edgington](https://hackmd.io/@benjaminion/B1wBrwbPFPoS implementers call]8;;: 
+    *   Kintsugi ]8;;https://notes.ethereum.org/@djrtwo/kintsugi-milestonesmilestone tracker]8;; to a persistent testnet early December
+    *   Pyrmont testnet to be shut down
+*   ]8;;https://hackmd.io/@sproul/altair-rewardsStaking rewards]8;; after Altair upgrade are more variable: 
+    *   Attestations: 0.0040-0.0042 ETH per day
+    *   Blocks: 0.018-0.03 ETH per block
+    *   Sync committee membership: 0.08 ETH per sync committee selection
+*   ]8;;https://ethresear.ch/t/mev-boost-merge-ready-flashbots-architecture/11177MEV-Boost]8;; for validators, work in progress Flashbots architecture sitting between consensus and execution clients
+
+**Layer2**
+
+*   ]8;;https://hackmd.io/@canti/rkUT0BD8KFuture of zk rollups]8;; to scale Ethereum, sidechains should take the pragmatic approach and become zk-rollups
+*   ]8;;https://twitter.com/connextnetwork/status/1456381261036113923Connext adds mainnet support]8;;, transfer stablecoins between mainnet, Arbitrum and selected sidechains
+
+* * *
+
+### **This newsletter is made possible thanks to ]8;;https://near.org/) & [Aurora](https://aurora.dev/NEAR]8;;!**
+
+!]8;;https://weekinethereumnews.com/wp-content/uploads/2021/11/Aurora-Chainlink-Hackathon-2021-1024x576.pngAurora Chainlink Hackathon]8;;
+
+Chainlink Fall 2021 Hackathon is taking place on October 22 – November 28. Join smart contract developers to reinvent applications in various industries in this biggest Chainlink hackathon so far.
+
+Aurora is providing $25,000 to the Chainlink Fall 2021 Hackathon.
+
+Participate in one of Aurora’s challenges, contribute to the growth of the NFT movement, and win up to $10,000!
+
+Create a contract that allows moving NFTs back and forth between NEAR and Aurora.
+
+Create a connector that allows moving native NEAR NFTs back and forth from NEAR to Ethereum using Aurora’s Rainbow Bridge.
+
+Develop with Aurora and Chainlink to spur a major surge of innovation across the NFT economy, and the larger smart contract ecosystem.
+
+Details: ]8;;https://chainlink-fall-hackathon-2021.devpost.comchainlink-fall-hackathon-2021.devpost.com]8;;
+
+* * *
+
+**Stuff for developers**
+
+*   ]8;;https://twitter.com/solidity_lang/status/1456233507538227207Solidity docs code examples]8;; can be opened in Remix 
+*   ]8;;https://github.com/mds1/solidity-trigonometrysolidity-trigonometry]8;;: basic trig functions, sin & cos are 2-2.5k gas
+*   ]8;;https://github.com/trader-xyz/nft-swap-sdknft-swap-sdk]8;;: TypeScript SDK using 0x v3 protocol to swap NFTs
+*   ]8;;https://twitter.com/cybourgeoisie/status/1455552910394368010NFT Floor Market]8;;: on chain NFT marketplace contract, no fees other than royalties, unaudited
+*   Otterscan ]8;;https://twitter.com/wmitsuda/status/1455247090821521412v2021.10.05]8;;: improved ABI outline UI for verified contracts and resolving token names from addresses
+*   ]8;;https://twitter.com/ArchiveNode/status/1455150809876992002ArchiveNode]8;;: free access to small time developers to archive data
+*   ]8;;https://starknet.io/playground/StarkNet playground]8;;: compile and deploy Cairo contracts
+*   ]8;;https://medium.com/nethermind-eth/composability-the-final-piece-of-the-puzzle-8c7ca5dfd470Warp (Solidity to Cairo transpiler) example]8;; of transpiling two composable contracts & deploying them
+*   ]8;;https://github.com/fracek/starknet-react-examplestarknet-react-example]8;;: connect React app to StarkNet Cairo contract
+*   ]8;;https://github.com/kevinz917/zksnarks-libraryzksnarks-library]8;;: commonly used logic and examples implemented into SNARKs using the Circom language
+*   ]8;;https://github.com/fluidex/plonkitplonkit]8;;: zkSNARK toolkit to work with Circom
+
+**Security**
+
+*   Fuse community ]8;;https://twitter.com/Mudit__Gupta/status/1455627465678749696pool drained]8;; after VUSD price manipulated on Uniswap v3, TWAPs can be subject to manipulation
+*   ]8;;https://twitter.com/alexberegszaszi/status/1455162941146288128Solidity not affected by Trojan Source]8;;, Solidity Underhanded Contest 2020 winner exploited Unicode direction markers & was fixed in v0.7.6
+*   Tincho’s ]8;;https://www.damnvulnerabledefi.xyz/v2-release.html): Solidity v0.8, four new levels, new (brokenDamn Vulnerable DeFi v2]8;; integrations and Hardhat + Ethers tests
+
+**Ecosystem**
+
+*   Ethereum Foundation ]8;;https://blog.ethereum.org/2021/11/04/esp-allocation-update-q2-2021/Q2 grantees]8;;, $8m in grants 
+*   Devcon Archive ]8;;https://blog.ethereum.org/2021/11/03/devcon-archive-v2/v2]8;;: improved UX & content discovery, more content on IPFS and community curated playlists
+*   Optimism’s $1m retroactive public goods funding ]8;;https://twitter.com/optimismPBC/status/1455780701479964675recipients]8;;
+*   ]8;;https://twitter.com/pet3rpan_/status/1455279420269375495Padawan DAO]8;;: funding scholarships for highschool and university students to attend their first crypto conferences
+
+**Enterprise**
+
+*   US Postal Service ]8;;https://medium.com/veve-collectibles/usps-series-1-day-of-the-dead-b5891e0d0baa) on VeVe (ImmutableDay of the Dead NFT stamp art]8;;
+*   Marvel ]8;;https://www.marvel.com/articles/gear/eternals-gather-for-marvel-mightys-digital-collectibles) movie NFTs on VeVe (ImmutableEternals]8;;
+*   ]8;;https://www.bk.com/cryptoBurger King US loyalty program]8;; offers chance to win 1 ETH or 1 memecoin via RobinHood
+*   Paradigm Founder ]8;;https://stripe.com/newsroom/news/matt-huang-joins-stripe-boardMatt Huang joins Stripe’s board to help guide web3]8;; strategy
+
+**Application layer**
+
+*   ]8;;https://ens.mirror.xyz/-eaqMv7XPikvXhvjbjzzPNLS4wzcQ8vdOgi9eNXeUuY): users can claim & delegate governance tokens per account, [token farm accounts](https://twitter.com/nicksdjohnson/status/1456048492141441027ENS DAO]8;; are being manually excluded
+*   Maker ]8;;https://twitter.com/hexonaut/status/1455507332469821440DAI Direct Deposit Module]8;;: privileged access for Aave to mint DAI
+*   ]8;;https://blog.notional.finance/notional-v2-is-live/Notional v2]8;; live on mainnet, longer-dated maturities and flexible dates
+*   ]8;;https://blog.angle.money/angle-is-live-on-the-ethereum-mainnet-a8253162daf0Angle Finance]8;; live on mainnet, Euro stablecoin
+*   Aave ]8;;https://governance.aave.com/t/introducing-aave-v3/6035v3 overview]8;;
+*   NFTX ]8;;https://twitter.com/nftx_/status/1455484494123831303Swaps]8;;: swap NFTs in same collection
+*   ]8;;https://www.ourspaces.xyz/Spaces]8;;: message any address or ENS, token gated chats
+
+* * *
+
+### **Job Listings**
+
+*   Toucan: ]8;;https://toucan-protocol.notion.site/Join-the-Flock-c5782edb754b48e598a8cdd74a4dc93cSolidity dev]8;; to build web3 infrastructure to reverse climate change
+*   OpenZeppelin hiring a ]8;;https://openzeppelin.com/jobs/opening/?gh_jid=4602368003Technical Marketing Manager]8;;
+*   Solidity is hiring a ]8;;https://ethereum.bamboohr.com/jobs/view.php?id=40&source=weekinethnewsC++ dev]8;;
+
+**Reach people experienced with Ethereum.**  $420 for two issues (~75 character limit), payable in ETH/DAI/USDC to abcoathup.eth.  Questions? abcoathup at-gmail
+
+* * *
+
+**Regulation/business/tokens**
+
+*   US Presidents Working Group on Financial Markets stablecoin ]8;;https://home.treasury.gov/system/files/136/PWG-Stablecoin-Statement-12-23-2020-CLEAN.pdfstatement]8;; calling for congressional action
+*   ]8;;https://www.commbank.com.au/articles/newsroom/2021/11/CBA-to-offer-crypto-services.html) (major Australian bankCommonwealth Bank]8;; to add crypto services to its banking app using Gemini
+*   ]8;;https://baby.mirror.xyz/O7a922A-9zT4C4UwssRExkftdHywJ-13sR2rxQ-t__kTuring-complete governance]8;;, composable & arbitrarily programmable
+*   Bankless: ]8;;https://newsletter.banklesshq.com/p/the-triple-point-blockchain-marketEthereum is the triple point blockchain]8;; 
+*   ]8;;https://www.coindesk.com/business/2021/11/02/consensys-shareholders-readying-legal-action-over-share-valuation/Early employees to sue ConsenSys]8;; over asset valuations
+
+**General**
+
+*   Harry Denley: Twitter and Facebook ]8;;https://harrydenley.com/faking-twitter-unfurling/server side unfurling engines can be abused for phishing]8;;
+*   Vitalik on ]8;;https://vitalik.ca/general/2021/10/31/cities.htmlcrypto cities]8;;, make existing processes more trusted & transparent and experiment with city tokens & participatory governance
+*   ]8;;https://kobi.one/2021/10/31/random-oracles.htmlRandom oracles in cryptography]8;;, using hashes that are not good imitations of random oracles can lead to broken protocols
+*   Vitalik: ]8;;https://vitalik.ca/general/2021/11/05/halo.htmlIncremental verification]8;; and SNARKs with no pairings and no trusted setups
+*   Bounties worth $172k for ]8;;https://www.zkhashbounties.info/breaking zk friendly hash functions]8;;, Rescue Prime, Feistel-MiMC, Poseidon and Reinforced Concrete
+
+* * *
+
+Follow ]8;;https://twitter.com/WeekInEthNews) to find out what the most clicked links are. Follow [4m   Week in Ethereum News                               [24m
+[4m[24m
+[4m[24m
+[4m[24m
+[4m  [24m
+[4m[24m
+[4m  [24m
+[4m  [24m
+[4m[24m
+[4m## [Week in Ethereum News  [24m
+[4mNovember 6, 2021](https://weekinethereumnews.com/week-in-ethereum-news-november-6-2021/)[24m
+[4m[24m
+[4m###### **Eth News and Links**[24m
+[4m[24m
+[4m**Mainnet execution layer**[24m
+[4m[24m
+[4m*   PoW switch off ]8;;https://www.youtube.com/watch?v=_kfS9jAUY6g&t=18scommunity call]8;;:[24m
+[4m    *   average block times change from ~13s to 12s, contracts may have ]8;;https://twitter.com/TimBeiko/status/1456644168986419200hardcoded ~13s assumption]8;;[24m
+[4m    *   Dankrad’s slides on ]8;;https://docs.google.com/presentation/d/1MUVaFyd9ce3hPQ5L-UhqVSfxf1ajMYFbkActkp5xNKI/edit#slide=id.p1finding the safe head of the chain]8;;[24m
+[4m*   Erigon ]8;;https://github.com/ledgerwatch/erigon/releases/tag/v2021.11.01v2021.11.01]8;;: first beta release, not downgradeable[24m
+[4m[24m
+[4m**EIPs/Standards**[24m
+[4m[24m
+[4m*   ]8;;https://eips.ethereum.org/EIPS/eip-4399EIP4399]8;;: Supplant DIFFICULTY opcode with RANDOM[24m
+[4m[24m
+[4m**Proof of Stake consensus layer**[24m
+[4m[24m
+[4m*   Danny Ryan’s ]8;;https://blog.ethereum.org/2021/11/02/finalized-no-31/Finalized PoS update]8;;: proposed forkchoice fixes can mitigate 3 liveness & reorg attacks and won’t delay switching off PoW [24m
+[4m*   Tweet thread of ]8;;https://twitter.com/casparschwa/status/1454511836267692039reorgs in PoS and mitigation strategies]8;;[24m
+[4m*   Latest ]8;;https://hackmd.io/@benjaminion/eth2_news/https%3A%2F%2Fhackmd.io%2F%40benjaminion%2Fwnie2_211105What’s New in Eth2]8;;[24m
+[4m*   ]8;;https://youtu.be/9U_xj_zCMYg?t=63). Notes from [Ben Edgington](https://hackmd.io/@benjaminion/B1wBrwbPFPoS implementers call]8;;: [24m
+[4m    *   Kintsugi ]8;;https://notes.ethereum.org/@djrtwo/kintsugi-milestonesmilestone tracker]8;; to a persistent testnet early December[24m
+[4m    *   Pyrmont testnet to be shut down[24m
+[4m*   ]8;;https://hackmd.io/@sproul/altair-rewardsStaking rewards]8;; after Altair upgrade are more variable: [24m
+[4m    *   Attestations: 0.0040-0.0042 ETH per day[24m
+[4m    *   Blocks: 0.018-0.03 ETH per block[24m
+[4m    *   Sync committee membership: 0.08 ETH per sync committee selection[24m
+[4m*   ]8;;https://ethresear.ch/t/mev-boost-merge-ready-flashbots-architecture/11177MEV-Boost]8;; for validators, work in progress Flashbots architecture sitting between consensus and execution clients[24m
+[4m[24m
+[4m**Layer2**[24m
+[4m[24m
+[4m*   ]8;;https://hackmd.io/@canti/rkUT0BD8KFuture of zk rollups]8;; to scale Ethereum, sidechains should take the pragmatic approach and become zk-rollups[24m
+[4m*   ]8;;https://twitter.com/connextnetwork/status/1456381261036113923Connext adds mainnet support]8;;, transfer stablecoins between mainnet, Arbitrum and selected sidechains[24m
+[4m[24m
+[4m* * *[24m
+[4m[24m
+[4m### **This newsletter is made possible thanks to ]8;;https://near.org/) & [Aurora](https://aurora.dev/NEAR]8;;!**[24m
+[4m[24m
+[4m!]8;;https://weekinethereumnews.com/wp-content/uploads/2021/11/Aurora-Chainlink-Hackathon-2021-1024x576.pngAurora Chainlink Hackathon]8;;[24m
+[4m[24m
+[4mChainlink Fall 2021 Hackathon is taking place on October 22 – November 28. Join smart contract developers to reinvent applications in various industries in this biggest Chainlink hackathon so far.[24m
+[4m[24m
+[4mAurora is providing $25,000 to the Chainlink Fall 2021 Hackathon.[24m
+[4m[24m
+[4mParticipate in one of Aurora’s challenges, contribute to the growth of the NFT movement, and win up to @evan\_van\_ness0,000![24m
+[4m[24m
+[4mCreate a contract that allows moving NFTs back and forth between NEAR and Aurora.[24m
+[4m[24m
+[4mCreate a connector that allows moving native NEAR NFTs back and forth from NEAR to Ethereum using Aurora’s Rainbow Bridge.[24m
+[4m[24m
+[4mDevelop with Aurora and Chainlink to spur a major surge of innovation across the NFT economy, and the larger smart contract ecosystem.[24m
+[4m[24m
+[4mDetails: ]8;;https://chainlink-fall-hackathon-2021.devpost.comchainlink-fall-hackathon-2021.devpost.com]8;;[24m
+[4m[24m
+[4m* * *[24m
+[4m[24m
+[4m**Stuff for developers**[24m
+[4m[24m
+[4m*   ]8;;https://twitter.com/solidity_lang/status/1456233507538227207Solidity docs code examples]8;; can be opened in Remix [24m
+[4m*   ]8;;https://github.com/mds1/solidity-trigonometrysolidity-trigonometry]8;;: basic trig functions, sin & cos are 2-2.5k gas[24m
+[4m*   ]8;;https://github.com/trader-xyz/nft-swap-sdknft-swap-sdk]8;;: TypeScript SDK using 0x v3 protocol to swap NFTs[24m
+[4m*   ]8;;https://twitter.com/cybourgeoisie/status/1455552910394368010NFT Floor Market]8;;: on chain NFT marketplace contract, no fees other than royalties, unaudited[24m
+[4m*   Otterscan ]8;;https://twitter.com/wmitsuda/status/1455247090821521412v2021.10.05]8;;: improved ABI outline UI for verified contracts and resolving token names from addresses[24m
+[4m*   ]8;;https://twitter.com/ArchiveNode/status/1455150809876992002ArchiveNode]8;;: free access to small time developers to archive data[24m
+[4m*   ]8;;https://starknet.io/playground/StarkNet playground]8;;: compile and deploy Cairo contracts[24m
+[4m*   ]8;;https://medium.com/nethermind-eth/composability-the-final-piece-of-the-puzzle-8c7ca5dfd470Warp (Solidity to Cairo transpiler) example]8;; of transpiling two composable contracts & deploying them[24m
+[4m*   ]8;;https://github.com/fracek/starknet-react-examplestarknet-react-example]8;;: connect React app to StarkNet Cairo contract[24m
+[4m*   ]8;;https://github.com/kevinz917/zksnarks-libraryzksnarks-library]8;;: commonly used logic and examples implemented into SNARKs using the Circom language[24m
+[4m*   ]8;;https://github.com/fluidex/plonkitplonkit]8;;: zkSNARK toolkit to work with Circom[24m
+[4m[24m
+[4m**Security**[24m
+[4m[24m
+[4m*   Fuse community ]8;;https://twitter.com/Mudit__Gupta/status/1455627465678749696pool drained]8;; after VUSD price manipulated on Uniswap v3, TWAPs can be subject to manipulation[24m
+[4m*   ]8;;https://twitter.com/alexberegszaszi/status/1455162941146288128Solidity not affected by Trojan Source]8;;, Solidity Underhanded Contest 2020 winner exploited Unicode direction markers & was fixed in v0.7.6[24m
+[4m*   Tincho’s ]8;;https://www.damnvulnerabledefi.xyz/v2-release.html): Solidity v0.8, four new levels, new (brokenDamn Vulnerable DeFi v2]8;; integrations and Hardhat + Ethers tests[24m
+[4m[24m
+[4m**Ecosystem**[24m
+[4m[24m
+[4m*   Ethereum Foundation ]8;;https://blog.ethereum.org/2021/11/04/esp-allocation-update-q2-2021/Q2 grantees]8;;, $8m in grants [24m
+[4m*   Devcon Archive ]8;;https://blog.ethereum.org/2021/11/03/devcon-archive-v2/v2]8;;: improved UX & content discovery, more content on IPFS and community curated playlists[24m
+[4m*   Optimism’s @evan\_van\_nessm retroactive public goods funding ]8;;https://twitter.com/optimismPBC/status/1455780701479964675recipients]8;;[24m
+[4m*   ]8;;https://twitter.com/pet3rpan_/status/1455279420269375495Padawan DAO]8;;: funding scholarships for highschool and university students to attend their first crypto conferences[24m
+[4m[24m
+[4m**Enterprise**[24m
+[4m[24m
+[4m*   US Postal Service ]8;;https://medium.com/veve-collectibles/usps-series-1-day-of-the-dead-b5891e0d0baa) on VeVe (ImmutableDay of the Dead NFT stamp art]8;;[24m
+[4m*   Marvel ]8;;https://www.marvel.com/articles/gear/eternals-gather-for-marvel-mightys-digital-collectibles) movie NFTs on VeVe (ImmutableEternals]8;;[24m
+[4m*   ]8;;https://www.bk.com/cryptoBurger King US loyalty program]8;; offers chance to win 1 ETH or 1 memecoin via RobinHood[24m
+[4m*   Paradigm Founder ]8;;https://stripe.com/newsroom/news/matt-huang-joins-stripe-boardMatt Huang joins Stripe’s board to help guide web3]8;; strategy[24m
+[4m[24m
+[4m**Application layer**[24m
+[4m[24m
+[4m*   ]8;;https://ens.mirror.xyz/-eaqMv7XPikvXhvjbjzzPNLS4wzcQ8vdOgi9eNXeUuY): users can claim & delegate governance tokens per account, [token farm accounts](https://twitter.com/nicksdjohnson/status/1456048492141441027ENS DAO]8;; are being manually excluded[24m
+[4m*   Maker ]8;;https://twitter.com/hexonaut/status/1455507332469821440DAI Direct Deposit Module]8;;: privileged access for Aave to mint DAI[24m
+[4m*   ]8;;https://blog.notional.finance/notional-v2-is-live/Notional v2]8;; live on mainnet, longer-dated maturities and flexible dates[24m
+[4m*   ]8;;https://blog.angle.money/angle-is-live-on-the-ethereum-mainnet-a8253162daf0Angle Finance]8;; live on mainnet, Euro stablecoin[24m
+[4m*   Aave ]8;;https://governance.aave.com/t/introducing-aave-v3/6035v3 overview]8;;[24m
+[4m*   NFTX ]8;;https://twitter.com/nftx_/status/1455484494123831303Swaps]8;;: swap NFTs in same collection[24m
+[4m*   ]8;;https://www.ourspaces.xyz/Spaces]8;;: message any address or ENS, token gated chats[24m
+[4m[24m
+[4m* * *[24m
+[4m[24m
+[4m### **Job Listings**[24m
+[4m[24m
+[4m*   Toucan: ]8;;https://toucan-protocol.notion.site/Join-the-Flock-c5782edb754b48e598a8cdd74a4dc93cSolidity dev]8;; to build web3 infrastructure to reverse climate change[24m
+[4m*   OpenZeppelin hiring a ]8;;https://openzeppelin.com/jobs/opening/?gh_jid=4602368003Technical Marketing Manager]8;;[24m
+[4m*   Solidity is hiring a ]8;;https://ethereum.bamboohr.com/jobs/view.php?id=40&source=weekinethnewsC++ dev]8;;[24m
+[4m[24m
+[4m**Reach people experienced with Ethereum.**  $420 for two issues (~75 character limit), payable in ETH/DAI/USDC to abcoathup.eth.  Questions? abcoathup at-gmail[24m
+[4m[24m
+[4m* * *[24m
+[4m[24m
+[4m**Regulation/business/tokens**[24m
+[4m[24m
+[4m*   US Presidents Working Group on Financial Markets stablecoin ]8;;https://home.treasury.gov/system/files/136/PWG-Stablecoin-Statement-12-23-2020-CLEAN.pdfstatement]8;; calling for congressional action[24m
+[4m*   ]8;;https://www.commbank.com.au/articles/newsroom/2021/11/CBA-to-offer-crypto-services.html) (major Australian bankCommonwealth Bank]8;; to add crypto services to its banking app using Gemini[24m
+[4m*   ]8;;https://baby.mirror.xyz/O7a922A-9zT4C4UwssRExkftdHywJ-13sR2rxQ-t__kTuring-complete governance]8;;, composable & arbitrarily programmable[24m
+[4m*   Bankless: ]8;;https://newsletter.banklesshq.com/p/the-triple-point-blockchain-marketEthereum is the triple point blockchain]8;; [24m
+[4m*   ]8;;https://www.coindesk.com/business/2021/11/02/consensys-shareholders-readying-legal-action-over-share-valuation/Early employees to sue ConsenSys]8;; over asset valuations[24m
+[4m[24m
+[4m**General**[24m
+[4m[24m
+[4m*   Harry Denley: Twitter and Facebook ]8;;https://harrydenley.com/faking-twitter-unfurling/server side unfurling engines can be abused for phishing]8;;[24m
+[4m*   Vitalik on ]8;;https://vitalik.ca/general/2021/10/31/cities.htmlcrypto cities]8;;, make existing processes more trusted & transparent and experiment with city tokens & participatory governance[24m
+[4m*   ]8;;https://kobi.one/2021/10/31/random-oracles.htmlRandom oracles in cryptography]8;;, using hashes that are not good imitations of random oracles can lead to broken protocols[24m
+[4m*   Vitalik: ]8;;https://vitalik.ca/general/2021/11/05/halo.htmlIncremental verification]8;; and SNARKs with no pairings and no trusted setups[24m
+[4m*   Bounties worth @evan\_van\_ness72k for ]8;;https://www.zkhashbounties.info/breaking zk friendly hash functions]8;;, Rescue Prime, Feistel-MiMC, Poseidon and Reinforced Concrete[24m
+[4m[24m
+[4m* * *[24m
+[4m[24m
+[4mFollow ]8;;https://twitter.com/WeekInEthNews) to find out what the most clicked links are. Follow [@evan\_van\_ness](https://twitter.com/evan_van_ness) and [@abcoathup](https://twitter.com/abcoathup@WeekinEthNews]8;; to get most of the week’s news in real time.[24m
+[4m[24m
+[4mPermalink for this week’s issue: ]8;;https://weekinethereumnews.com/week-in-ethereum-news-november-6-2021https://weekinethereumnews.com/week-in-ethereum-news-november-6-2021]8;;[24m
+[4m[24m
+[4m* * *[24m
+[4m[24m
+[4m###### **Dates of Note**[24m
+[4m[24m
+[4mUpcoming dates of note _(new/changes in **bold**)_**:**[24m
+[4m[24m
+[4m*   Oct 25 – Dec 13 – ]8;;https://gitcoin.co/hackathon/dao-global/onboard) (virtualGitcoin DAO Global hackathon]8;;[24m
+[4m*   Nov 11 – ]8;;https://twitter.com/optimismPBC/status/1451339513964359682Optimism upgrade]8;;[24m
+[4m*   Nov 16 – ]8;;https://runtimeverification.com/events/formalverificationeth/Formal Verification in the Ethereum Ecosystem]8;;[24m
+[4m*   **Dec 1-16 – ]8;;https://twitter.com/gitcoin/status/1454244939169214472Gitcoin Grants Round 12]8;;**[24m
+[4m*   Dec ~8 – ]8;;https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/arrow-glacier.mdArrow Glacier]8;; upgrade block 13,773,000[24m
+[4m*   Jan 24-26 – ]8;;https://cbr.stanford.edu/sbc22/) (Stanford UniversityScience of Blockchain Conference]8;;[24m
+[4m*   Feb 11-20 – ]8;;https://www.ethdenver.com/ETHDenver]8;;[24m
+[4m*   Mar 28-30 – ]8;;https://www.ethdubai.xyz/ETHDubai]8;;[24m
+[4m[24m
+[4m**Did you get forwarded this newsletter?** _]8;;https://weekinethereum.substack.com/subscribe#aboutSign up]8;; **to receive it weekly**_[24m
+[4m[24m
+[4m]8;;https://weekinethereumnews.com/feed/RSS]8;;[24m and [@abcoathup](https://twitter.com/abcoathup@WeekinEthNews]8;; to get most of the week’s news in real time.
+
+Permalink for this week’s issue: ]8;;https://weekinethereumnews.com/week-in-ethereum-news-november-6-2021https://weekinethereumnews.com/week-in-ethereum-news-november-6-2021]8;;
+
+* * *
+
+###### **Dates of Note**
+
+Upcoming dates of note _(new/changes in **bold**)_**:**
+
+*   Oct 25 – Dec 13 – ]8;;https://gitcoin.co/hackathon/dao-global/onboard) (virtualGitcoin DAO Global hackathon]8;;
+*   Nov 11 – ]8;;https://twitter.com/optimismPBC/status/1451339513964359682Optimism upgrade]8;;
+*   Nov 16 – ]8;;https://runtimeverification.com/events/formalverificationeth/Formal Verification in the Ethereum Ecosystem]8;;
+*   **Dec 1-16 – ]8;;https://twitter.com/gitcoin/status/1454244939169214472Gitcoin Grants Round 12]8;;**
+*   Dec ~8 – ]8;;https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/arrow-glacier.mdArrow Glacier]8;; upgrade block 13,773,000
+*   Jan 24-26 – ]8;;https://cbr.stanford.edu/sbc22/) (Stanford UniversityScience of Blockchain Conference]8;;
+*   Feb 11-20 – ]8;;https://www.ethdenver.com/ETHDenver]8;;
+*   Mar 28-30 – ]8;;https://www.ethdubai.xyz/ETHDubai]8;;
+
+**Did you get forwarded this newsletter?** _]8;;https://weekinethereum.substack.com/subscribe#aboutSign up]8;; **to receive it weekly**_
+
+]8;;https://weekinethereumnews.com/feed/RSS]8;; 

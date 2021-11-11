@@ -18,9 +18,8 @@ async function getCert() {
     }
 }
 
-async function getLatestWien() {
+export async function getLatestWien() {
   const {data} = await axios.get('https://weekinethereumnews.com/');
 	return data;
 }
 
-exports.getLatestWien = getLatestWien; 

@@ -1,26 +1,43 @@
 import React from 'react';
 import  {useState, useEffect, useRef, useCallback} from 'react';
 import ansiRegex from 'ansi-regex'
-import reactStringReplace from 'react-string-replace'
 import processString from 'react-process-string'
 import {renderMarkdown} from './renderMarkdown'
-//import secondRenderMarkdown from './secondRenderMarkdown'
 import blessed from 'blessed'
 import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
-const regex = ansiRegex({onlyFirst: true});
-const stripAnsi = require('strip-ansi');
-function hasAnsi(string) {
-	return regex.test(string);
-}
+import  stripAnsi from 'strip-ansi';
+import chalk from 'chalk';
+// create a stdout and file logger
+const opts = {
+	errorEventName:'error',
+        logDirectory:'/home/zmg/Tinker/wiener/logs', // NOTE: folder must exist and be writable...
+        fileNamePattern:'log1-<DATE>.log',
+        dateFormat:'YYYY.MM.DD'
+};
+const opts2 = {
+	errorEventName:'error',
+        logDirectory:'/home/zmg/Tinker/wiener/logs', // NOTE: folder must exist and be writable...
+        fileNamePattern:'log2-<DATE>.log',
+        dateFormat:'YYYY.MM.DD'
+};
 
-/*
- (async () => { 
-   let rm = await renderMarkdown()
-   console.log(rm.match(ansiRegex()))
-})()
-*/
+const log = require('simple-node-logger').createSimpleFileLogger('/home/zmg/Tinker/wiener/logs/fresh.log');
+
+const log1 = require('simple-node-logger').createRollingFileLogger( opts );
+const log2 = require('simple-node-logger').createRollingFileLogger( opts2 ); 
+const marked = require('marked');
+const TerminalRenderer = require('marked-terminal');
+const {getMarkdown} = require('./getMarkdown.js');
+import {formatText} from './format'
+
+/*const renderMarkdown = async () => {
+  const markdown = await getMarkdown(); 
+  marked.setOptions({
+    renderer: new TerminalRenderer() });
+  return marked(markdown)*/
+
 const MainBox = () =>  {
   const [markdown, setMarkdown] = useState(null)
   const [jsx, setJsx] = useState(null)
@@ -29,6 +46,38 @@ const MainBox = () =>  {
   const [linkButtonRendered, setLinkButtonRendered] = useState(null)
   const [linkButtonFocused, setLinkButtonFocused] = useState(null)
   const mainBoxRef = useRef(null)
+  
+  useEffect( () => {
+    async function _getMarkdown() {
+      const response = await getMarkdown()
+
+      log.info(formatText(response))        
+      setMarkdown(formatText(response));
+      
+    }
+    _getMarkdown()
+    
+
+  }, []) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const clickHandler = async (mouse) => {
     // move the cursor
@@ -111,28 +160,9 @@ const MainBox = () =>  {
   }
 
 
-  useEffect( () => {
-    async function getMarkdown() {
-      const response = await renderMarkdown()
-
-     /* 
-      let config = [{
-        regex: /\{"linkText":"(.+?)","url":"(https?:\/\/.+?)"\}/gm,
-        fn: (key, result) => {
-          return (<ButtonBox url={`${result[2]}`} linkText={`${result[1]}`} key={key} />)
-        }
-      }]
-      
-      const processedString = processString(config)(stripAnsi(response))
-*/
-
-      setMarkdown(response);
-    }
-    getMarkdown()
-  }, []) 
+    
 
   return(
-    
     <box 
     top={"center"}
     left={"center"}
@@ -149,14 +179,16 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     >
+    {markdown && markdown}
     <layout align={"left"} width={"100%"} height={"100%"} border={{type: 'line', fg: 'blue'} } wrap={true} >
-    {markdown}
+
     </layout> 
     <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
     
   )
-  
+/*  
+*/
 }
  
 

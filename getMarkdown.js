@@ -1,21 +1,25 @@
-const TurndownService = require('turndown');
-const {getLatestWien} = require('./getLatestWien.js');
+import chalk from 'chalk';
+import  TurndownService from 'turndown';
+import {getLatestWien} from './getLatestWien.js';
+import terminalLink from 'terminal-link'
 
 const turndownOptions = {
   headingStyle: 'atx',
   bulletListMarker: '*',
-	linkStyle: 'referenced',
 }
 const turndownFilter = ['script', 'footer', 'style', 'nav', 'center'];
 
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
-//turndownService.addRule("linksToObjects", {
-  //filter: ["a"],
-  //replacement: function replacementFunction (content, node, options) {
-  //} 
-//})
 
+ turndownService.addRule("linkStyles", {
+  filter: ["a"],
+  replacement: function replacementFunction (content, node, options) {
+     const url =  `${node.getAttribute('href')}`; 
+     //const underlinedLinkText = chalk.underline(content)
+     return `\[${content}\]`+`\(${url}\)`
+    }
+  }) 
 const getMarkdown = async () => {
   const html = await getLatestWien() 
   const markdown = await turndownService.turndown(html);
@@ -25,7 +29,6 @@ const getMarkdown = async () => {
 exports.getMarkdown = getMarkdown;
 
 
-//html to markdown
 
 
 
