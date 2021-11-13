@@ -8,7 +8,6 @@ import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
 import  stripAnsi from 'strip-ansi';
-import chalk from 'chalk';
 // create a stdout and file logger
 const opts = {
 	errorEventName:'error',
@@ -59,25 +58,6 @@ const MainBox = () =>  {
     
 
   }, []) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const clickHandler = async (mouse) => {
     // move the cursor
@@ -159,9 +139,6 @@ const MainBox = () =>  {
     }
   }
 
-
-    
-
   return(
     <box 
     top={"center"}
@@ -169,7 +146,6 @@ const MainBox = () =>  {
     width={"100%"}
     height={"100%"}  
     align={"left"}
-    tags
     focused={true}
     keyable={true}
     input={true}

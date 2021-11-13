@@ -23,9 +23,8 @@ const screen = blessed.screen({
 //  autoPadding: true,
   smartCSR: true,
   title: 'wiener',
+  dump: '/home/zmg/Tinker/wiener/logs/dump'
 });
-
-screen.log()
 
 
 const component = render(<App />, screen);
