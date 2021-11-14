@@ -1,7 +1,7 @@
 import React from 'react';
 const {useState, useEffect, useRef} = require('react');
 const importJsx = require('import-jsx');
-const blessed =  require('blessed');
+import blessed from 'neo-blessed';
 const {render} = require('react-blessed');
 
 

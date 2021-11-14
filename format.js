@@ -3,7 +3,7 @@ import {reduce} from 'ramda';
 import stripAnsi from 'strip-ansi';
 import figures, {mainSymbols} from 'figures';
 import chalk from 'chalk';
-//const blessedChalk = new chalk.Instance({level: 2});
+//const blessedChalk = new chalk.Instance({level: 3});
 const pipe = (...fns) => x => fns.reduce((y, f) => f(y), x); 
 
 const log3 = require('simple-node-logger').createSimpleFileLogger('/home/zmg/Tinker/wiener/logs/log3.log');
@@ -57,6 +57,6 @@ const starToBullet = (string) => {
 
 const h6Format = (string) => {
   const re = /#{6}\s\*\*(.+?)\*\*/gm 
-  return string.replace(re, chalk.bgHex('#af87d7')('$1'))
+  return string.replace(re, chalk.bgAnsi256(183)('$1'))
 }
 

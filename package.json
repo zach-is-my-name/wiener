@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "wien": "babel-node react-blessed.js",
-    "nm": "nodemon index.js"
+    "nm": "nodemon index.js",
+    "postinstall": "cd ./node_modules/neo-blessed && npm install && npm run build"  
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "eslint": "^8.2.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.1-alpha-fd5e01c2e-20210913",
+    "neo-blessed": "https://github.com/zach-is-my-name/neo-blessed.git",
     "nodemon": "^2.0.14",
     "rollup": "^2.59.0",
     "rollup-plugin-babel": "^4.4.0",
@@ -38,7 +40,6 @@
     "ansi-escapes": "^4.3.2",
     "ansi-regex": "^5.0.1",
     "axios": "^0.21.4",
-    "blessed": "^0.1.81",
     "figures": "^3.2.0",
     "import-jsx": "^4.0.0",
     "is-tmux": "^1.0.0",

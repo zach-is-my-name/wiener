@@ -3,7 +3,7 @@ import  {useState, useEffect, useRef, useCallback} from 'react';
 import ansiRegex from 'ansi-regex'
 import processString from 'react-process-string'
 import {renderMarkdown} from './renderMarkdown'
-import blessed from 'blessed'
+import blessed from 'neo-blessed';
 import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
@@ -163,8 +163,8 @@ const MainBox = () =>  {
     </box>
     
   )
-/*  
-*/
+  
+
 }
  
 
