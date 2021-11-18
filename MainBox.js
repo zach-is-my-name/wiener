@@ -14,12 +14,7 @@ const {getMarkdown} = require('./getMarkdown.js');
 import {formatText} from './format'
 import winston, {createLogger, transports}  from 'winston';
 import fs from 'fs'
-
-winston.add(new winston.transports.File({
-  filename: '/home/zmg/Tinker/wiener/logs/errors.log',
-  handleExceptions: true,
-  handleRejections: true,
-}));
+const regexLink = /\[(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)\]/
 
 const MainBox = () =>  {
   const [markdown, setMarkdown] = useState(null)
@@ -31,15 +26,15 @@ const MainBox = () =>  {
   const mainBoxRef = useRef(null)
   
   useEffect( () => {
-    async function _getMarkdown() {
-      const response = await getMarkdown()
-      fs.writeFileSync('/home/zmg/Tinker/wiener/logs/markdown',response)
-      setMarkdown(await formatText(response));
-      
+    function _getMarkdown() {
+      //const response = await getMarkdown()
+      //fs.writeFileSync('/home/zmg/Tinker/wiener/logs/markdown',response)
+      //fs.writeFileSync('/home/zmg/Tinker/wiener/archive/11-13-21', await formatText(response))
+      //setMarkdown(await formatText(response));
+      setMarkdown(fs.readFileSync('/home/zmg/Tinker/wiener/archive/11-13-21', {encoding:'utf8', flag:'r'})
+);
     }
     _getMarkdown()
-    
-
   }, []) 
 
   const clickHandler = async (mouse) => {
@@ -55,7 +50,43 @@ const MainBox = () =>  {
     await followLinkUnderCursor()
   }
 
-  const linkButtonPress = useCallback( () => {
+  const followLinkUnderCursor = () => {
+    // check if the chunk under the cursor is a markdown link
+    const lines = mainBoxRef.getScreenLines()
+    if (cursorTop >= lines.length) {
+      return
+    }
+    const before = lines.slice(0, cursorTop)
+    const cursorIndex = stripAnsi(before.join('')).length + cursorLeft
+    const cursorLine = stripAnsi(lines[cursorTop])
+    if (cursorLeft <= cursorLine.length) {
+      const text = stripAnsi(lines.join(''))
+      let match = regexLink.exec(text)
+      while (match) {
+        const start = match.index
+        const end = start + match[0].length
+        if (start <= cursorIndex && cursorIndex < end) {
+          // jump to the link destination
+          await this.cbFollow(match[1])
+          break
+        }
+        match = regexLink.exec(text)
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+const linkButtonPress = useCallback( () => {
   }, [])
 
   const keyHandler = async (ch, key) => {
@@ -121,7 +152,7 @@ const MainBox = () =>  {
       }
     }
   }
-// 
+ 
   return(
     <box 
     top={"center"}
@@ -138,8 +169,8 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     >
-    {markdown && markdown}
     <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
+    {markdown && markdown}
     </box>
     
   )
@@ -148,4 +179,9 @@ const MainBox = () =>  {
  
 
 export default MainBox
+winston.add(new winston.transports.File({
+  filename: '/home/zmg/Tinker/wiener/logs/errors.log',
+  handleExceptions: true,
+  handleRejections: true,
+}));
 

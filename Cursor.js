@@ -11,7 +11,7 @@ const {render} = require('react-blessed');
          height={1}
          top={props.cursorTop}
          left={props.cursorLeft}
-         style ={{fg: 'white', bg: 'white'}}>
+         style ={{fg: 'purple', bg: 'purple'}}>
     </box>
     )
   }                 

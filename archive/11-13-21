@@ -1,0 +1,156 @@
+   Week in Ethereum News                               
+
+
+
+  
+
+  
+  
+
+[4mNovember 13, 2021[24m(https://weekinethereumnews.com/week-in-ethereum-news-november-13-2021/)
+
+[1m[37m[48;2;102;102;153mEth News and Links[49m[39m[22m
+
+[97m[1mMainnet execution layer[22m[39m
+
+●   Update your clients for [4mArrow Glacier upgrade[24m (difficulty bomb delay) before December 5:›[38;2;48;48;48mhttps://is.gd/7ib3tI[39m
+    ●   Geth [4mv1.10.12[24m: native Go call tracing (2.5x faster)›[38;2;48;48;48mhttps://is.gd/6f5ARD[39m
+    ●   Erigon [4mv2021.11.02[24m: official beta suffix›[38;2;48;48;48mhttps://is.gd/EcDXte[39m
+    ●   Nethermind [4mv1.11.7[24m: TxPool optimization, trace\_callMany and tracing improvements›[38;2;48;48;48mhttps://is.gd/U5LTfn[39m
+    ●   Besu [4mv21.10.1[24m›[38;2;48;48;48mhttps://is.gd/OofD67[39m
+    ●   EthereumJS VM [4mv5.6.0[24m›[38;2;48;48;48mhttps://is.gd/KNHLHe[39m
+●   Latest [4mcore devs call video[24m. Notes from [Tim Beiko](https://twitter.com/TimBeiko/status/1459240133752856577): ›[38;2;48;48;48mhttps://is.gd/48b0Dx[39m
+    ●   Multi-client devnet to switch off PoW expected late next week
+    ●   Discussion of how execution layer clients will identify network upgrade for PoW switch off
+    ●   EIP4396 to update EIP1559 to use time rather than blocks won’t be included in PoW switch off as don’t want to delay
+    ●   EIP4444 proposal to limit historical data over p2p to 1 year
+●   Initial PoW switch off [4mexecution layer spec[24m›[38;2;48;48;48mhttps://is.gd/fU5f9D[39m
+●   [4mGeth todo list[24m to switch off PoW›[38;2;48;48;48mhttps://is.gd/asm4IR[39m
+●   [4mJSON-RPC spec has great first issues[24m for devs looking to contribute and break into core development›[38;2;48;48;48mhttps://is.gd/TKxJgT[39m
+
+[97m[1mEIPs/Standards[22m[39m
+
+●   [4mEIP editors wanted[24m: volunteer a few hours per week, focus on your area of expertise, ensure EIPs are well-formatted, technically complete and meet minimum quality bar›[38;2;48;48;48mhttps://is.gd/szLjBJ[39m
+●   [4mEIP4430[24m: Described Transactions›[38;2;48;48;48mhttps://is.gd/tpHdPF[39m
+●   [4mEIP4444[24m: Bound Historical Data in Execution Clients›[38;2;48;48;48mhttps://is.gd/48Al36[39m
+
+[97m[1mProof of Stake consensus layer[22m[39m
+
+●   [4mKintsugi testnet (PoW switch off) v2 spec[24m: engine API forkchoiceUpdated returns payloadId rather than both layers calculating it›[38;2;48;48;48mhttps://is.gd/hAc6g1[39m
+●   [4mOptimistic sync research[24m (post PoW switch off): sync Beacon Chain without verifying execution components, once execution client synced then inform consensus client of validity of transactions›[38;2;48;48;48mhttps://is.gd/6M4nGX[39m
+●   Teku [4mv21.11.1[24m: fixed blocks endpoints compliance, support for Apple silicon and LevelDB on Linux/arm64, improved performance when running large number of validators›[38;2;48;48;48mhttps://is.gd/No5XjI[39m
+●   Nimbus [4mv1.5.4[24m: hotfix for rare issue leading to loss of attestations and sync committee messages›[38;2;48;48;48mhttps://is.gd/thWQ0l[39m
+●   Beacon chain [4mlight client design[24m›[38;2;48;48;48mhttps://is.gd/oA4tTo[39m
+●   Rocket Pool (staking pool) is [4mlive[24m, users can run a node or provide liquidity for stakers, capacity will be raised again on November 15›[38;2;48;48;48mhttps://is.gd/EVf1u3[39m
+
+[97m[1mLayer2[22m[39m
+
+●   [4m$5 billion locked[24m in Layer2›[38;2;48;48;48mhttps://is.gd/6UqWYL[39m
+●   [4mOptimism upgrade to EVM equivalence[24m is live; [MetaMask v10.5.1](https://twitter.com/optimismpbc/status/1459296690045796353) supports new fee scheme›[38;2;48;48;48mhttps://is.gd/cUOW7u[39m
+●   [4mStarkNet (zk rollup)[24m opens project onboarding for Alpha mainnet›[38;2;48;48;48mhttps://is.gd/co0bfd[39m
+●   [4mAcross Protocol[24m: bridge from Arbitrum to mainnet built to showcase UMA’s Optimistic Oracle ›[38;2;48;48;48mhttps://is.gd/3rlRad[39m
+●   [4mDAI Wormhole[24m: teleport DAI between L2s and mainnet, burn DAI on one network, provide an oracle attestation of the burn, then mint DAI on another network; no need for counterparty liquidity›[38;2;48;48;48mhttps://is.gd/sD72uw[39m
+●   [4mHow rollups scale Ethereum[24m: rollups need less validators than mainnet for security and state growth can be spread across multiple rollups›[38;2;48;48;48mhttps://is.gd/7NzCmE[39m
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+### **This newsletter is made possible thanks to [4mCeler[24m’s [cBridge](https://cbridge.celer.network/) cross-chain transfer exchange!**›[38;2;48;48;48mhttps://is.gd/tYIs94[39m
+
+![4mCeler[24m›[38;2;48;48;48mundefined[39m
+
+Celer Network is a layer-2 scaling platform that brings fast, secure and low-cost blockchain applications.
+
+Celer cBridge 1.0 has processed $920M total volume and [4ma major upgrade, cBridge 2.0[24m, is launching soon in November. Use at [cbridge.celer.network](https://cbridge.celer.network/).›[38;2;48;48;48mhttps://is.gd/9Ueh2k[39m
+
+Celer is also hosting a [4mcBridge 2.0 testnet campaign with $20,000 in reward[24m. ›[38;2;48;48;48mhttps://is.gd/x843XM[39m
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+[97m[1mStuff for developers[22m[39m
+
+●   Solidity [4mv0.8.10[24m: external function call optimizations, EVM code generator for pure Yul mode and SMTChecker reports contract invariants & reentrancy properties›[38;2;48;48;48mhttps://is.gd/GED8VD[39m
+●   [4mENSTools[24m: use ENS instead of an address including DNS not yet claimed as ENS; onlyENSOwner modifier, push & pull funds/NFTs to ENS›[38;2;48;48;48mhttps://is.gd/rKxTwh[39m
+●   [4mxdeployer[24m: Hardhat plugin to deploy contracts with deterministic address (uses CREATE2), beta, currently only selected testnets›[38;2;48;48;48mhttps://is.gd/wKCk3J[39m
+●   Intro to [4mDappTools testing[24m: write tests in Solidity, fuzz testing and symbolic execution›[38;2;48;48;48mhttps://is.gd/9Dyf3I[39m
+●   Nile [4mv0.2.0[24m: Python development environment for StarkNet contracts, supports Cairo v0.5.0, uses starknet-devnet as default local network›[38;2;48;48;48mhttps://is.gd/EysIti[39m
+●   [4mNethereum explorer[24m (.NET explorer & simple wallet template): migrated to Blazor & Maui›[38;2;48;48;48mhttps://is.gd/ex02LV[39m
+●   Etherscan adds [4mmore support for ERC1155[24m multi token standard›[38;2;48;48;48mhttps://is.gd/seqYYh[39m
+●   WalletConnect [4mv2.0 explainer[24m: multi-chain support, pairing & session separation, JSON-RPC permissions, improved session management and decentralized message relaying (using Waku v2.0)›[38;2;48;48;48mhttps://is.gd/z2wx76[39m
+
+[97m[1mSecurity[22m[39m
+
+●   samczsum’s [4mpinball CTF[24m used Etherscan source verification 0day, anything between solc metadata markers was ignored; [solution to CTF](https://medium.com/@kanewallmann_71759/an-untrustworthy-pinball-machine-d9dcd07882c)›[38;2;48;48;48mhttps://is.gd/pL4npE[39m
+●   [4mSmart Contract Security Registry[24m: register to receive info on known incidents or threats for OpenZeppelin Contracts & selected libraries ›[38;2;48;48;48mhttps://is.gd/PRbZP4[39m
+
+[97m[1mEcosystem[22m[39m
+
+●   Trent’s [4mupdated Ethereum roadmap[24m: PoW switch off in 5-8 months, Shanghai upgrade in 10-12 months and ongoing research for data sharding, state expiry & weak statelessness›[38;2;48;48;48mhttps://is.gd/S4OUTH[39m
+●   [4mEnergy use of the network will be reduced by ~99.95%[24m when Proof of Work is switched off forever›[38;2;48;48;48mhttps://is.gd/j8GGbr[39m
+●   [4mSandwiching that benefits users[24m: provide Just in Time liquidity on Uniswap v3 to frontrun a large trade and then backrun the trade to remove liquidity, gives better execution price to traders›[38;2;48;48;48mhttps://is.gd/DITh1I[39m
+●   [4mGas fees during NFT launches[24m: base fee & priority fee combine to create tabletop around 2000 gwei›[38;2;48;48;48mhttps://is.gd/NSfOqq[39m
+●   [4mEtherscan[24m: review and revoke NFT and ERC20 approvals›[38;2;48;48;48mhttps://is.gd/ZQUXIp[39m
+
+[97m[1mEnterprise[22m[39m
+
+●   [4mKINGSHIP metaverse group formed by 10:22PM[24m (Universal Music label), 3 Bored Apes & 1 Mutant to release music, NFTs and experiences›[38;2;48;48;48mhttps://is.gd/rsPRmP[39m
+●   Discord [4mhints at Ethereum integration[24m but then [announces no plans to ship](https://twitter.com/jasoncitron/status/1458607550677405699) after backlash›[38;2;48;48;48mhttps://is.gd/W6Dg8p[39m
+●   [4mCDBCgo from ConsenSys and Visa[24m one of three winners of Monetary Authority of Singapore’s Global CDBC Challenge›[38;2;48;48;48mhttps://is.gd/aG0NIs[39m
+
+[97m[1mApplication layer[22m[39m
+
+●   [4mCurve ended USDM gauge[24m after alleged governance attack, turning off Mochi’s pool CRV rewards›[38;2;48;48;48mhttps://is.gd/WWHTmJ[39m
+●   1inch Router [4mv4[24m: separate routers added to lower gas costs and DAI permit support›[38;2;48;48;48mhttps://is.gd/cEEEWn[39m
+●   [4mSongADAO[24m: co-op to own Song A Day catalog copyright and royalties (Disclosure: I own a Song A Day NFT)›[38;2;48;48;48mhttps://is.gd/R8ZhPj[39m
+●   [4mSign-in with Ethereum[24m demo implementation, integrates with ENS to display ENS name and avatar›[38;2;48;48;48mhttps://is.gd/ymCidp[39m
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+### **Job Listings**
+
+●   Ethereum Foundation hiring a [4mResearch Engineer[24m for PoS consensus layer›[38;2;48;48;48mhttps://is.gd/oq5yub[39m
+●   OpenZeppelin hiring a [4mOpen Source Developer[24m›[38;2;48;48;48mhttps://is.gd/Vx0kwU[39m
+●   Toucan: [4mSolidity dev[24m to build web3 infrastructure to reverse climate change›[38;2;48;48;48mhttps://is.gd/tZHODe[39m
+
+[97m[1mReach people experienced with Ethereum.[22m[39m  $420 for two issues (~75 character limit), payable in ETH/DAI/USDC to abcoathup.eth.  Questions? abcoathup at-gmail
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+[97m[1mRegulation/business/tokens[22m[39m
+
+●   [4mUS infrastructure bill passed[24m, crypto provisions take effect Jan 1, 2024 ›[38;2;48;48;48mhttps://is.gd/aPQHS4[39m
+●   [4mMastercard[24m launching crypto-funded payment cards in Asia Pacific›[38;2;48;48;48mhttps://is.gd/Cj1xOT[39m
+●   Gnosis propose [4mxDAI sidechain merger[24m to become Gnosis Chain›[38;2;48;48;48mhttps://is.gd/aXfWlo[39m
+●   A post-EIP1559 [4mflows-based Ethereum price[24m model›[38;2;48;48;48mhttps://is.gd/3SfUdj[39m
+
+[97m[1mGeneral[22m[39m
+
+●   [4mVisualization of crypto vs internet adoption[24m: crypto is where the internet was in 1998›[38;2;48;48;48mhttps://is.gd/Pf3S4y[39m
+●   [4m16% of US adults[24m have used, invested or traded crypto›[38;2;48;48;48mhttps://is.gd/Hhg5hQ[39m
+●   [4mRobinhood[24m customer support social engineering incident, unauthorized access to 5m email addresses, 2m names, ~300 personal info and ~10 extensive account details›[38;2;48;48;48mhttps://is.gd/zK1My9[39m
+●   [4m2FA bots[24m used to gain access to centralized accounts›[38;2;48;48;48mhttps://is.gd/3tpQfd[39m
+●   Cloudflare: [4mperformance of TLS with drop-in post-quantum signatures[24m›[38;2;48;48;48mhttps://is.gd/Ajg0E4[39m
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Follow [4m@WeekinEthNews[24m to find out what the most clicked links are. Follow [@evan\_van\_ness](https://twitter.com/evan_van_ness) and [@abcoathup](https://twitter.com/abcoathup) to get most of the week’s news in real time.›[38;2;48;48;48mhttps://is.gd/5Q0hS0[39m
+
+Permalink for this week’s issue: [4mhttps://weekinethereumnews.com/week-in-ethereum-news-november-13-2021[24m›[38;2;48;48;48mhttps://is.gd/kCBR9L[39m
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+[1m[37m[48;2;102;102;153mDates of Note[49m[39m[22m
+
+Upcoming dates of note _(new/changes in **bold**)_**:**
+
+●   Oct 25 – Dec 13 – [4mGitcoin DAO Global hackathon[24m (virtual)›[38;2;48;48;48mhttps://is.gd/B6gOK3[39m
+●   Nov 16 – [4mFormal Verification in the Ethereum Ecosystem[24m›[38;2;48;48;48mhttps://is.gd/leyoZj[39m
+●   **Nov 19 – Applications close for [4mApplied ZK learning group[24m**›[38;2;48;48;48mhttps://is.gd/uBm28n[39m
+●   Dec 1-16 – [4mGitcoin Grants Round 12[24m›[38;2;48;48;48mhttps://is.gd/zq7TWf[39m
+●   Dec ~8 – [4mArrow Glacier[24m upgrade block 13,773,000›[38;2;48;48;48mhttps://is.gd/7ib3tI[39m
+●   Jan 24-26 – [4mScience of Blockchain Conference[24m (Stanford University)›[38;2;48;48;48mhttps://is.gd/VEzwGD[39m
+●   Feb 11-20 – [4mETHDenver[24m›[38;2;48;48;48mhttps://is.gd/QzQAUr[39m
+●   Mar 28-30 – [4mETHDubai[24m›[38;2;48;48;48mhttps://is.gd/gKrJ8R[39m
+
+[4m97m[1mDid you get forwarded this newsletter?[22m[39m _[Sign up[24m **to receive it weekly**_›[38;2;48;48;48mhttps://is.gd/VeQqkH[39m
+
+[RSS](https://weekinethereumnews.com/feed/)
