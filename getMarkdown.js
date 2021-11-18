@@ -1,7 +1,5 @@
-import chalk from 'chalk';
 import  TurndownService from 'turndown';
 import {getLatestWien} from './getLatestWien.js';
-import terminalLink from 'terminal-link'
 
 const turndownOptions = {
   headingStyle: 'atx',
@@ -16,7 +14,6 @@ turndownService.remove(turndownFilter);
   filter: ["a"],
   replacement: function replacementFunction (content, node, options) {
      const url =  `${node.getAttribute('href')}`; 
-     //const underlinedLinkText = chalk.underline(content)
      return `\[${content}\]`+`\(${url}\)`
     }
   }) 

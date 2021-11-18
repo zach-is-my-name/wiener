@@ -8,34 +8,18 @@ import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
 import  stripAnsi from 'strip-ansi';
-// create a stdout and file logger
-const opts = {
-	errorEventName:'error',
-        logDirectory:'/home/zmg/Tinker/wiener/logs', // NOTE: folder must exist and be writable...
-        fileNamePattern:'log1-<DATE>.log',
-        dateFormat:'YYYY.MM.DD'
-};
-const opts2 = {
-	errorEventName:'error',
-        logDirectory:'/home/zmg/Tinker/wiener/logs', // NOTE: folder must exist and be writable...
-        fileNamePattern:'log2-<DATE>.log',
-        dateFormat:'YYYY.MM.DD'
-};
-
-const log = require('simple-node-logger').createSimpleFileLogger('/home/zmg/Tinker/wiener/logs/fresh.log');
-
-const log1 = require('simple-node-logger').createRollingFileLogger( opts );
-const log2 = require('simple-node-logger').createRollingFileLogger( opts2 ); 
 const marked = require('marked');
 const TerminalRenderer = require('marked-terminal');
 const {getMarkdown} = require('./getMarkdown.js');
 import {formatText} from './format'
+import winston, {createLogger, transports}  from 'winston';
+import fs from 'fs'
 
-/*const renderMarkdown = async () => {
-  const markdown = await getMarkdown(); 
-  marked.setOptions({
-    renderer: new TerminalRenderer() });
-  return marked(markdown)*/
+winston.add(new winston.transports.File({
+  filename: '/home/zmg/Tinker/wiener/logs/errors.log',
+  handleExceptions: true,
+  handleRejections: true,
+}));
 
 const MainBox = () =>  {
   const [markdown, setMarkdown] = useState(null)
@@ -49,9 +33,8 @@ const MainBox = () =>  {
   useEffect( () => {
     async function _getMarkdown() {
       const response = await getMarkdown()
-
-      log.info(formatText(response))        
-      setMarkdown(formatText(response));
+      fs.writeFileSync('/home/zmg/Tinker/wiener/logs/markdown',response)
+      setMarkdown(await formatText(response));
       
     }
     _getMarkdown()
@@ -138,14 +121,14 @@ const MainBox = () =>  {
       }
     }
   }
-
+// 
   return(
     <box 
     top={"center"}
     left={"center"}
     width={"100%"}
     height={"100%"}  
-    align={"left"}
+    align={"center"}
     focused={true}
     keyable={true}
     input={true}
@@ -156,14 +139,10 @@ const MainBox = () =>  {
     ref={mainBoxRef}
     >
     {markdown && markdown}
-    <layout align={"left"} width={"100%"} height={"100%"} border={{type: 'line', fg: 'blue'} } wrap={true} >
-
-    </layout> 
     <Cursor cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
     
   )
-  
 
 }
  

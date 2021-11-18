@@ -25,7 +25,7 @@ const screen = blessed.screen({
 //  autoPadding: true,
   smartCSR: true,
   title: 'wiener',
-  dump: '/home/zmg/Tinker/wiener/logs/dump'
+  fullUnicode: true
 });
 
 
