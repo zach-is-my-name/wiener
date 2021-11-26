@@ -49,6 +49,7 @@
     "marked": "^3.0.8",
     "marked-terminal": "^4.2.0",
     "node-emoji": "^1.11.0",
+    "open": "^8.4.0",
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-blessed": "^0.7.2",

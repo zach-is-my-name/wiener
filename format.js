@@ -49,7 +49,6 @@ const terminalLinks = async (string) => {
     const point = figures.pointerSmall
     return `${chalk.underline(linkText)}${untilEol}${point}${styledUrl}${linkBreak}` 
   }
-   _logger.info(string.length)
   const stringWithLinks =  await replaceAsync(string, re, replacerFunction)
    return stringWithLinks
   //   return string
