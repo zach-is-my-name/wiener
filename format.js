@@ -1,4 +1,5 @@
 import ansiEscapes from 'ansi-escapes';
+import blessed from 'neo-blessed'
 import {reduce} from 'ramda'; 
 import fs from 'fs'
 import https from 'https'
@@ -18,8 +19,25 @@ const agent = new https.Agent({
 
 var axiosInstance = axios.create({ httpsAgent: agent });
 
-export const formatText = async (string) => {
-  const output_final = pipe(_stripAnsi, removeH1, addUnderlineToDate, topLevelStarToBullet, indentedStarToBullet, /*addUnderlines,*/ h6Format, sectionBold, horizontalRule, await terminalLinks)(string);
+export const formatText = (string) => {
+  const output_final = pipe(
+    _stripAnsi,  
+    removeH1, 
+    titleCenter,
+    h6Format, 
+    //trimH2,
+    addUnderlineToDate, 
+    //sectionBold, 
+    //centerH2, 
+    /*lineBreakTopLevelStars,
+    lineBreaksIndentedStars,  
+    topLevelStarToBullet, 
+    indentedStarToBullet,*/
+    //horizontalRule,  
+    //addUnderlines, 
+    //removeUnderlineFromBreakH2, 
+    terminalLinks
+  )(string);
 
   return output_final
 }
@@ -29,14 +47,36 @@ const _stripAnsi = (string) => {
 }
 
 const removeH1 =  (string) => {
-  const re = /\#{1}\s+?\[Week\sin\sEthereum\sNews\]\(https:\/\/weekinethereumnews\.com\/\)/ 
+  const re = /\#{1}\s+?\[(Week\sin\sEthereum\sNews)\]\(https:\/\/weekinethereumnews\.com\/\)/ 
+  return string.replace(re, '') 
+}
 
-  return string.replace(re, "") 
+const titleCenter = (string) => {
+  const re = /(Week\s[I|i]n\sEthereum\sNews)/  
+  const title = '$1' 
+  return string.replace(re, `` )
+}
+
+const h6Format = (string) => {
+  const re = /(#{6}\s\*\*)(.+?)\*\*/gm 
+  const h6 = `${chalk.bold.bgAnsi256(103).white('$2')}`
+  return  string.replace(re, `${h6}`)
+}
+
+const trimH2 = (string) => {
+  const re = /\#\#\s\[Week\sin\sEthereum\sNews[^]+?(\w{3,}\s\d+.+?\d{4})\]/gm  
+  _logger.info(re.test(string))
+  return string.replace('$1')
+}
+
+const centerH2 = (string) => {
+  const re = /\#\#\s(\[Week\sin\sEthereum\sNews)[^]+?(\w{3,}\s\d+.+?\d{4}\])(\(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*\))/gm
+  return string.replace('{center}$1{/center}\n' + '{center}$2{/center} \n' + '$3' )
 }
 
 const terminalLinks = async (string) => {
-  const re = /\[(.+?)\]\((https?:\/\/.*?)\)(.*)(\n)/g
-
+  const re = /\[([^]+?)\]\((https?:\/\/.*?)\)(.*)(\n)/g
+  //_logger.info(re.test(string))
   const replacerFunction = async (p1, p2, p3, p4, p5)  => {
     const linkText = p2
     const url = p3 
@@ -49,26 +89,36 @@ const terminalLinks = async (string) => {
     const point = figures.pointerSmall
     return `${chalk.underline(linkText)}${untilEol}${point}${styledUrl}${linkBreak}` 
   }
+  
   const stringWithLinks =  await replaceAsync(string, re, replacerFunction)
-   return stringWithLinks
-  //   return string
-}
+  return stringWithLinks
+  }
 
 const addUnderlines = (string) => {
   const re = /\[([^\][]*)]/g
-  ///\[|\]/g
   return string.replace(re, chalk.underline('$1')) 
 }
 
 const removeUnderlineFromBreakH2 = (string) => {
   const re = /\#\#\s\[Week\sin\sEthereum\sNews(\s{1,}.+?)\]/gm  
-  const group = re.exec(string)[1]
-  return string.replace(re, stripAnsi(group))
+  return string.replace(re, stripAnsi("$1 + \n") )
 }
 
 const addUnderlineToDate = (string) => {
-  const re = /\#\#\s\[Week\sin\sEthereum\sNews[^]+?(\w{3,}\s\d+.+?\d{4})\]/gm
-  return string.replace(re, chalk.underline('$1'))  
+  const re = /(\#\#\s\[Week\sin\sEthereum\sNews[^]+?)(\w{3,}\s\d+.+?\d{4})\]/gm
+  return string.replace(re, "$1" + chalk.underline('$2'))  
+}
+
+//add breaks before bullets
+
+const lineBreakTopLevelStars = string => {
+  const re =/(?!\*\s\*)^\*\s.*/gm  
+  return string.replace(re, '$& \n')
+}
+
+const lineBreaksIndentedStars = string => {
+  const re =/(?!\*\s\*)(?!\n)^\s+\*\s.*/gm 
+  return string.replace(re, '$& \n') 
 }
 
 const topLevelStarToBullet = (string) => {
@@ -79,14 +129,10 @@ const topLevelStarToBullet = (string) => {
 
 const indentedStarToBullet = (string) => {
   const re =/(?!\*\s\*)(?!\n)^(\s+)\*\s(.*)/gm 
-  const bullet = figures.bullet
+  const bullet = figures.bullet 
   return string.replace(re, `$1${bullet} $2`)
 }
 
-const h6Format = (string) => {
-  const re = /#{6}\s\*\*(.+?)\*\*/gm 
-  return string.replace(re, chalk.bold.white.bgAnsi256(103)('$1'))
-}
 
 const sectionBold = (string) => {
   const re =/^\*{2}(?!\*+)(.+?)\*\*/gm 

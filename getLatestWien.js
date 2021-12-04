@@ -6,7 +6,6 @@ const axios = require('axios');
 https.globalAgent.options.ca = fs.readFileSync('./certs/weekinethereumnews.com');
 
 async function getCert() {
-
 	const rootUrl = 'https://weekinethereumnews.com'
 
   try {

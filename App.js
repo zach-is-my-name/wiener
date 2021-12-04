@@ -25,7 +25,7 @@ const screen = blessed.screen({
 //  autoPadding: true,
   smartCSR: true,
   title: 'wiener',
-  fullUnicode: true
+  fullUnicode: true,
 });
 
 
