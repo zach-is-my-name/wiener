@@ -19,24 +19,25 @@ const agent = new https.Agent({
 
 var axiosInstance = axios.create({ httpsAgent: agent });
 
-export const formatText = (string) => {
+export const formatBody = async (string) => {
   const output_final = pipe(
     _stripAnsi,  
-    removeH1, 
-    titleCenter,
+    trimHeader,
+    //removeH1, 
+    //titleCenter,
     h6Format, 
     //trimH2,
-    addUnderlineToDate, 
-    //sectionBold, 
+    //addUnderlineToDate, 
+    sectionBold, 
     //centerH2, 
-    /*lineBreakTopLevelStars,
+    lineBreakTopLevelStars,
     lineBreaksIndentedStars,  
     topLevelStarToBullet, 
-    indentedStarToBullet,*/
-    //horizontalRule,  
-    //addUnderlines, 
+    indentedStarToBullet,
+    horizontalRule,  
+    addUnderlines, 
     //removeUnderlineFromBreakH2, 
-    terminalLinks
+    await terminalLinks
   )(string);
 
   return output_final
@@ -44,6 +45,13 @@ export const formatText = (string) => {
 
 const _stripAnsi = (string) => {
   return stripAnsi(string)
+}
+
+const trimHeader = (string) => {
+  const re = /^\*\*[^]+/m
+  const body = string.match(re)
+  //_logger.info({body}) 
+  return body[0]
 }
 
 const removeH1 =  (string) => {

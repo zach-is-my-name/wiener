@@ -8,12 +8,13 @@ import blessed from 'neo-blessed';
 import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
 import LinkButton from './LinkButton'
-import  stripAnsi from 'strip-ansi';
+import stripAnsi from 'strip-ansi';
 import open from 'open';
 const marked = require('marked');
 const TerminalRenderer = require('marked-terminal');
 const {getMarkdown} = require('./getMarkdown.js');
-import {formatText} from './format'
+import {formatBody} from './formatBody'
+import {formatHeader} from './formatHeader'
 import winston, {createLogger, transports}  from 'winston';
 import fs from 'fs'
 const regexLink = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
@@ -37,7 +38,8 @@ winston.add(new winston.transports.File({
 }));
 
 const MainBox = () =>  {
-  const [markdown, setMarkdown] = useState(null)
+  const [markdownHeader, setMarkdownHeader] = useState(null)
+  const [markdownBody, setMarkdownBody] = useState(null)
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
   const isFirstRender = useRef(true)
@@ -56,7 +58,8 @@ const MainBox = () =>  {
      // fs.writeFileSync('/home/zmg/Tinker/wiener/logs/raw', await formatText(response))
       //logger2.info(await formatText(response))
       //setMarkdown(await formatText(response));
-      setMarkdown(await formatText(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})));
+      setMarkdownHeader(await formatHeader(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})))
+      setMarkdownBody(await formatBody(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})));
       //setMarkdown(fs.readFileSync('/home/zmg/Tinker/wiener/archive/11-27-21', {encoding:'utf8', flag:'r'}));
     }
     _getMarkdown()
@@ -229,15 +232,16 @@ const MainBox = () =>  {
       }
     }
   }
- 
-  return(
 
+  const centeredHeader =`{center}${markdownHeader}`
+  const clean = `\n{/}{/}\n\n`
+  const leftBody = `{left}${markdownBody}{/left}` 
+  return(
     <box 
     top={"top"}
     left={"left"}
     width={"100%"}
     height={"100%"}  
-    align={"left"}
     focused={true}
     keyable={true}
     input={true}
@@ -247,12 +251,10 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     tags={true}
-    content={markdown && markdown}
-    >
-
+    content={markdownBody && markdownHeader && centeredHeader + clean + leftBody} 
+    > 
     <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
-
   )
 /*
  <box ref={markdownBoxRef}>
