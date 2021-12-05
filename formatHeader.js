@@ -8,13 +8,12 @@ import figures, {mainSymbols} from 'figures';
 import chalk from 'chalk';
 import {_logger} from './logger';
 
-export const formatHeader = (string) => {
+export const formatHeader = async(string) => {
   const output_final = pipe(
     _stripAnsi,  
     trimBody,
     removeH1, 
     removeTopTitle,
-    //trimH2,
     h2Format,
     h6Format, 
     trimH2,
@@ -48,6 +47,7 @@ const h6Format = (string) => {
   const h6 = `${chalk.bold.bgAnsi256(103)(' $2 ')}`
   return  string.replace(re, `${h6}\n\n`)
 }
+
 const h2Format = (string) => {
   const re = /\#\#\s\[(Week\sin\sEthereum\sNews)[^]+?(\w{3,}\s\d+.+?\d{4})\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)\)/gm
   _logger.info({h2FormatRE: re.test(string)})
@@ -73,6 +73,8 @@ const addUnderlineToDate = (string) => {
   const re = /(\#\#\s\[Week\sin\sEthereum\sNews[^]+?)(\w{3,}\s\d+.+?\d{4})\]/gm
   return string.replace(re, "$1" + chalk.underline('$2'))  
 }
+
+
 
 
 

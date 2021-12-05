@@ -1,7 +1,6 @@
 import React from 'react';
 import  {useState, useEffect, useRef, useCallback} from 'react';
 import {useStateWithCallbackLazy} from './customHooks';
-import ansiRegex from 'ansi-regex'
 import processString from 'react-process-string'
 import {renderMarkdown} from './renderMarkdown'
 import blessed from 'neo-blessed';
@@ -19,6 +18,7 @@ import {formatPostFormat} from './formatPostFormat'
 import winston, {createLogger, transports}  from 'winston';
 import fs from 'fs'
 const regexLink = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+
 
 const logger = winston.createLogger({
   transports: [
@@ -41,6 +41,7 @@ winston.add(new winston.transports.File({
 const MainBox = () =>  {
   const [markdownHeader, setMarkdownHeader] = useState(null)
   const [markdownBody, setMarkdownBody] = useState(null)
+  const [logo, setLogo] = useState(null)
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
   const isFirstRender = useRef(true)
@@ -51,10 +52,7 @@ const MainBox = () =>  {
   const [wasMouseClicked, toggleWasMouseClicked] = useState(false) 
   const [stateCallbackFlag, setStateCallbackFlag] = useState(false)
 
-  useEffect(() => {
 
-    markdownHeader && logger2.info({theContent: mainBoxRef.current.getContent()})
-  }) 
   useEffect( () => {
     async function _getMarkdown() {
       //const response = await getMarkdown()
@@ -237,7 +235,6 @@ const MainBox = () =>  {
       }
     }
   }
-
   const centeredHeader =`{center}${markdownHeader}`
   const clean = `\n{/}{/}\n\n`
   const leftBody = `{left}${markdownBody}{/left}` 
@@ -256,7 +253,7 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     tags={true}
-    content={markdownBody && markdownHeader && centeredHeader + clean + leftBody} 
+    content={markdownBody && markdownHeader &&  centeredHeader + clean + leftBody} 
     > 
     <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
