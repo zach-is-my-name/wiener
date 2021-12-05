@@ -23,20 +23,12 @@ export const formatBody = async (string) => {
   const output_final = pipe(
     _stripAnsi,  
     trimHeader,
-    //removeH1, 
-    //titleCenter,
     h6Format, 
-    //trimH2,
-    //addUnderlineToDate, 
-    sectionBold, 
-    //centerH2, 
     lineBreakTopLevelStars,
     lineBreaksIndentedStars,  
     topLevelStarToBullet, 
     indentedStarToBullet,
     horizontalRule,  
-    addUnderlines, 
-    //removeUnderlineFromBreakH2, 
     await terminalLinks
   )(string);
 
@@ -71,11 +63,7 @@ const h6Format = (string) => {
   return  string.replace(re, `${h6}`)
 }
 
-const trimH2 = (string) => {
-  const re = /\#\#\s\[Week\sin\sEthereum\sNews[^]+?(\w{3,}\s\d+.+?\d{4})\]/gm  
-  _logger.info(re.test(string))
-  return string.replace('$1')
-}
+
 
 const centerH2 = (string) => {
   const re = /\#\#\s(\[Week\sin\sEthereum\sNews)[^]+?(\w{3,}\s\d+.+?\d{4}\])(\(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*\))/gm
@@ -94,18 +82,15 @@ const terminalLinks = async (string) => {
     const miniUrl = response.data
     const linkBracketStyle = chalk.ansi256(103).bold
     const styledUrl = chalk.hex('#303030')(miniUrl)
+    const styledLinkText = chalk.underline(linkText)
     const point = figures.pointerSmall
-    return `${chalk.underline(linkText)}${untilEol}${point}${styledUrl}${linkBreak}` 
+    const reset = chalk.reset("")
+    return `${styledLinkText}${untilEol}${point}${styledUrl}${reset}${linkBreak}` 
   }
-  
+  //
   const stringWithLinks =  await replaceAsync(string, re, replacerFunction)
   return stringWithLinks
   }
-
-const addUnderlines = (string) => {
-  const re = /\[([^\][]*)]/g
-  return string.replace(re, chalk.underline('$1')) 
-}
 
 const removeUnderlineFromBreakH2 = (string) => {
   const re = /\#\#\s\[Week\sin\sEthereum\sNews(\s{1,}.+?)\]/gm  
@@ -142,10 +127,6 @@ const indentedStarToBullet = (string) => {
 }
 
 
-const sectionBold = (string) => {
-  const re =/^\*{2}(?!\*+)(.+?)\*\*/gm 
-  return string.replace(re, chalk.whiteBright.bold('$1'))
-}
 
 const horizontalRule = (string) => {
   const re = /(?<!\*)(\*\s\*\s\*)(?!\*)/gm  

@@ -15,6 +15,7 @@ const TerminalRenderer = require('marked-terminal');
 const {getMarkdown} = require('./getMarkdown.js');
 import {formatBody} from './formatBody'
 import {formatHeader} from './formatHeader'
+import {formatPostFormat} from './formatPostFormat'
 import winston, {createLogger, transports}  from 'winston';
 import fs from 'fs'
 const regexLink = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
@@ -49,7 +50,11 @@ const MainBox = () =>  {
   const [cursorLeft, setCursorLeft] = useState(0)
   const [wasMouseClicked, toggleWasMouseClicked] = useState(false) 
   const [stateCallbackFlag, setStateCallbackFlag] = useState(false)
-  
+
+  useEffect(() => {
+
+    markdownHeader && logger2.info({theContent: mainBoxRef.current.getContent()})
+  }) 
   useEffect( () => {
     async function _getMarkdown() {
       //const response = await getMarkdown()
@@ -59,7 +64,7 @@ const MainBox = () =>  {
       //logger2.info(await formatText(response))
       //setMarkdown(await formatText(response));
       setMarkdownHeader(await formatHeader(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})))
-      setMarkdownBody(await formatBody(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})));
+      setMarkdownBody(formatPostFormat((await formatBody(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})))));
       //setMarkdown(fs.readFileSync('/home/zmg/Tinker/wiener/archive/11-27-21', {encoding:'utf8', flag:'r'}));
     }
     _getMarkdown()

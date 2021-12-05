@@ -45,7 +45,7 @@ const removeTopTitle = (string) => {
 
 const h6Format = (string) => {
   const re = /(#{6}\s\*\*)(.+?)\*\*/gm 
-  const h6 = `${chalk.bold.bgAnsi256(103).white(' $2 ')}`
+  const h6 = `${chalk.bold.bgAnsi256(103)(' $2 ')}`
   return  string.replace(re, `${h6}\n\n`)
 }
 const h2Format = (string) => {
