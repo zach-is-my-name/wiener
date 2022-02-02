@@ -9,8 +9,8 @@ import figures, {mainSymbols} from 'figures';
 import chalk from 'chalk';
 import minify from 'url-minify';
 import axios from 'axios'
-import {_logger} from './logger';
-const cert = fs.readFileSync('./certs/gd.pem')
+import {_logger} from '../logger.js';
+const cert = fs.readFileSync('../certs/gd.pem')
 import replaceAsync from 'string-replace-async'
 const agent = new https.Agent({
   rejectUnauthorized: false, // (NOTE: this will disable client verification)

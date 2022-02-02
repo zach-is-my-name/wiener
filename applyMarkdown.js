@@ -1,5 +1,5 @@
 import  TurndownService from 'turndown';
-import {getLatestWien} from './getLatestWien.js';
+import {useGetWien} from './useGetWien.js';
 
 const turndownOptions = {
   headingStyle: 'atx',
@@ -10,20 +10,19 @@ const turndownFilter = ['script', 'footer', 'style', 'nav', 'center'];
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
 
- turndownService.addRule("linkStyles", {
+turndownService.addRule("linkStyles", {
   filter: ["a"],
   replacement: function replacementFunction (content, node, options) {
      const url =  `${node.getAttribute('href')}`; 
      return `\[${content}\]`+`\(${url}\)`
-    }
-  }) 
-const getMarkdown = async () => {
-  const html = await getLatestWien() 
+  }
+}) 
+
+export const applyMarkdown = async (html) => {
   const markdown = await turndownService.turndown(html);
   return markdown;
 }
 
-exports.getMarkdown = getMarkdown;
 
 
 

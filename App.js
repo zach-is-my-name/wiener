@@ -1,24 +1,21 @@
 import React from 'react';
+const https = require('https');
+const fs = require('fs');
 import MainBox from './MainBox.js'
-const {useState, useEffect, useRef} = require('react');
+const {useState, useEffect} = require('react');
 const importJsx = require('import-jsx');
 const {renderMarkdown} = require('./renderMarkdown')
 import blessed from 'neo-blessed';
 import {createBlessedRenderer} from 'react-blessed';
-
+import {argObj} from './index'
 const render = createBlessedRenderer(blessed);
+const StormDB = require("stormdb");
+https.globalAgent.options.ca = fs.readFileSync('./certs/weekinethereumnews.com');
+
 
 function App(props) {
 
-  const [linkButtonRendered, setLinkButtonRendered] = useState(false)
-  const [linkButtonFocused, setLinkButtonFocus] = useState(false) 
-  const [linkButtonTop, setLinkButtonTop] = useState(0)
-  const [linkButtonLeft, setLinkButtonLeft] = useState(0)
-  const [linkButtonHide, setLinkButtonHide] = useState(false)
-
-    return (
-      <MainBox />
-    );
+    return  <MainBox ...props /> 
 }
 
 const screen = blessed.screen({
@@ -29,5 +26,5 @@ const screen = blessed.screen({
 });
 
 
-const component = render(<App />, screen);
+render(<App argObj={argObj} />, screen);
 

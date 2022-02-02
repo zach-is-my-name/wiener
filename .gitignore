@@ -1,2 +1,6 @@
 **/node_modules
 scrapes
+archive
+logs
+package-lock.json
+oldSratch/*

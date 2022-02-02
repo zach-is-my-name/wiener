@@ -18,29 +18,10 @@ import {formatPostFormat} from './formatPostFormat'
 import winston, {createLogger, transports}  from 'winston';
 import fs from 'fs'
 const regexLink = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
+import useGetWien from './useGetWien'
 
-
-const logger = winston.createLogger({
-  transports: [
-    new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/utility.log' })
-  ]
-});
-
-const logger2 = winston.createLogger({
-  transports: [
-    new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/text.log' })
-  ]
-});
-
-winston.add(new winston.transports.File({
-  filename: '/home/zmg/Tinker/wiener/logs/errors.log',
-  handleExceptions: true,
-  handleRejections: true,
-}));
-
-const MainBox = () =>  {
-  const [markdownHeader, setMarkdownHeader] = useState(null)
-  const [markdownBody, setMarkdownBody] = useState(null)
+const MainBox = (props) =>  {
+  const [renderObj, setRenderObj] = useState(null)
   const [logo, setLogo] = useState(null)
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
@@ -51,22 +32,10 @@ const MainBox = () =>  {
   const [cursorLeft, setCursorLeft] = useState(0)
   const [wasMouseClicked, toggleWasMouseClicked] = useState(false) 
   const [stateCallbackFlag, setStateCallbackFlag] = useState(false)
+  const [mode, setMode] = useState("latest"); 
 
-
-  useEffect( () => {
-    async function _getMarkdown() {
-      //const response = await getMarkdown()
-      //fs.writeFileSync('/home/zmg/Tinker/wiener/archive/markdown',response)
-      //fs.writeFileSync('/home/zmg/Tinker/wiener/archive/11-27-21', await formatText(response))
-     // fs.writeFileSync('/home/zmg/Tinker/wiener/logs/raw', await formatText(response))
-      //logger2.info(await formatText(response))
-      //setMarkdown(await formatText(response));
-      setMarkdownHeader(await formatHeader(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})))
-      setMarkdownBody(formatPostFormat((await formatBody(fs.readFileSync('/home/zmg/Tinker/wiener/archive/markdown', {encoding:'utf8', flag:'r'})))));
-      //setMarkdown(fs.readFileSync('/home/zmg/Tinker/wiener/archive/11-27-21', {encoding:'utf8', flag:'r'}));
-    }
-    _getMarkdown()
-  }, []) 
+  //return render object 
+  setRenderObj(useGetWien(props.argObj))
 
   useEffect(() => {
     //logger.info("click handler called; now in useEffect; state wasMouseClicked = ", {wasMouseClicked})
@@ -143,8 +112,12 @@ const MainBox = () =>  {
 
     } else if (key.full === 'enter') {
         await followLinkUnderCursor()
+    } else if (key.full === 'H') {
+        await newsletterBack()
+    } else if (key.full === 'L') {
+        await newsletterForward() 
     } else {
-      updateCoordinate(key.full)
+        updateCoordinate(key.full)
     }
 
     function nextCursorPosition( current, forward, maxLength, adjustment )  {
@@ -253,7 +226,7 @@ const MainBox = () =>  {
     scrollable={true}
     ref={mainBoxRef}
     tags={true}
-    content={markdownBody && markdownHeader &&  centeredHeader + clean + leftBody} 
+    content={renderObj && renderObj.text} 
     > 
     <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} />   
     </box>
@@ -268,7 +241,24 @@ const MainBox = () =>  {
 */
 
 }
+
+winston.add(new winston.transports.File({
+  filename: '/home/zmg/Tinker/wiener/logs/errors.log',
+  handleExceptions: true,
+  handleRejections: true,
+}));
  
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/utility.log' })
+  ]
+});
+
+const logger2 = winston.createLogger({
+  transports: [
+    new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/text.log' })
+  ]
+});
 
 export default MainBox
 

@@ -1,5 +1,7 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
+'use strict';
 import meow from 'meow'
+import wienr from '.'
 import figures, {mainSymbols} from 'figures';
 
 const help = `
@@ -21,16 +23,4 @@ const cli = meow(
 	}
 });
 
-export const argObj = {input: cli.input[0], flags: cli.flags}
-
-const main = async () => {
-
-//require("@babel/register")({
- // presets: [["@babel/preset-env"], ["@babel/preset-react"]],
-//});
-
-};
-
-main(); 
-//require("./App");
-//require("./archive/convert")
+wiener(cli.input[0], cli.flags);
