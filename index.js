@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 import meow from 'meow'
 import figures, {mainSymbols} from 'figures';
+import {start} from 'App.js';
 
 const help = `
 wienr is the (unofficial) Week in Ethereum News Reader
@@ -23,14 +24,6 @@ const cli = meow(
 
 export const argObj = {input: cli.input[0], flags: cli.flags}
 
-const main = async () => {
+start(argObj)
 
-//require("@babel/register")({
- // presets: [["@babel/preset-env"], ["@babel/preset-react"]],
-//});
 
-};
-
-main(); 
-//require("./App");
-//require("./archive/convert")

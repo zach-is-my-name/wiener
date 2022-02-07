@@ -1,8 +1,9 @@
 import React from 'react';
 import  {useState, useEffect, useRef, useCallback} from 'react';
-import {useStateWithCallbackLazy} from './customHooks';
-import processString from 'react-process-string'
-import {renderMarkdown} from './renderMarkdown'
+import {useStateWithCallbackLazy} from './customHooks/useStateWithCallback.js';
+import {useUpdateArchive} from './customHooks/useUpdateArchive.js';
+import processString from 'react-process-string';
+import {renderMarkdown} from './renderMarkdown';
 import blessed from 'neo-blessed';
 import Cursor from './Cursor'
 import ButtonBox from './ButtonBox'
@@ -34,8 +35,11 @@ const MainBox = (props) =>  {
   const [stateCallbackFlag, setStateCallbackFlag] = useState(false)
   const [mode, setMode] = useState("latest"); 
 
+  useUpdateArchive()
+
   //return render object 
   setRenderObj(useGetWien(props.argObj))
+  
 
   useEffect(() => {
     //logger.info("click handler called; now in useEffect; state wasMouseClicked = ", {wasMouseClicked})

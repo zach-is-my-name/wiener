@@ -25,6 +25,6 @@ const screen = blessed.screen({
   fullUnicode: true,
 });
 
-
-render(<App argObj={argObj} />, screen);
-
+export function start(argObj) {
+  render(<App argObj={argObj} />, screen);
+}

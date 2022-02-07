@@ -13,7 +13,7 @@ newsletters_db.default({
    });
 
 // add new entry
-export function addNewsletter(date, text) {
+export function addNewsletterToDb(date, text) {
   newsletters_db.get("newsletters").push({ date, text });
   newsletters_db.save()
 }
