@@ -1,5 +1,9 @@
 import {useEffect, useState} from 'react';
-
+import {applyMarkdown} from './applyMarkdown.js'
+import {getDateFromNewsletter} from './utilities.js'
+import {addNewsletterToDb} from './db.js'
+import axios from 'axios';
+import fs from 'fs'
 
  function useGetWien(obj) {
   const [renderObject, setRenderObject] = useState(null)
@@ -9,21 +13,19 @@ import {useEffect, useState} from 'react';
     async function getLatestWien() {
       const {data} = await axios.get('http://weekinethereumnews.com');
       const markdownNewsletter = applyMarkdown(data) 
-      const date = formatDate(markdownNewsletter) 
-      addNewsletter(date, markdownNewsletter) 
+      const date = getDateFromNewsletter(markdownNewsletter) 
+      addNewsletterToDb(date, markdownNewsletter) 
       setRenderObject({date, content:loadNewsletter(date)})
     }
 
-
     
     async function loadWienFromArchive(date)  {
-     
+    const newsletter = fs.readFileSync('./archive/markdownNewsletters/' + date, {encoding:'utf8', flag:'r'})
+      return newsletter
     }
 
-    async function getBackWien(start) {
-   //changes url format 10/14/17 
-   // full blast scrape is ~47
-   // late 2021 archive undefined (not picking up month name abrv?)
+    async function getBackWiens(start) {
+
     }
 
     async function searchWiens() {
@@ -33,7 +35,7 @@ import {useEffect, useState} from 'react';
     switch (obj) {
       case obj.search: searchWiens(searchTerm)  
       case obj.load: loadWienFromArchive() 
-      case obj.back: getBackWien(start) 
+      case obj.back: getBackWiens(start) 
       default: getLatestWien()
     }
   }, [])

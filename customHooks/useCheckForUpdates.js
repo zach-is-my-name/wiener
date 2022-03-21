@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-function useUpdateArchive() {
+function useCheckForUpdates() {
  
   useEffect(() => {
     async function checkForUpdates() {

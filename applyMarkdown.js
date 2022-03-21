@@ -1,11 +1,10 @@
 import  TurndownService from 'turndown';
-import {useGetWien} from './useGetWien.js';
 
 const turndownOptions = {
   headingStyle: 'atx',
   bulletListMarker: '*',
 }
-const turndownFilter = ['script', 'footer', 'style', 'nav', 'center'];
+const turndownFilter = ['script', 'footer', 'style', 'center'];
 
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);

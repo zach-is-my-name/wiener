@@ -1,10 +1,19 @@
 //import {dateSchedule} from './dateSchedule.js'
+import fs from 'fs'
 
-export function checkNewslettersBack(currentDate) {
-  //const datesBefore = return dates before currentDate     
+export function getUrlOfNewsletter(markdownNewsletter) {
+  const re = /(https\:\/\/weekinethereumnews.com\/week-in-ethereum-news-.*\d)/gm
+  const execResult = re.exec(markdownNewsletter)
+  return execResult[1]
 }
 
-export function formatDate(newsletter) {
+export function getNewsletterFromDate(date) {
+  const archiveFileNamesArr = fs.readdirSync('./archive/markdownNewsletters') 
+  const newsletterFileName = archiveFileNamesArr.find(element => element === date)
+  return fs.readFileSync('./archive/markdownNewsletters/' + newsletterFileName, {encoding:'utf8', flag:'r'})
+}
+
+export function getDateFromNewsletter(newsletter) {
   const re = /(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2}),\s+(\d{4})/i
   const execResult = re.exec(newsletter)   
   if (execResult == undefined){console.log("exec result undefined")} 
