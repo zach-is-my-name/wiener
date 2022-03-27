@@ -17,20 +17,19 @@ export async function convertAndStoreAll() {
 }
 
 async function writeFile(date, markdownNewsletter, isCurrent) {
-  if (isCurrent) {
+  if (!isCurrent) {
     let filename =  './archive/markdownNewsletters/freshTest/'+ date
     fs.writeFile(filename, markdownNewsletter, { flag: "wx" }, function(err) {
       if (err) {
         console.log("file " + filename + " already exists, testing next");
         //filename = filename + "0";
         //writeFile();
-      }
-      else {
+      } else {
         console.log("Succesfully written " + filename);
       }
     });
   } else {
-    let filename =  './archive/markdownNewsletters/freshTest/currentNewsletters'+ date
+    let filename =  './archive/markdownNewsletters/freshTest/currentNewsletters/'+ date
     fs.writeFile(filename, markdownNewsletter, { flag: "wx" }, function(err) {
       if (err) {
         console.log("file " + filename + " already exists, testing next");
@@ -51,17 +50,17 @@ export async function convertAndStore(newsletter) {
   const date = await getDateFromNewsletter(markdownNewsletter) 
   //fs.writeFileSync('./archive/markdownNewsletters/freshTest/'+ date, markdownNewsletter)
   writeFile(date, markdownNewsletter, false)
-  console.log(chalk.green('written %s'), date)
+  //console.log(chalk.green('written %s'), date)
   //addNewsletterToDb(date, markdownNewsletter) 
 }
 
 export async function convertAndStoreCurrent(newsletter) {
-//  console.trace()
+  console.trace()
   const markdownNewsletter = await applyMarkdown(newsletter) 
   const date = await getDateFromNewsletter(markdownNewsletter) 
   //fs.writeFileSync('./archive/markdownNewsletters/freshTest/'+ date, markdownNewsletter)
   writeFile(date, markdownNewsletter, true)
-  console.log(chalk.green('written %s'), date)
+  //console.log(chalk.green('written %s'), date)
   //addNewsletterToDb(date, markdownNewsletter) 
 }
 
