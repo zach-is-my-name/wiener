@@ -4,7 +4,7 @@ import url from 'url'
 import Crawler from 'crawler';
 import fs from 'fs';
 import {convertAndStore} from './convert1.js';
-import {getUrlOfNewsletter, getNewsletterFromDate, fetchDateFromCurrentNewsletter,getDateFromNewsletter, fetchNewsletterFromDate, fetchPreceedingDateOfCurrentNewsletter, subsequentDate} from './utilities1.js'
+import {getUrlOfNewsletter, getNewsletterFromDate, fetchDateFromCurrentNewsletter,getDateFromNewsletter, fetchNewsletterFromDate, fetchPreceedingDateOfCurrentNewsletter, subsequentDate} from './utilities.js'
 //import {updateForwardFromNewest} from './updateForwardFromNewest.js'
 import dayjs from 'dayjs'
 import path from 'path'

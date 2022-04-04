@@ -48,7 +48,8 @@ const MainBox = (props) =>  {
     // check if the clicked chunk is a markdown link
       followLinkUnderCursor()
     }
-  }, [wasMouseClicked, cursorLeft, cursorTop])
+  }, [wasMouseClicked, cursorLeft, cursorTop]
+  )
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -65,7 +66,8 @@ const MainBox = (props) =>  {
         scrollToScrollHeightFlag.current = false 
         scrollToZeroFlag.current = false
       }
-  }, [cursorLeft, cursorTop, stateCallbackFlag])
+  }, [cursorLeft, cursorTop, stateCallbackFlag]
+  )
 
   const clickHandler = (mouse) => {
     // move the cursor

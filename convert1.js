@@ -1,6 +1,9 @@
 import {addNewsletterToDb} from './db.js'
 import {applyMarkdown} from './applyMarkdown.js'
-import {getDateFromNewsletter} from './utilities1.js'
+import {getDateFromNewsletter} from './utilities.js'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat.js'
+dayjs.extend(customParseFormat)
 import chalk from 'chalk'
 import fs from 'fs'
 
@@ -48,10 +51,12 @@ export async function convertAndStore(newsletter) {
 //  console.trace()
   const markdownNewsletter = await applyMarkdown(newsletter) 
   const date = await getDateFromNewsletter(markdownNewsletter) 
-  //fs.writeFileSync('./archive/markdownNewsletters/freshTest/'+ date, markdownNewsletter)
-  writeFile(date, markdownNewsletter, false)
-  //console.log(chalk.green('written %s'), date)
-  //addNewsletterToDb(date, markdownNewsletter) 
+  if (dayjs(date, 'M-D-YYYY').isValid() === true) {
+    //fs.writeFileSync('./archive/markdownNewsletters/freshTest/'+ date, markdownNewsletter)
+    writeFile(date, markdownNewsletter, false)
+    //console.log(chalk.green('written %s'), date)
+    //addNewsletterToDb(date, markdownNewsletter) 
+  } else { console.log("invalid date format", markdownNewsletter)}
 }
 
 export async function convertAndStoreCurrent(newsletter) {

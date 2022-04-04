@@ -1,4 +1,4 @@
-import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter, getPermaLinkFowardFromPage} from './utilities1.js'
+import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter, getPermaLinkFowardFromPage} from './utilities.js'
 import {convertAndStore} from './convert1.js'
 import Crawler from 'crawler';
 

@@ -2,7 +2,7 @@ import fs from 'fs'
 import chalk from 'chalk'
 import Crawler from 'crawler';
 import {updateBackFromOldest} from './updateBackFromOldest.js'
-import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from './utilities1.js'
+import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from './utilities.js'
 
 export async function updateForwardFromNewest() { 
   console.log(`${chalk.yellow('Getting Forward from Latest')}`)

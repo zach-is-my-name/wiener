@@ -1,23 +1,23 @@
-import fs from 'fs'
 import chalk from 'chalk';
+import url from 'url'
 import Crawler from 'crawler';
-import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter, dateGaps} from './utilities.js'
+import fs from 'fs';
+import {convertAndStore} from './convert1.js';
+import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from './utilities.js'
 
-export async function updateBackFromOldest() {
-  console.log(`${chalk.magenta('Getting Backwards from Oldest...')}`)
+export async function checkAndFetchForwardFromLatest() { 
+  console.log("Getting Forward from Latest")
   let start
   const storedNewsletters = fs.readdirSync('./archive/markdownNewsletters/freshTest').sort((a, b) => new Date(b) - new Date(a))
   if (storedNewsletters.length) {
-    const urlOldestInArchive = getUrlOfNewsletter(getNewsletterFromDate(storedNewsletters.slice().pop())) 
-    console.log("oldest in archive:", urlOldestInArchive) 
-
-    start = urlOldestInArchive 
+    const urlNewestInArchive = await getUrlOfNewsletter(getNewsletterFromDate(storedNewsletters.slice().shift())) 
+    console.log("newest in archive:", urlNewestInArchive) 
+    start =  urlNewestInArchive 
   } else {
     start = 'https://weekinethereumnews.com'
   }
-  const crawler = new Crawler({
-    rateLimit: 2500,
-    callback: async (error, res, done) => {
+  async function callbackOuter(error, res, done) {
+     
       let newsletterInArchive
       if (error) {
         console.log(error);
@@ -25,8 +25,11 @@ export async function updateBackFromOldest() {
         const $ = res.$;
         const newsletterDate = getDateFromNewsletter($.html())
 
-        newsletterInArchive = storedNewsletters.find(fileName => fileName === newsletterDate)
+        //console.log(`${newsletterDate} is ${chalk.blue(res.statusCode)}`) 
 
+        if (res.statusCode !== 200) {console.log(res.body)}
+
+        newsletterInArchive = storedNewsletters.find(fileName => fileName === newsletterDate )
 
         if (newsletterInArchive?.length)  {console.log(`${newsletterDate} In archive? ${chalk.green('YES')}`)}  
         if (!newsletterInArchive) {console.log(`${newsletterDate} In archive?: ${chalk.red('NO')}`)}
@@ -34,27 +37,31 @@ export async function updateBackFromOldest() {
         if (!newsletterInArchive) {
           await convertAndStore($.html())          
         } 
-        const prevUrl = $('.nav-previous').children('a').attr('href');
-        if (prevUrl) {
+        const nextUrl = $('.nav-next').children('a').attr('href');
+        if (nextUrl) {
           crawler.queue([{
-            uri: prevUrl,
+            uri: nextUrl,
             rateLimit: 2500,
             callback: async (error, res, done) => {
+              console.log("callback inner")
               if (error) {
                 console.log(error);
               } else {
                 const $ = res.$;
+
                 const newsletterDate = getDateFromNewsletter($.html())
+
                 newsletterInArchive = storedNewsletters.find(fileName => fileName === newsletterDate)
-                if (newsletterInArchive?.length) {console.log(`${newsletterDate} In archive? ${chalk.green('YES')}`)}  
+
+                if (newsletterInArchive?.length)  {console.log(`${newsletterDate} In archive? ${chalk.green('YES')}`)}  
                 if (!newsletterInArchive) {console.log(`${newsletterDate} In archive?: ${chalk.red('NO')}`)}
                 if (!newsletterInArchive) {
                   await convertAndStore($.html())          
                 } 
 
-                const prevUrl = $('.nav-previous').children('a').attr('href');
-                if (prevUrl) {
-                  crawler.queue(prevUrl)
+                const nextUrl = $('.nav-next').children('a').attr('href');
+                if (nextUrl) {
+                  crawler.queue(nextUrl)
                 }
               }
               done() 
@@ -63,13 +70,14 @@ export async function updateBackFromOldest() {
         }
       }
       done();
-      let arrayOfDateGapObjs = dateGaps()
-
-      if (arrayOfDateGapObjs.length) {
-        arrayOfDateGapObjs.forEach(dateGapObj => getForwardFromDate(dateGapObj.b))
-      } 
-     console.log("COMPLETE") 
+    console.log("checkAndGetForwardFromLatest() complete")
     }
+  
+
+  const crawler = new Crawler({
+    rateLimit: 2500,
+    callback: callbackOuter
   })
   crawler.queue(start)
 }
+

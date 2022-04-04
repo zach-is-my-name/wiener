@@ -4,7 +4,8 @@ import url from 'url'
 import Crawler from 'crawler';
 import fs from 'fs';
 import {convertAndStore} from './convert1.js';
-import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from './utilities1.js'
+import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from './utilities.js'
+
 /*
 (function sorted() {
   const storedNewsletters = fs.readdirSync('./archive/markdownNewsletters/freshTest').sort((a, b) => new Date(b) - new Date(a))
@@ -13,7 +14,7 @@ import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from '
 })()
 */
 
-export async function checkAndGetBackFromLatest() {
+export async function checkAndFetchBackFromLatest() {
 
   const storedNewsletters = fs.readdirSync('./archive/markdownNewsletters/freshTest').sort((a, b) => new Date(b) - new Date(a))
 
@@ -75,6 +76,6 @@ export async function checkAndGetBackFromLatest() {
   updateCrawler.queue(urlNewestInArchive)
 }
 
-checkAndGetBackFromLatest()
+checkAndFetchBackFromLatest()
 
 
