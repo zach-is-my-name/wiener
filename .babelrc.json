@@ -9,8 +9,7 @@
   ],
   "plugins": [
     ["@babel/plugin-transform-runtime", {
-      "regenerator": true,
-      "useESModules": true
+      "regenerator": true
     }],
   "@babel/transform-flow-strip-types",
   "@babel/plugin-proposal-object-rest-spread",
