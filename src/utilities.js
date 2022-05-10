@@ -9,8 +9,8 @@ dayjs.extend(customParseFormat)
 import cheerio from 'cheerio'
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import {applyMarkdown} from './applyMarkdown.js'
-import {convertAndStore, convertAndStoreCurrent} from './convert.js'
+import {applyMarkdown} from './transform/applyMarkdown.js'
+import {convertAndStore, convertAndStoreCurrent} from './transform/convert.js'
 let errorCount = 0
 
 const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
@@ -24,24 +24,6 @@ function validateInputDate(date) {
     return 
   }
 }
-
-export function subsequentDate(baseDate, debug) {
-  validateInputDate(baseDate)
-  const baseDateNewsletter = getNewsletterFromDate(baseDate)
-  const re = /\[Next\sPost.*\(https:\/\/weekinethereumnews\.com\/(?:week-in-ethereum-news-)?(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)-(\d{1,2})-(\d{4})/i
-
-  
-  if (!re.test(baseDateNewsletter)) {
-   console.log({debug: JSON.stringify(debug)}) 
-   console.log({baseDate,basedateNewsletter: baseDateNewsletter.length > 20, test: re.test(baseDateNewsletter) }) 
-  }
-  //if (!re.test(baseDateNewsletter)) console.log(baseDateNewsletter) 
-  const execResult =  re.exec(baseDateNewsletter)
-  const [match, monthName, date, year] = execResult 
-  const month = monthNameToNumber(monthName)
-  return `${month}-${date}-${year}`
-}
-
 
 export function getUrlOfNewsletter(markdownNewsletter) {
   validateInputDate(markdownNewsletter)
@@ -67,67 +49,6 @@ export function getNewsletterFromDate(date) {
   } else {
     console.log("error")
   }
-}
-
-export async function fetchNewsletterFromDate(date, isCurrent) {
-  const dateObj = dayjs(date)
-  validateInputDate(date)
-  let day = dateObj.format("D") 
-  let month = dateObj.format("MMMM") 
-  let year = dateObj.format("YYYY") 
-
-  const urls = [
-    `https://weekinethereumnews.com/week-in-ethereum-news-${month}-${day}-${year}`,
-
-    `https://weekinethereumnews.com/week-in-eth-news-${month}-${day}-${year}`,
-
-    `https://weekinethereumnews.com/${month}-${day}-${year}`,
-
-    `https://weekinethereumnews.com/week-in-ethereum-news-${dateObj.format("MMM")}-${day}-${year}`,
-
-    `https://weekinethereumnews.com/week-in-eth-news-${dateObj.format("MMM")}-${day}-${year}`,
-  ]
-  /*he always uses the month name (long or short)*/ 
-
-  const fetchedNewsletter =  (await ( async (urls) => {
-    let i = 0;
-    while (i < urls.length) {
-      const url = urls[i];
-      try {
-        const {data: response} = await http.get(url);
-        if (response) console.log("Success:", url)
-        return await response;
-      } catch (error) {
-        //if (errorCount > 5) throw new Error(`error count passed threshold, analize`)
-        console.log('url' +' Fail')
-        continue;
-      } finally {
-        i++;
-      }
-    }
-  })(urls)) 
-
-  if (isCurrent) {
-  fetchedNewsletter && typeof fetchedNewsletter === 'string' ?  await convertAndStore(fetchedNewsletter) && console.log("should write newsletter"): console.log("no write")  
-
-  } else {
-
-  fetchedNewsletter && typeof fetchedNewsletter === 'string' ?  await convertAndStoreCurrent(fetchedNewsletter) && console.log("should write newsletter"): console.log("no write")  
-  }
-}
-
-export async function fetchDateFromCurrentNewsletter() {
-  const {data} = await http.get('http://weekinethereumnews.com');
-  //const markdownNewsletter = applyMarkdown(data) 
-  const date = await getDate(data)  
-  return date
-}
-
-export async function fetchPreceedingDateOfCurrentNewsletter(currentNewsletterDate) {
-  const {data} = await http.get('http://weekinethereumnews.com/page/2/');
-  //const markdownNewsletter = applyMarkdown(data) 
-  const date = await getDate(data)  
-  return date
 }
 
 async function getDate(document) {

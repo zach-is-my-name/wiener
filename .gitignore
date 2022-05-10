@@ -6,3 +6,4 @@ package-lock.json
 oldSratch/*
 Session.vim
 *.stormdb
+devScripts

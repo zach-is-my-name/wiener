@@ -6,6 +6,8 @@ import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+console.log({__dirname })
+
 // Use JSON file for storage
 const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
@@ -26,8 +28,9 @@ export async function loadNewsletter(dateString) {
   await db.read()
   console.log(db.data)
 }
-await addNewsletterToDb("11-11-1111", "Foo" )
-await loadNewsletter()
+
+// await addNewsletterToDb("11-11-1111", "Foo" )
+// await loadNewsletter()
 
 //console.log(db.data)
 

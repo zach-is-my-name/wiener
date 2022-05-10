@@ -3,8 +3,11 @@ import chalk from 'chalk';
 import Crawler from 'crawler';
 import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter, dateGaps} from './utilities.js'
 
+/* will get links without dates */
+
 export async function updateBackFromOldest() {
   console.log(`${chalk.magenta('Getting Backwards from Oldest...')}`)
+
   let start
   const storedNewsletters = fs.readdirSync('./archive/markdownNewsletters/freshTest').sort((a, b) => new Date(b) - new Date(a))
   if (storedNewsletters.length) {

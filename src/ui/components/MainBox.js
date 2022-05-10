@@ -1,11 +1,11 @@
 import React from 'react';
+import {useStateWithCallbackLazy} from 'use-state-with-callback'
 import Cursor from "./Cursor.js"  
 import  {useReducer, useEffect, useRef, useCallback} from 'react';
 import {useKeyHandler, 
         useClickHandler, 
         //useUpdateArchive,
         useGetWien, 
-        useStateWithCallbackLazy, 
         //useScroll,
         useMouseClick,      
         } from './customHooks/index.js'
@@ -34,27 +34,34 @@ function reducer(state, action) {
 }
 
 
-const MainBox = (props) =>  {
+const MainBox = ({hasInternet, hasLatest, argObj}) =>  {
   const [state, dispatch] = useReducer(reducer, initialState);
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
   const isFirstRender = useRef(true)
   const scrollToScrollHeightFlagRef = useRef(false)
   const scrollToZeroFlagRef = useRef(false)
-  /*   latest newsletter $ wienr 
-    previous newsletters $ wienr                                 
-  search all newsletters $ wienr -s 'search terms'
 
+  /*   latest newsletter $ wienr 
+    previous newsletters $ wienr (in-app)
+  search all newsletters $ wienr (in-app)'
   argObj={input: cli.input[0], flags: cli.flags} */
   
-  const argObj = {props}
+  const argObj = {props.argObj, props.hasInternet }
    
   useGetWien(argObj)
-  //useUpdateArchive() 
-
-  
 
   const keyHandler = useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef)
+
+  if (hasInternet) {
+    if (hasLatest) {
+      useLoadArchiveLatest()
+    } else {
+      useFetchLatest()
+    }
+  } else {
+    useLoadArchiveMostRecent()
+  }
 
   return(
     <box 

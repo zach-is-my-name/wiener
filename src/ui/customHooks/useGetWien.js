@@ -4,33 +4,23 @@ export function useGetWien(argObj) {
 
   useEffect(() => {
 
-    async function loadWienFromArchive(date)  {
+    async function loadNewsletterFromArchive(date)  {
       const newsletter = await loadNewsletterFromDb(date)
       dispatch({type:"setRenderObj", payload: { newsletter, date}})
     }
     
-    async function fetchLatestWien() {
-      const {data} = await axios.get('http://weekinethereumnews.com');
-      const markdownNewsletter = applyMarkdown(data) 
-      const date = getDateFromNewsletter(markdownNewsletter) 
-      addNewsletterToDb(date, markdownNewsletter) 
+    async function fetchLatestNewsletter() {
       dispatch({type: "setRenderObject", payload: {date, content: loadNewsletter(date)})
     }
 
     //todo
-    async function getBackWiens(start) {
+    async function getBackNewsletters(start) {
     }
 
     //todo
-    async function searchWiens() {
+    async function searchNewsletters() {
     }    
 
-    switch (argObj) {
-      default: fetchLatestWien()
-      case argObj.search: searchWiens(searchTerm)  
-      case argObj.load: loadWienFromArchive() 
-      case argObj.back: getBackWiens(start) 
-    }
   }, [])
 
 }

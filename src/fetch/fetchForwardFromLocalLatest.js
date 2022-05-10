@@ -5,7 +5,10 @@ import fs from 'fs';
 import {convertAndStore} from './convert1.js';
 import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from './utilities.js'
 
-export async function checkAndFetchForwardFromLatest() { 
+/* will get links without dates */
+
+
+export async function fetchForwardFromLocalLatest() { 
   console.log("Getting Forward from Latest")
   let start
   const storedNewsletters = fs.readdirSync('./archive/markdownNewsletters/freshTest').sort((a, b) => new Date(b) - new Date(a))
