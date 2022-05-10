@@ -9,7 +9,8 @@ import {useKeyHandler,
         //useScroll,
         useMouseClick,      
         } from './customHooks/index.js'
-
+import { UseLoadArchiveMostRecent } from './hookComponents/UseLoadArchiveMostRecent.js' 
+        
 const initialState = { cursorTop: 0, cursorLeft: 0, renderObj: null, wasMouseClicked: false, stateCallbackFlag: false, mode: "latest", renderObj: {date: "", content:"" } }
 
 function reducer(state, action) {
@@ -34,7 +35,7 @@ function reducer(state, action) {
 }
 
 
-const MainBox = ({hasInternet, hasLatest, argObj}) =>  {
+const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed, argObj}) =>  {
   const [state, dispatch] = useReducer(reducer, initialState);
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
@@ -47,23 +48,24 @@ const MainBox = ({hasInternet, hasLatest, argObj}) =>  {
   search all newsletters $ wienr (in-app)'
   argObj={input: cli.input[0], flags: cli.flags} */
   
-  const argObj = {props.argObj, props.hasInternet }
-   
+  const argObj = {props.argObj}
   useGetWien(argObj)
 
   const keyHandler = useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef)
 
   if (hasInternet) {
-    if (hasLatest) {
-      useLoadArchiveLatest()
+    if (hasLatestInArchive) {
+      useLoadArchiveMostRecent()
     } else {
       useFetchLatest()
     }
-  } else {
+  } else { //no internet
     useLoadArchiveMostRecent()
   }
 
+
   return(
+    <UseLoadArchiveMostRecent dispatch={dispatch} />
     <box 
     top={"top"}
     left={"left"}

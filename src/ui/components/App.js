@@ -15,7 +15,6 @@ import MainBox from './MainBox.js'
 
 function App() {
 
-
 const hasInternet = useHasInternet()
 const boolHasLatestInArchive = useHasLatestInArchive()
 

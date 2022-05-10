@@ -15,6 +15,7 @@ await db.read()
 // set default db value if db is empty
 db.data ||= { newsletters: [{date:"", text:""}] }
 
+
 // add new entry
 export async function addNewsletterToDb(date, text) {
   await db.read()
@@ -27,6 +28,11 @@ export async function addNewsletterToDb(date, text) {
 export async function loadNewsletterFromDb(dateString) {
   await db.read()
   const { newsletters } = db.data
-  return newsletters.find(obj => obj.date === dateString)
+  const storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+  if (dateString.length === 0) {
+    return storedNewsletters.pop()
+  } 
+    return storedNewsletters.find(obj => obj.date === dateString)
 }
 
