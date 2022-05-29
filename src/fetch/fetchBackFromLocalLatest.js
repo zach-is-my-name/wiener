@@ -2,88 +2,66 @@
 import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
-import Crawler from 'crawler';
-import fs from 'fs';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import rateLimit from 'axios-rate-limit';
+import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
 import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from '../utilities.js'
 import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
-fetchBackFromLocalLatest()
-export async function fetchBackFromLocalLatest() {
-  const __dirname = dirname(fileURLToPath(await resolve("../db/db.json", import.meta.url)));
 
+//fetchBackFromLocalLatest()
+
+export async function fetchBackFromLocalLatest() {
+  let count = 0
+  const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 5000 })
+  axiosRetry(http, { retryDelay: () => {return 50000}}) 
+
+  const __dirname = dirname(fileURLToPath(await resolve("../db/db.json", import.meta.url)));
   const file = join(__dirname, 'db.json')
   const adapter = new JSONFile(file)
   const db = new Low(adapter)
   await db.read()
 
   db.data ||= { newsletters: [ ] }
+
   const { newsletters } = db.data
 
-  // const storedNewsletters = fs.readdirSync('./archive/markdownNewsletters/freshTest').sort((a, b) => new Date(b) - new Date(a))
-  const storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
+  let storedNewsletters  
+  storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-    //return 
+  for (let i = 0; i < storedNewsletters.length; i++ ) {
+    if (count > 100) { setTimeout(() => {console.log("waiting a bit to fetch more... (the rate limit)")}, 50000)} 
+    
 
-  const urlNewestInArchive = getUrlOfNewsletter(await getNewsletterFromDate(storedNewsletters.slice().shift())) 
-  let count = 0
-  const updateCrawler = new Crawler({
-    rateLimit: 2500,
-    callback: async (error, res, done) => {
-      if (error) {
-        console.log(error);
-      } else {
-        const $ = res.$;
-        const newsletterDate = await getDateFromNewsletter($.html())
-        console.log({newsletterDate})
-        console.log("Count: ", count)
-        count++
+    await db.read()
+    let { newsletters } = db.data
+    storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
+    count++
+    console.log({archive_length:storedNewsletters.length, count})
+     
+    const newsLetterObj = storedNewsletters[storedNewsletters.length - 1]
+    const prevUrlFromArchive = newsLetterObj.prevUrl 
+    if (!prevUrlFromArchive) return  
+    let fetchResult 
+    try {fetchResult = await http.get(prevUrlFromArchive);} catch(error) {throw new Error(error)}
 
-        let newsletterInArchiveArray = storedNewsletters.find(fileName => fileName === newsletterDate )
-        
-        if (newsletterInArchiveArray?.length)  {console.log(`${newsletterDate} In archive? ${chalk.green('YES')}`)}  
-        if (!newsletterInArchiveArray) {console.log(`${newsletterDate} In archive?: ${chalk.red('NO')}`)}
-
-        if (!newsletterInArchiveArray) {
-          await convertAndStore($.html())          
-        } 
-
-        const prevUrl = $('.nav-previous').children('a').attr('href');
-        if (prevUrl) {
-          updateCrawler.queue([{
-            uri: prevUrl,
-            rateLimit: 2500,
-            callback: async (error, res, done) => {
-              if (error) {
-                console.log(error);
-              } else {
-                const $ = res.$;
-                const newsletterDate = await getDateFromNewsletter($.html())
-                newsletterInArchiveArray = storedNewsletters.find(fileName => fileName === newsletterDate)
-
-                if (newsletterInArchiveArray?.length)  {console.log(`${newsletterDate} In archive? ${chalk.green('YES')}`)}  
-                if (!newsletterInArchiveArray) {console.log(`${newsletterDate} In archive?: ${chalk.red('NO')}`)}
-                if (!newsletterInArchiveArray) {
-                  await convertAndStore($.html())          
-                } 
-
-                const prevUrl = $('.nav-previous').children('a').attr('href');
-                if (prevUrl) {
-                  updateCrawler.queue(prevUrl)
-                }
-              }
-              done() 
-            }
-          }]);
-        }
+    const {data: fetchedNewsletter} = fetchResult
+    const $ = cheerio.load(fetchedNewsletter)
+    const date =  await getDateFromNewsletter($.html())
+    console.log({date})
+    const prevUrl = $('.nav-previous').children('a').attr('href');
+      console.log({prevUrl}) 
+      const beforePutNewsletterArrayLength = storedNewsletters.length
+      console.log({beforeDbPut: beforePutNewsletterArrayLength })
+      await convertAndStore(fetchedNewsletter, prevUrl) 
+      await db.read()
+      const afterPutNewsletterArrayLength = storedNewsletters.length
+      console.log({afterDbPut: afterPutNewsletterArrayLength })
+      if (beforePutNewsletterArrayLength >= afterPutNewsletterArrayLength) {
+        return
       }
-      done();
-    }
-  });
-  updateCrawler.queue(urlNewestInArchive)
+  }
 }
-
-// fetchBackFromLocalLatest()
-
-

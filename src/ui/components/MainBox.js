@@ -1,17 +1,19 @@
 import React from 'react';
-import {useStateWithCallbackLazy} from 'use-state-with-callback'
+//import useStateWithCallbackLazy from 'use-state-with-callback'
 import Cursor from "./Cursor.js"  
 import  {useReducer, useEffect, useRef, useCallback} from 'react';
-import {useKeyHandler, 
+import {keyHandler} from '../functions/keyHandler.js' 
+import {
+        //useKeyHandler, 
         useClickHandler, 
         //useUpdateArchive,
         useGetWien, 
+        useUpdateNewsletters,
         //useScroll,
         useMouseClick,      
-        } from './customHooks/index.js'
-import { UseLoadArchiveMostRecent } from './hookComponents/UseLoadArchiveMostRecent.js' 
+        } from '../customHooks/index.js'
         
-const initialState = { cursorTop: 0, cursorLeft: 0, renderObj: null, wasMouseClicked: false, stateCallbackFlag: false, mode: "latest", renderObj: {date: "", content:"" } }
+const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, stateCallbackFlag: false, mode: "latest", renderObj: {date: "", content:"" }, getHook: "", updateHook: false }
 
 function reducer(state, action) {
   switch (action.type) {
@@ -27,6 +29,14 @@ function reducer(state, action) {
       return {...state };
     case 'setRenderObj':
       return {...state, renderObj: action.payload };
+    case 'getHook':
+      return {...state, getHook: action.payload};
+    case 'updateHook':
+      return {...state, updateHook: action.payload};
+    case 'loadPrev':
+      return {...state, loadPrev:action.payload};
+    case 'loadNext':
+      return {...state, loadNext: action.payload };
     case 'placeholder':
       return {...state };
     default:
@@ -34,38 +44,39 @@ function reducer(state, action) {
   }
 }
 
-
-const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed, argObj}) =>  {
+const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed}) =>  {
   const [state, dispatch] = useReducer(reducer, initialState);
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
   const isFirstRender = useRef(true)
   const scrollToScrollHeightFlagRef = useRef(false)
   const scrollToZeroFlagRef = useRef(false)
-
+  
   /*   latest newsletter $ wienr 
     previous newsletters $ wienr (in-app)
   search all newsletters $ wienr (in-app)'
-  argObj={input: cli.input[0], flags: cli.flags} */
-  
-  const argObj = {props.argObj}
-  useGetWien(argObj)
+ */
 
-  const keyHandler = useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef)
-
+  //const keyHandler = useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef)
+  // console.log({hasInternet})
+/* 
   if (hasInternet) {
     if (hasLatestInArchive) {
-      useLoadArchiveMostRecent()
+      dispatch({type: "getHook", payload: "useLoadArchiveMostRecent"})
     } else {
-      useFetchLatest()
+      dispatch({type: "getHook", payload: "useFetchLatest"})
     }
   } else { //no internet
-    useLoadArchiveMostRecent()
+    dispatch({type: "getHook", payload: "useLoadArchiveMostRecent"})
   }
-
-
+  if (hasInternet && !hasAllNewsletters) {
+    dispatch({type: "updateHook", payload: true})
+  }
+*/
+  //useGetWien(state.getHook, dispatch)
+  //useUpdateNewsletters(state.updateHook, dispatch) 
+  
   return(
-    <UseLoadArchiveMostRecent dispatch={dispatch} />
     <box 
     top={"top"}
     left={"left"}
@@ -77,13 +88,15 @@ const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed, argObj}) =>  {
     scrollable={true}
     mouse={true} 
     tags={true}
-    onKeypress={(e) => keyHandler(e,  )}
+    onKeypress={(e,ch, key) => keyHandler(e,ch,key, mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef, dispatch)}
     onClick={() =>clickHandler(mainBoxRef)}
     ref={mainBoxRef}
-    content={renderObj && renderObj.text} 
+    content={"ruf"}
+    /*content={state.renderObj && state.renderObj.text}*/
     > 
 
-    <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} />   
+    <Cursor cursorRef={cursorRef} cursorTop={state.cursorTop} cursorLeft={state.cursorLeft} />   
+
     </box>
   )
 

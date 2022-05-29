@@ -10,10 +10,22 @@ import cheerio from 'cheerio'
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import {applyMarkdown} from './transform/applyMarkdown.js'
-import {convertAndStore, convertAndStoreCurrent} from './transform/convert.js'
 let errorCount = 0
 
+
 const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
+
+export async function fetchDateFromCurrentNewsletter() {
+  const {data} = await http.get('http://weekinethereumnews.com');
+  //const markdownNewsletter = applyMarkdown(data) 
+  const date = await getDate(data)  
+  return date
+}
+
+export async function fetchDateFromHtml(htmlNewsletter) {
+  const date = await getDate(data)  
+  return date
+}
 
 function validateInputDate(date) {
   if (typeof date !== 'string') {

@@ -3,13 +3,12 @@ import isOnline from 'is-online'
 
 export function useHasInternet() {
   const [hasInternet, setHasInternet] = useState(false)
-
   useEffect(() => {
+      console.log({run: "run"});
     (async () => {
-      const hasInternet = await isOnline();
-      setHasInternet(hasInternet);
+      setHasInternet(await isOnline());
     })()
-  }, []);
-
+  } );
+  console.log({hasInternet})
  return hasInternet
 }
