@@ -7,3 +7,4 @@ oldSratch/*
 Session.vim
 *.stormdb
 dist
+src/devScripts

@@ -1,3 +1,4 @@
+import {_logger, logger2} from '../../devLog/logger.js' 
 import React from 'react';
 import {useState, useEffect} from 'react'  
 import https from 'https'
@@ -14,13 +15,13 @@ import MainBox from './MainBox.js'
 
 
 function App() {
-
 const hasInternet = useHasInternet()
+
 const boolHasLatestInArchive = useHasLatestInArchive()
-  // console.log({hasInternet})
+
   return (
-      <MainBox argObj={argObj} hasInteret={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
-)
+      <MainBox argObj={argObj} hasInternet={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
+  )
 }
 
 const screen = blessed.screen({

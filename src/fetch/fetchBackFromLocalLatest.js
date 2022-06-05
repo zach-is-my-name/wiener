@@ -40,7 +40,7 @@ export async function fetchBackFromLocalLatest() {
     let { newsletters } = db.data
     storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
     count++
-    console.log({archive_length:storedNewsletters.length, count})
+    //console.log({archive_length:storedNewsletters.length, count})
      
     const newsLetterObj = storedNewsletters[storedNewsletters.length - 1]
     const prevUrlFromArchive = newsLetterObj.prevUrl 
@@ -51,15 +51,15 @@ export async function fetchBackFromLocalLatest() {
     const {data: fetchedNewsletter} = fetchResult
     const $ = cheerio.load(fetchedNewsletter)
     const date =  await getDateFromNewsletter($.html())
-    console.log({date})
+    //console.log({date})
     const prevUrl = $('.nav-previous').children('a').attr('href');
-      console.log({prevUrl}) 
+      //console.log({prevUrl}) 
       const beforePutNewsletterArrayLength = storedNewsletters.length
-      console.log({beforeDbPut: beforePutNewsletterArrayLength })
+      //console.log({beforeDbPut: beforePutNewsletterArrayLength })
       await convertAndStore(fetchedNewsletter, prevUrl) 
       await db.read()
       const afterPutNewsletterArrayLength = storedNewsletters.length
-      console.log({afterDbPut: afterPutNewsletterArrayLength })
+      //console.log({afterDbPut: afterPutNewsletterArrayLength })
       if (beforePutNewsletterArrayLength >= afterPutNewsletterArrayLength) {
         return
       }

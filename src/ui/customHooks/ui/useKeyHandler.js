@@ -2,7 +2,7 @@ import open from "open"
 
 export function useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef, dispatch) { 
   async function keyHandler(e, ch, key) {
-    console.log("e", e)
+    //console.log("e", e)
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
 

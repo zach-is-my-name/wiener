@@ -7,13 +7,15 @@ import {convertAndStore} from '../../transform/convert.js'
 import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
 import {fetchDateFromHtml} from '../../utilities.js'
 
-export function useUpdateNewsletters(hookString, dispatch) {
+export function useUpdateNewsletters(hookBool, dispatch) {
 
   useEffect(() => {
+    if (hookBool === true) {
       (async () => {
         fetchBackFromLocalLatest()
       })()
     return () => dispatch({type: "updateHook", payload: false})
-  }, [hookString])
+    }
+  }, [hookBool])
 }
 

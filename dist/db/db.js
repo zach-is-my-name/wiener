@@ -81,7 +81,7 @@ function _loadNewsletterFromDb() {
               break;
             }
 
-            return _context2.abrupt("return", storedNewsletters.pop());
+            return _context2.abrupt("return", storedNewsletters.shift());
 
           case 7:
             return _context2.abrupt("return", storedNewsletters.find(function (obj) {

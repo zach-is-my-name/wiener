@@ -14,7 +14,7 @@ export async function convertAndStore(htmlNewsletter, prevUrl, nextUrl) {
   if (dayjs(date, 'M-D-YYYY').isValid() === true) {
     await addNewsletterToDb(date, markdownNewsletter, url, prevUrl, nextUrl) 
     return date
-  } else { console.log("invalid date format", markdownNewsletter)}
+  } else { console.log("invalid date format")}
 }
 
 //async function writeFile(date, markdownNewsletter, isCurrent) {

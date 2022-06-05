@@ -25,10 +25,11 @@ export async function loadNewsletterFromDb(dateString) {
   await db.read()
   db.data ||= { newsletters: [] }             
   const { newsletters } = db.data
+  
   const storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
 
   if (dateString.length === 0) {
-    return storedNewsletters.pop()
+    return storedNewsletters.shift()
   } 
   return storedNewsletters.find(obj => obj.date === dateString)
 }

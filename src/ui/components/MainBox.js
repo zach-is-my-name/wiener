@@ -1,3 +1,4 @@
+import {_logger, logger2} from '../../devLog/logger.js' 
 import React from 'react';
 //import useStateWithCallbackLazy from 'use-state-with-callback'
 import Cursor from "./Cursor.js"  
@@ -13,7 +14,7 @@ import {
         useMouseClick,      
         } from '../customHooks/index.js'
         
-const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, stateCallbackFlag: false, mode: "latest", renderObj: {date: "", content:"" }, getHook: "", updateHook: false }
+const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, /*stateCallbackFlag: false,*/ /*mode: "latest",*/ renderObj: {date: "", text: "", url:""}, getHook: "", updateHook: false, debugCount: 0, loading: false }
 
 function reducer(state, action) {
   switch (action.type) {
@@ -30,6 +31,7 @@ function reducer(state, action) {
     case 'setRenderObj':
       return {...state, renderObj: action.payload };
     case 'getHook':
+      _logger.info("reducer", {action, pass: state.debugCount})
       return {...state, getHook: action.payload};
     case 'updateHook':
       return {...state, updateHook: action.payload};
@@ -37,44 +39,66 @@ function reducer(state, action) {
       return {...state, loadPrev:action.payload};
     case 'loadNext':
       return {...state, loadNext: action.payload };
+    case 'debugAdd':
+      return {...state, debugCount: state.debugCount +1 };
+    case 'loading':
+      return {...state, loading: true };
     case 'placeholder':
       return {...state };
     default:
-      throw new Error("reducer error");
+      _logger.warn("reducer error", {type: action.type, payload:action.payload})
   }
 }
 
 const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed}) =>  {
+  const renderCount = useRef(0);
+  renderCount.current = renderCount.current + 1;
   const [state, dispatch] = useReducer(reducer, initialState);
   const mainBoxRef = useRef(null)
   const cursorRef = useRef(null)
   const isFirstRender = useRef(true)
   const scrollToScrollHeightFlagRef = useRef(false)
   const scrollToZeroFlagRef = useRef(false)
-  
+  _logger.info({"MainBox renders" : renderCount.current})
+  // _logger.info({state}) 
+
   /*   latest newsletter $ wienr 
     previous newsletters $ wienr (in-app)
   search all newsletters $ wienr (in-app)'
  */
-
   //const keyHandler = useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef)
-  // console.log({hasInternet})
-/* 
-  if (hasInternet) {
-    if (hasLatestInArchive) {
-      dispatch({type: "getHook", payload: "useLoadArchiveMostRecent"})
-    } else {
-      dispatch({type: "getHook", payload: "useFetchLatest"})
+ if (state.renderObj?.url && state.renderObj?.date) {
+   _logger.info("mainBox state partial", {url:state?.renderObj?.url, date:state?.renderObj?.date})
+ } 
+ useEffect(() =>  {
+  if (hasInternet === true) {
+    if (hasLatestInArchive === true) {
+      dispatch({type: "getHook", payload: "loadArchiveMostRecent"})
+    } else if (hasLatestInArchive === false) {
+      dispatch({type: "getHook", payload: "fetchLatest"})
+    } else if (hasLatestInArchive === "loading") {
+      dispatch({type: "loading"}) 
     }
-  } else { //no internet
-    dispatch({type: "getHook", payload: "useLoadArchiveMostRecent"})
+  } else if (hasInternet === false) { //no internet
+    dispatch({type: "getHook", payload: "loadArchiveMostRecent"})
   }
-  if (hasInternet && !hasAllNewsletters) {
+   else if (hasInternet === "loading") {
+    dispatch({type: "loading"}) 
+   }
+
+  if (hasInternet === true && Object.keys(state.renderObj).length) {
     dispatch({type: "updateHook", payload: true})
   }
-*/
-  //useGetWien(state.getHook, dispatch)
-  //useUpdateNewsletters(state.updateHook, dispatch) 
+
+ }, [hasInternet, hasLatestInArchive])
+  
+const renderObj = useGetWien(state?.getHook, dispatch, state?.debugCount)
+
+// _logger.info({"useGetWien render count: ": state?.debugCount})
+// _logger.info({"state.getHook": state?.getHook})
+
+//useUpdateNewsletters(state?.updateHook, dispatch) 
+
   
   return(
     <box 
@@ -91,15 +115,14 @@ const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed}) =>  {
     onKeypress={(e,ch, key) => keyHandler(e,ch,key, mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef, dispatch)}
     onClick={() =>clickHandler(mainBoxRef)}
     ref={mainBoxRef}
-    content={"ruf"}
-    /*content={state.renderObj && state.renderObj.text}*/
+    content={renderObj && renderObj.text}
     > 
-
-    <Cursor cursorRef={cursorRef} cursorTop={state.cursorTop} cursorLeft={state.cursorLeft} />   
+    <Cursor cursorRef={cursorRef} cursorTop={state?.cursorTop} cursorLeft={state?.cursorLeft} />   
 
     </box>
   )
-
+  //state?.renderObj?.text
+  // content={state?.renderObj && state?.renderObj?.content}
 }
 
 
