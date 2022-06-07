@@ -1,8 +1,9 @@
 #! /usr/bin/env/node
-//import {dateSchedule} from './dateSchedule.js'
 import _slicedToArray from "@babel/runtime/helpers/slicedToArray";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
 import _regeneratorRuntime from "@babel/runtime/regenerator";
+import { _logger } from './devLog/logger.js'; //import {dateSchedule} from './dateSchedule.js'
+
 import fs from 'fs';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
@@ -18,12 +19,12 @@ var http = rateLimit(axios.create(), {
   maxRequests: 1,
   perMilliseconds: 2500
 });
-export function fetchDateFromCurrentNewsletter() {
+export function fetchDateFromCurrentNewsletter(_x) {
   return _fetchDateFromCurrentNewsletter.apply(this, arguments);
 }
 
 function _fetchDateFromCurrentNewsletter() {
-  _fetchDateFromCurrentNewsletter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  _fetchDateFromCurrentNewsletter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(withMonthName) {
     var _yield$http$get, data, date;
 
     return _regeneratorRuntime.wrap(function _callee$(_context) {
@@ -37,7 +38,7 @@ function _fetchDateFromCurrentNewsletter() {
             _yield$http$get = _context.sent;
             data = _yield$http$get.data;
             _context.next = 6;
-            return getDate(data);
+            return getDate(data, withMonthName);
 
           case 6:
             date = _context.sent;
@@ -53,7 +54,7 @@ function _fetchDateFromCurrentNewsletter() {
   return _fetchDateFromCurrentNewsletter.apply(this, arguments);
 }
 
-export function fetchDateFromHtml(_x) {
+export function fetchDateFromHtml(_x2) {
   return _fetchDateFromHtml.apply(this, arguments);
 }
 
@@ -120,12 +121,12 @@ export function getNewsletterFromDate(date) {
   }
 }
 
-function getDate(_x2) {
+function getDate(_x3, _x4) {
   return _getDate.apply(this, arguments);
 }
 
 function _getDate() {
-  _getDate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(document) {
+  _getDate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(document, withMonthName) {
     var re, execResult, _execResult, match, monthName, day, year, monthNum;
 
     return _regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -137,32 +138,45 @@ function _getDate() {
             execResult = re.exec(document);
             _execResult = _slicedToArray(execResult, 4), match = _execResult[0], monthName = _execResult[1], day = _execResult[2], year = _execResult[3];
             monthNum = monthNameToNumber(monthName);
+
+            if (!withMonthName) {
+              _context3.next = 9;
+              break;
+            }
+
+            return _context3.abrupt("return", monthName + '-' + day + '-' + year);
+
+          case 9:
             return _context3.abrupt("return", monthNum + '-' + day + '-' + year);
 
-          case 8:
-            _context3.prev = 8;
+          case 10:
+            _context3.next = 18;
+            break;
+
+          case 12:
+            _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
             errorCount++;
 
             if (!(errorCount > 5)) {
-              _context3.next = 14;
+              _context3.next = 18;
               break;
             }
 
             throw new Error("error count passed threshold, analize");
 
-          case 14:
+          case 18:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 8]]);
+    }, _callee3, null, [[1, 12]]);
   }));
   return _getDate.apply(this, arguments);
 }
 
-export function getDateFromNewsletter(_x3) {
+export function getDateFromNewsletter(_x5) {
   return _getDateFromNewsletter.apply(this, arguments);
 }
 

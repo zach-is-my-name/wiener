@@ -18,9 +18,9 @@ function App() {
 const hasInternet = useHasInternet()
 
 const boolHasLatestInArchive = useHasLatestInArchive()
-
+//_logger.info({useHasLatestInArchiveReturn: boolHasLatestInArchive})
   return (
-      <MainBox argObj={argObj} hasInternet={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
+       <MainBox argObj={argObj} hasInternet={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
   )
 }
 

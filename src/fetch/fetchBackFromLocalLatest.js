@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {_logger} from '../devLog/logger.js'
 import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
@@ -12,9 +13,10 @@ import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
 
-//fetchBackFromLocalLatest()
+fetchBackFromLocalLatest()
+export async function fetchBackFromLocalLatest(dispatch) {
 
-export async function fetchBackFromLocalLatest() {
+//export async function fetchBackFromLocalLatest(dispatch) {
   let count = 0
   const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 5000 })
   axiosRetry(http, { retryDelay: () => {return 50000}}) 
@@ -33,35 +35,38 @@ export async function fetchBackFromLocalLatest() {
   storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
 
   for (let i = 0; i < storedNewsletters.length; i++ ) {
-    if (count > 100) { setTimeout(() => {console.log("waiting a bit to fetch more... (the rate limit)")}, 50000)} 
-    
+    if (count > 100) { 
+      setTimeout(() => {console.log("waiting a bit to fetch more... (the rate limit)")}, 50000)
+    } 
 
     await db.read()
-    let { newsletters } = db.data
-    storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
+    storedNewsletters = db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
     count++
-    //console.log({archive_length:storedNewsletters.length, count})
-     
+    const debugSlice = storedNewsletters.slice(0, 5) 
+    // for (const obj of debugSlice) _logger.info({date: obj.date, prevUrl: obj.prevUrl})
     const newsLetterObj = storedNewsletters[storedNewsletters.length - 1]
+    _logger.info({newsLetterObj})
     const prevUrlFromArchive = newsLetterObj.prevUrl 
-    if (!prevUrlFromArchive) return  
+
+    if (!prevUrlFromArchive) {
+      // dispatch({type: "updateHook", payload: false}) 
+      // _logger.info("fetchBack 50, dispatch",{date: newsLetterObj.date, prev: newsLettersObj.prevUrl} )
+      return  
+    }
     let fetchResult 
-    try {fetchResult = await http.get(prevUrlFromArchive);} catch(error) {throw new Error(error)}
+    fetchResult = await http.get(prevUrlFromArchive); 
 
     const {data: fetchedNewsletter} = fetchResult
     const $ = cheerio.load(fetchedNewsletter)
     const date =  await getDateFromNewsletter($.html())
-    //console.log({date})
     const prevUrl = $('.nav-previous').children('a').attr('href');
-      //console.log({prevUrl}) 
-      const beforePutNewsletterArrayLength = storedNewsletters.length
-      //console.log({beforeDbPut: beforePutNewsletterArrayLength })
-      await convertAndStore(fetchedNewsletter, prevUrl) 
-      await db.read()
-      const afterPutNewsletterArrayLength = storedNewsletters.length
-      //console.log({afterDbPut: afterPutNewsletterArrayLength })
-      if (beforePutNewsletterArrayLength >= afterPutNewsletterArrayLength) {
-        return
-      }
+    const beforePutNewsletterArrayLength = storedNewsletters.length
+    await convertAndStore(fetchedNewsletter, prevUrl) 
+    await db.read()
+    const afterPutNewsletterArrayLength = storedNewsletters.length
+    if (beforePutNewsletterArrayLength >= afterPutNewsletterArrayLength) {
+      return
+    }
+
   }
 }

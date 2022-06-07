@@ -1,3 +1,4 @@
+import {_logger} from '../devLog/logger.js';
 import {addNewsletterToDb} from '../db/db.js'
 import {applyMarkdown} from './applyMarkdown.js'
 import {getDateFromNewsletter, getUrlOfNewsletter} from '../utilities.js'
@@ -12,8 +13,9 @@ export async function convertAndStore(htmlNewsletter, prevUrl, nextUrl) {
   const url = getUrlOfNewsletter(markdownNewsletter) 
 
   if (dayjs(date, 'M-D-YYYY').isValid() === true) {
-    await addNewsletterToDb(date, markdownNewsletter, url, prevUrl, nextUrl) 
-    return date
+    const addedNewsletterObj = await addNewsletterToDb(date, markdownNewsletter, url, prevUrl, nextUrl) 
+    _logger.info({addedNewsletterObj})
+    return addedNewsletterObj
   } else { console.log("invalid date format")}
 }
 

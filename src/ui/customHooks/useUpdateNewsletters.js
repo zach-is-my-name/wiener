@@ -1,3 +1,4 @@
+import {_logger} from '../../devLog/logger.js' 
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
@@ -8,14 +9,14 @@ import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
 import {fetchDateFromHtml} from '../../utilities.js'
 
 export function useUpdateNewsletters(hookBool, dispatch) {
-
   useEffect(() => {
     if (hookBool === true) {
-      (async () => {
-        fetchBackFromLocalLatest()
-      })()
-    return () => dispatch({type: "updateHook", payload: false})
+    (async () => {
+      // logger.info({useUpdateCalled: "useUpdateCalled"})
+      await fetchBackFromLocalLatest(dispatch)
+    })()
     }
+    //return () => dispatch({type: "updateHook", payload: false})
   }, [hookBool])
 }
 

@@ -1,4 +1,5 @@
 #! /usr/bin/env/node
+import {_logger} from './devLog/logger.js'
 //import {dateSchedule} from './dateSchedule.js'
 import fs from 'fs'
 import dayjs from 'dayjs'
@@ -12,13 +13,11 @@ import rateLimit from 'axios-rate-limit';
 import {applyMarkdown} from './transform/applyMarkdown.js'
 let errorCount = 0
 
-
 const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
 
-export async function fetchDateFromCurrentNewsletter() {
+export async function fetchDateFromCurrentNewsletter(withMonthName) {
   const {data} = await http.get('http://weekinethereumnews.com');
-  //const markdownNewsletter = applyMarkdown(data) 
-  const date = await getDate(data)  
+  const date = await getDate(data, withMonthName)  
   return date
 }
 
@@ -63,14 +62,18 @@ export function getNewsletterFromDate(date) {
   }
 }
 
-async function getDate(document) {
+async function getDate(document, withMonthName) {
   const re = /(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2}),\s+(\d{4})/i
 
   try {
     const execResult = re.exec(document)   
     const [match, monthName, day, year] = execResult
     let monthNum = monthNameToNumber(monthName)
-    return monthNum + '-' + day + '-'+ year
+    if (withMonthName) { 
+      return monthName + '-' + day + '-'+ year
+    } else {
+      return monthNum + '-' + day + '-'+ year
+    } 
   } catch(error) {
     console.log(error)    
     errorCount++
@@ -167,3 +170,4 @@ process.on('unhandledRejection', error => {
   // Will print "unhandledRejection err is not defined"
   console.log('unhandledRejection', error);
 });
+

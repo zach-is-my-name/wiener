@@ -1,4 +1,5 @@
 import {_logger, logger2} from '../../devLog/logger.js' 
+import {useTraceUpdate} from '../../devScripts/useTraceUpdates.js'
 import React from 'react';
 //import useStateWithCallbackLazy from 'use-state-with-callback'
 import Cursor from "./Cursor.js"  
@@ -14,7 +15,7 @@ import {
         useMouseClick,      
         } from '../customHooks/index.js'
         
-const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, /*stateCallbackFlag: false,*/ /*mode: "latest",*/ renderObj: {date: "", text: "", url:""}, getHook: "", updateHook: false, debugCount: 0, loading: false }
+const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, /*stateCallbackFlag: false,*/ /*mode: "latest",*/ renderObj: {date: "", text: "", url:""}, getHook: "", updateHook: false,  loading: false }
 
 function reducer(state, action) {
   switch (action.type) {
@@ -31,7 +32,7 @@ function reducer(state, action) {
     case 'setRenderObj':
       return {...state, renderObj: action.payload };
     case 'getHook':
-      _logger.info("reducer", {action, pass: state.debugCount})
+      //_logger.info("reducer", {action})
       return {...state, getHook: action.payload};
     case 'updateHook':
       return {...state, updateHook: action.payload};
@@ -39,8 +40,6 @@ function reducer(state, action) {
       return {...state, loadPrev:action.payload};
     case 'loadNext':
       return {...state, loadNext: action.payload };
-    case 'debugAdd':
-      return {...state, debugCount: state.debugCount +1 };
     case 'loading':
       return {...state, loading: true };
     case 'placeholder':
@@ -49,8 +48,13 @@ function reducer(state, action) {
       _logger.warn("reducer error", {type: action.type, payload:action.payload})
   }
 }
+  /*   latest newsletter $ wienr 
+    previous newsletters $ wienr (in-app)
+  search all newsletters $ wienr (in-app)'
+ */
 
-const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed}) =>  {
+const MainBox = (props) =>  {
+const {hasInternet, hasLatestInArchive, weeksElapsed} = props
   const renderCount = useRef(0);
   renderCount.current = renderCount.current + 1;
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -59,23 +63,30 @@ const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed}) =>  {
   const isFirstRender = useRef(true)
   const scrollToScrollHeightFlagRef = useRef(false)
   const scrollToZeroFlagRef = useRef(false)
-  _logger.info({"MainBox renders" : renderCount.current})
-  // _logger.info({state}) 
+  // _logger.info({"MainBox renders" : renderCount.current})
 
-  /*   latest newsletter $ wienr 
-    previous newsletters $ wienr (in-app)
-  search all newsletters $ wienr (in-app)'
- */
+  useTraceUpdate({...props, ...state})
+
   //const keyHandler = useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef)
- if (state.renderObj?.url && state.renderObj?.date) {
-   _logger.info("mainBox state partial", {url:state?.renderObj?.url, date:state?.renderObj?.date})
- } 
+
+const renderObj = useGetWien(state?.getHook, dispatch);
+
+ useEffect(() => {
+   if (renderObj && renderObj.text.length) {
+     dispatch({type: "updateHook", payload: true})
+   }
+ }, [renderObj]
+ )
+  
  useEffect(() =>  {
   if (hasInternet === true) {
+
     if (hasLatestInArchive === true) {
       dispatch({type: "getHook", payload: "loadArchiveMostRecent"})
+
     } else if (hasLatestInArchive === false) {
       dispatch({type: "getHook", payload: "fetchLatest"})
+
     } else if (hasLatestInArchive === "loading") {
       dispatch({type: "loading"}) 
     }
@@ -85,19 +96,14 @@ const MainBox = ({hasInternet, hasLatestInArchive, weeksElapsed}) =>  {
    else if (hasInternet === "loading") {
     dispatch({type: "loading"}) 
    }
-
-  if (hasInternet === true && Object.keys(state.renderObj).length) {
-    dispatch({type: "updateHook", payload: true})
-  }
+  // _logger.info({renderObj, hasInternet, keys:renderObj && Object.keys(renderObj).length})
+  // if (hasInternet && renderObj && Object.keys(renderObj).length) {
+  //   dispatch({type: "updateHook", payload: true})
+  // }
 
  }, [hasInternet, hasLatestInArchive])
-  
-const renderObj = useGetWien(state?.getHook, dispatch, state?.debugCount)
-
-// _logger.info({"useGetWien render count: ": state?.debugCount})
-// _logger.info({"state.getHook": state?.getHook})
-
-//useUpdateNewsletters(state?.updateHook, dispatch) 
+ 
+  useUpdateNewsletters(state?.updateHook, dispatch) 
 
   
   return(
