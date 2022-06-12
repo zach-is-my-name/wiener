@@ -10,11 +10,10 @@ export function useUpdateNewsletters(hookBool, dispatch) {
   useEffect(() => {
     if (hookBool === true) {
     (async () => {
-      // logger.info({useUpdateCalled: "useUpdateCalled"})
       await fetchBackFromLocalLatest(dispatch)
     })()
     }
-    //return () => dispatch({type: "updateHook", payload: false})
+    return () => dispatch({type: "updateHook", payload: false})
   }, [hookBool])
 }
 

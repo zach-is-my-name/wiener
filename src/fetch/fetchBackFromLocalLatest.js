@@ -61,13 +61,13 @@ export async function fetchBackFromLocalLatest(dispatch) {
       count++
     }
   }
+    dispatch({type: "updateHook", payload: false}) 
     return 
 }
 
 async function fetchAndAdd(url) {
   if (!url) {
      dispatch({type: "updateHook", payload: false}) 
-     _logger.info("fetchBack 50, dispatch",{date: newsLetterObj.date, prev: newsLettersObj.prevUrl} )
     return  
   }
 
@@ -89,5 +89,4 @@ try {
   return storedNewsletterObj 
 }
 
-fetchBackFromLocalLatest()
 
