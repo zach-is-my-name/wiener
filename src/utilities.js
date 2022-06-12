@@ -21,11 +21,6 @@ export async function fetchDateFromCurrentNewsletter(withMonthName) {
   return date
 }
 
-export async function fetchDateFromHtml(htmlNewsletter) {
-  const date = await getDate(data)  
-  return date
-}
-
 function validateInputDate(date) {
   if (typeof date !== 'string') {
     throw new Error(`argument must be a string ${date}`)
@@ -39,10 +34,9 @@ function validateInputDate(date) {
 export function getUrlOfNewsletter(markdownNewsletter) {
   validateInputDate(markdownNewsletter)
   const re = /(https\:\/\/weekinethereumnews.com\/(?:week-in-eth(?:ereum)?-news-)?.*\d)/igm
-  //console.log(re.test(markdownNewsletter))
 
   const execResult = re.exec(markdownNewsletter)
-  return execResult[1]
+  return execResult[1]+'/'
 }
 
 export function getNewsletterFromDate(date) {
@@ -62,6 +56,7 @@ export function getNewsletterFromDate(date) {
   }
 }
 
+//searches rendered text
 async function getDate(document, withMonthName) {
   const re = /(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2}),\s+(\d{4})/i
 
@@ -70,14 +65,12 @@ async function getDate(document, withMonthName) {
     const [match, monthName, day, year] = execResult
     let monthNum = monthNameToNumber(monthName)
     if (withMonthName) { 
-      return monthName + '-' + day + '-'+ year
+      return `${monthName.toLowerCase()}-${day}-${year}/`
     } else {
       return monthNum + '-' + day + '-'+ year
     } 
   } catch(error) {
-    console.log(error)    
-    errorCount++
-    if (errorCount > 5) throw new Error(`error count passed threshold, analize`)
+    throw new Error(error)
   }
 }
 

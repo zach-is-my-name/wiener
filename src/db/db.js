@@ -1,3 +1,4 @@
+/*always include April 18, 2021 in db*/ 
 import {_logger, logger2} from '../devLog/logger.js' 
 import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
@@ -10,17 +11,16 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
-//_logger.info({"meta-import": fileURLToPath(import.meta.url)})
-
 // add new entry
 export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl) {
   // Use JSON file for storage
   await db.read()
   db.data ||= { newsletters: [] }             
   db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl });
+  db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
   await db.write()
-  await db.read()
-  const addedNewsletter = db.data.newsletters.shift()
+
+  const addedNewsletter = await loadNewsletterFromDb(date)
   return addedNewsletter 
 }
 

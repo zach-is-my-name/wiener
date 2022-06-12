@@ -1,4 +1,5 @@
 **/node_modules
+src/db/db.json
 scrapes
 archive
 logs

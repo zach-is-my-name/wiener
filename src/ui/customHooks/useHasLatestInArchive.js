@@ -6,14 +6,11 @@ import {fetchDateFromCurrentNewsletter} from '../../utilities.js'
 //const  {useStateWithCallbackLazy}  = pkg 
 
 export function useHasLatestInArchive() {
-  // const [latestPublishedDate, setLatestPublishedDate] = useStateWithCallbackLazy(null)
   const [hasLatestInArchive, setHasLatestInArchive] = useState("loading") 
-  //_logger.info({hasLatestInArchive})
   useEffect(()=> {
     (async () => {
       const latestPublishedDate = await fetchDateFromCurrentNewsletter()
       const latestArchiveDate = await getDateFromLatestInArchive() 
-      //_logger.info({latestPublishedDate, latestArchiveDate, areEqualResult: areEqual()})  
       const areEqual =  Boolean(latestPublishedDate ===  latestArchiveDate) 
       setHasLatestInArchive(areEqual)
     })()

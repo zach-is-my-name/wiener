@@ -18,8 +18,9 @@ export function useGetWien(runHookString, dispatch, debugCount) {
         const dateResult = await fetchDateFromCurrentNewsletter(true)
         const {data} = await http.get(`http://weekinethereumnews.com/week-in-ethereum-news-${dateResult}`);
         const $ = cheerio.load(data)
+        const url = $('link[rel="canonical"]').attr('href')
         const prevUrl = $('.nav-previous').children('a').attr('href');
-        const addedNewsletterObj = await convertAndStore(data, prevUrl)
+        const addedNewsletterObj = await convertAndStore(data, url, prevUrl)
         //_logger.info({addedNewsletterObj})
         setNewsletterObj(addedNewsletterObj)
       })()

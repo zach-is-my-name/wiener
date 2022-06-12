@@ -8,19 +8,17 @@ import axiosRetry from 'axios-retry';
 import rateLimit from 'axios-rate-limit';
 import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
-import {getUrlOfNewsletter, getNewsletterFromDate, getDateFromNewsletter} from '../utilities.js'
+import {fetchDateFromCurrentNewsletter} from '../utilities.js'
+import {getNewsletterFromDate, getDateFromNewsletter} from '../utilities.js'
 import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
+const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 5000 })
 
-fetchBackFromLocalLatest()
+axiosRetry(http, { retryDelay: () => {return 50000}}) 
+
 export async function fetchBackFromLocalLatest(dispatch) {
-
-//export async function fetchBackFromLocalLatest(dispatch) {
   let count = 0
-  const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 5000 })
-  axiosRetry(http, { retryDelay: () => {return 50000}}) 
-
   const __dirname = dirname(fileURLToPath(await resolve("../db/db.json", import.meta.url)));
   const file = join(__dirname, 'db.json')
   const adapter = new JSONFile(file)
@@ -33,40 +31,63 @@ export async function fetchBackFromLocalLatest(dispatch) {
 
   let storedNewsletters  
   storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
+  let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${await fetchDateFromCurrentNewsletter(true)}`
 
-  for (let i = 0; i < storedNewsletters.length; i++ ) {
-    if (count > 100) { 
-      setTimeout(() => {console.log("waiting a bit to fetch more... (the rate limit)")}, 50000)
-    } 
+
+  while (targetUrl) {
+    // if (count > 100) { 
+    //   setTimeout(() => {console.log("waiting a bit to fetch more... (the rate limit)")}, 50000)
+    // } 
+    if (count > 305) { 
+      throw new Error("error")
+      return 
+    }
 
     await db.read()
+
     storedNewsletters = db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
-    count++
-    const debugSlice = storedNewsletters.slice(0, 5) 
-    // for (const obj of debugSlice) _logger.info({date: obj.date, prevUrl: obj.prevUrl})
-    const newsLetterObj = storedNewsletters[storedNewsletters.length - 1]
-    _logger.info({newsLetterObj})
-    const prevUrlFromArchive = newsLetterObj.prevUrl 
 
-    if (!prevUrlFromArchive) {
-      // dispatch({type: "updateHook", payload: false}) 
-      // _logger.info("fetchBack 50, dispatch",{date: newsLetterObj.date, prev: newsLettersObj.prevUrl} )
-      return  
+
+
+    const newsLetterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
+
+    if (!newsLetterObj) {
+       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
+
+       targetUrl = writtenNewsletterObj.prevUrl 
+       count++
+    } else {
+      targetUrl = newsLetterObj.prevUrl
+      count++
     }
-    let fetchResult 
-    fetchResult = await http.get(prevUrlFromArchive); 
-
-    const {data: fetchedNewsletter} = fetchResult
-    const $ = cheerio.load(fetchedNewsletter)
-    const date =  await getDateFromNewsletter($.html())
-    const prevUrl = $('.nav-previous').children('a').attr('href');
-    const beforePutNewsletterArrayLength = storedNewsletters.length
-    await convertAndStore(fetchedNewsletter, prevUrl) 
-    await db.read()
-    const afterPutNewsletterArrayLength = storedNewsletters.length
-    if (beforePutNewsletterArrayLength >= afterPutNewsletterArrayLength) {
-      return
-    }
-
   }
+    return 
 }
+
+async function fetchAndAdd(url) {
+  if (!url) {
+     dispatch({type: "updateHook", payload: false}) 
+     _logger.info("fetchBack 50, dispatch",{date: newsLetterObj.date, prev: newsLettersObj.prevUrl} )
+    return  
+  }
+
+let fetchResult
+try {
+  fetchResult =  await http.get(url); 
+} catch (e) { throw new Error(e)} 
+  const {data: fetchedNewsletter} = fetchResult
+  const $ = cheerio.load(fetchedNewsletter)
+  const $url = $('link[rel="canonical"]').attr('href')
+  if ($url !== url) {throw new Error("url wrong! debug!")}
+  const date =  await getDateFromNewsletter($.html())
+  let prevUrl = $('.nav-previous').children('a').attr('href');
+  url === "https://weekinethereumnews.com/january-4-2019/" ? prevUrl = "https://weekinethereumnews.com/december-28-2018/" : prevUrl = prevUrl
+  
+  const storedNewsletterObj = await convertAndStore(fetchedNewsletter, url, prevUrl) 
+
+  
+  return storedNewsletterObj 
+}
+
+fetchBackFromLocalLatest()
+
