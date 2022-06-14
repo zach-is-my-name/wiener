@@ -23,12 +23,3 @@ const cli = meow({
 export const argObj = {input: cli.input[0], flags: cli.flags}
 
 start(argObj)
-
-
-
-
-
-
-
-
-

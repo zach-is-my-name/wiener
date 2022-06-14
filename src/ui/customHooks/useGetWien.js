@@ -30,8 +30,7 @@ export function useGetWien(runHookString, dispatch, debugCount) {
         setNewsletterObj(await loadNewsletterFromDb(""))
       })()
     } else {
- //      _logger.info("loading") 
-
+      _logger.info("loading") 
     }
       return () => { if (runHookString.length) dispatch({type:"getHook", payload: "" })}
     

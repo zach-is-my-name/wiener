@@ -15,13 +15,13 @@ import MainBox from './MainBox.js'
 
 
 function App() {
-const hasInternet = useHasInternet()
+  const hasInternet = useHasInternet()
 
-const boolHasLatestInArchive = useHasLatestInArchive()
-//_logger.info({useHasLatestInArchiveReturn: boolHasLatestInArchive})
-  return (
-       <MainBox argObj={argObj} hasInternet={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
-  )
+  const boolHasLatestInArchive = useHasLatestInArchive()
+  //_logger.info({useHasLatestInArchiveReturn: boolHasLatestInArchive})
+    return (
+         <MainBox argObj={argObj} hasInternet={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
+    )
 }
 
 const screen = blessed.screen({

@@ -8,7 +8,7 @@ import figures, {mainSymbols} from 'figures';
 import chalk from 'chalk';
 import {_logger} from '../logger.js';
 
-export const formatHeader = async(string) => {
+export const formatHeader = (string) => {
   const output_final = pipe(
     _stripAnsi,  
     trimBody,
