@@ -1,21 +1,24 @@
+import {useEffect} from 'react'
 
-export function useScroll(isFirstRenderRef, mainBoxRef, scrollToZeroFlagRef, scrollToScrollHeightFlagRef) {
+export function useScroll(refs, state, dispatch ) {
+const [{mainBoxRef, isFirstRender,scrollToZeroFlag, scrollToScrollHeightFlag}] = refs
+const {stateCallbackFlag, cursorLeft, cursorTop} = state 
+
   useEffect(() => {
-    if (isFirstRenderRef.current) {
-      isFirstRenderRef.current = false
+    if (isFirstRender?.current) {
+      isFirstRender.current = false
     }
-    mainBoxRef.current?.scrollTo(cursorTop);
-    if (scrollToScrollHeightFlagRef.current) {
-      mainBoxRef.current?.scrollTo(mainBoxRef.currrent?.getScrollHeight())
-    } else if (scrollToZeroFlagRef.current) {
-      mainBoxRef.current?.scrollTo(0)
+    mainBoxRef?.current?.scrollTo(cursorTop);
+    if (scrollToScrollHeightFlag?.current) {
+      mainBoxRef?.current?.scrollTo(mainBoxRef.currrent?.getScrollHeight())
+    } else if (scrollToZeroFlag?.current) {
+      mainBoxRef?.current?.scrollTo(0)
     }
     return () => {
-      setStateCallbackFlag(false)
-      scrollToScrollHeightFlagRef.current = false 
-      scrollToZeroFlagRef.current = false
+      dispatch({type: "setStateCallbackFlag"})
+      scrollToScrollHeightFlag.current = false 
+      scrollToZeroFlag.current = false
     }
-  }, [cursorLeft, cursorTop, stateCallbackFlag]
-  )
+  }, [cursorLeft, cursorTop, stateCallbackFlag])
 }
 

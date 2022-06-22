@@ -15,15 +15,16 @@ let errorCount = 0
 
 const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
 
-export async function fetchDateFromCurrentNewsletter(withMonthName) {
-  const {data} = await http.get('http://weekinethereumnews.com');
-  const date = await getDate(data, withMonthName)  
-  return date
+export async function fetchDateFromCurrentNewsletter() {
+  const {data} = await axios.get('http://weekinethereumnews.com');
+  const { dateWithMonth, dateNoMonth } = await getDate(data)  
+  return ({dateWithMonth, dateNoMonth, data})
 }
 
 function validateInputDate(date) {
+
   if (typeof date !== 'string') {
-    throw new Error(`argument must be a string ${date}`)
+    throw new Error(`argument must be a string ${JSON.stringify(date)}`)
     return 
   } else if (dayjs(date, 'M-D-YYYY').isValid() === false){ 
     throw new Error(`date format invalid ${date}`)
@@ -57,26 +58,22 @@ export function getNewsletterFromDate(date) {
 }
 
 //searches rendered text
-async function getDate(document, withMonthName) {
+async function getDate(document) {
   const re = /(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2}),\s+(\d{4})/i
 
   try {
     const execResult = re.exec(document)   
     const [match, monthName, day, year] = execResult
     let monthNum = monthNameToNumber(monthName)
-    if (withMonthName) { 
-      return `${monthName.toLowerCase()}-${day}-${year}/`
-    } else {
-      return monthNum + '-' + day + '-'+ year
-    } 
+   return ({dateWithMonth:`${monthName.toLowerCase()}-${day}-${year}/`, dateNoMonth: monthNum + '-' + day + '-'+ year})
   } catch(error) {
     throw new Error(error)
   }
 }
 
 export async function getDateFromNewsletter(newsletter) {
-  validateInputDate(newsletter)
-  const date = await getDate(newsletter)
+  const {dateNoMonth:date} = await getDate(newsletter)
+  validateInputDate(date)
   return date
 }
 

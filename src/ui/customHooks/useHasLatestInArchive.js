@@ -2,22 +2,28 @@ import {_logger, logger2} from '../../devLog/logger.js'
 import React, {useEffect, useState} from 'react'
 import {getDateFromLatestInArchive} from '../../db/db.js' 
 import {fetchDateFromCurrentNewsletter} from '../../utilities.js'
-//import  pkg from 'use-state-with-callback';
-//const  {useStateWithCallbackLazy}  = pkg 
 
 export function useHasLatestInArchive() {
   const [hasLatestInArchive, setHasLatestInArchive] = useState("loading") 
+  const [dateCurrentNewsletter, setDateCurrentNewsletter] = useState({dateCurrentNewsletter: {dateWithMonth: null, dateNoMonth:null}} ) 
+
   useEffect(()=> {
-    (async () => {
-      const latestPublishedDate = await fetchDateFromCurrentNewsletter()
-      const latestArchiveDate = await getDateFromLatestInArchive() 
-      const areEqual =  Boolean(latestPublishedDate ===  latestArchiveDate) 
-      setHasLatestInArchive(areEqual)
-    })()
-  })
-  return hasLatestInArchive
+    if (hasLatestInArchive === "loading" || dateCurrentNewsletter === null) {
+      (async () => {
+
+        const { dateWithMonth, dateNoMonth:latestPublishedDate } = await fetchDateFromCurrentNewsletter()
+        
+        const result = await getDateFromLatestInArchive() 
+        const latestArchiveDate= result.date
+        logger2.info(`calling hook where date is compared to latest published: ${latestPublishedDate} `, JSON.stringify(result.date))
+
+        const areEqual = Boolean(latestPublishedDate === latestArchiveDate) 
+        setDateCurrentNewsletter({dateWithMonth, latestPublishedDate}) 
+        setHasLatestInArchive(areEqual)
+
+      })()
+    }
+  }, [])
+
+  return {hasLatestInArchive, dateCurrentNewsletter} 
 }
-
-
-
-

@@ -1,6 +1,6 @@
 import meow from 'meow'
 import figures, {mainSymbols} from 'figures';
-import {start} from './ui/components/App.js';
+import {start} from './ui/start.js';
 
 const help = `
 wienr is the (unofficial) Week in Ethereum News Reader

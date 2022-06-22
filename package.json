@@ -8,9 +8,9 @@
     "wienr": "./index.js"
   },
   "scripts": {
-    "build": "npx babel src -d dist --extensions \".js\" --copy-files",
+    "build": "npx babel src -d dist --extensions \".js\" --source-maps --copy-files ",
     "go": "node dist/index.js",
-    "dev": "rimraf dist && npm run build && node dist/index.js",
+    "dev": "rimraf dist && npm run build && node -r source-map-support/register dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -28,6 +28,7 @@
     "@swc-node/register": "^1.4.2",
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.164",
+    "@types/node": "^18.0.0",
     "chalk": "^4.1.2",
     "conf": "^10.0.3",
     "console-log-to-file": "^1.0.3",
@@ -36,6 +37,9 @@
     "nodemon": "^2.0.15",
     "parcel": "^2.4.1",
     "react-devtools": "^4.21.0",
+    "source-map-support": "^0.5.21",
+    "stack-trace": "^1.0.0-pre1",
+    "utils-deep-clone": "^0.0.3",
     "winston": "^3.3.3",
     "winston-array-transport": "^1.1.5"
   },

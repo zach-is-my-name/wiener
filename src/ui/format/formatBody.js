@@ -6,10 +6,10 @@ import https from 'https'
 const pipe = (...fns) => x => fns.reduce((y, f) => f(y), x); 
 import stripAnsi from 'strip-ansi';
 import figures, {mainSymbols} from 'figures';
+import {_logger} from '../../devLog/logger.js';
 import chalk from 'chalk';
 import minify from 'url-minify';
 import axios from 'axios'
-import {_logger} from '../logger.js';
 const cert = fs.readFileSync('./certs/gd.pem')
 import replaceAsync from 'string-replace-async'
 const agent = new https.Agent({
@@ -78,7 +78,7 @@ const terminalLinks = async (string) => {
     const url = p3 
     const untilEol = p4
     const linkBreak = p5
-    const response = await axiosInstance.get(`https://is.gd/create.php?format=simple&url=` + `${url}`).catch(e => _logger.info(e))
+    const response = await axiosInstance.get(`https://is.gd/create.php?format=simple&url=` + `${url}`).catch(e => _logger.info("error FormatBody", e))
     const miniUrl = response.data
     const linkBracketStyle = chalk.ansi256(103).bold
     const styledUrl = chalk.hex('#303030')(miniUrl)

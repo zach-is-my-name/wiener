@@ -1,19 +1,24 @@
-import open from "open"
+import {_logger} from '../../../devLog/logger.js' 
 
-export function useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef, dispatch) { 
-  async function keyHandler(e, ch, key) {
-    //console.log("e", e)
+import open from 'open'
+export function useKeyHandler(refs, state, dispatch) {
+  const [{mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlagRef}] = refs
+  const {cursorTop, cursorLeft} = state 
+
+  async function keyHandler(ch, key) {
+    // _logger.info("e", e)
+//    _logger.info({arguments})
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
 
     } else if (key.full === 'enter') {
-        await followLinkUnderCursor()
+      await followLinkUnderCursor()
     } else if (key.full === 'H') {
-        await newsletterBack()
+      await newsletterBack()
     } else if (key.full === 'L') {
-        await newsletterForward() 
+      await newsletterForward() 
     } else {
-        updateCoordinate(key.full)
+      updateCoordinate(key.full)
     }
 
     function nextCursorPosition( current, forward, maxLength, adjustment )  {
@@ -107,7 +112,7 @@ export function useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZ
 
   function followLinkUnderCursor(mainBoxRef)  {
     // check if the chunk under the cursor is a markdown link
-            
+
     const lines = mainBoxRef.current?.getScreenLines()
     if (state.cursorTop >= lines.length) {
       return
@@ -133,5 +138,6 @@ export function useKeyHandler(mainBoxRef, scrollToScrollHeightFlagRef, scrollToZ
       }
       dispatch({type: "toggleWasMouseClicked"})
     }
-    }
+  }
+  return [{followLinkUnderCursor, keyHandler}] 
 }

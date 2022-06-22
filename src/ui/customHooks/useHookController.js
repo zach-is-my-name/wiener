@@ -1,3 +1,4 @@
+import {_logger, logger2} from '../../devLog/logger.js' 
 import {useReducer, useEffect} from 'react'
 
 const initialState = {renderObj: {url: "", text: "", prevUrl: ""}, getHook: "", updateHook: false,  loading: false }
@@ -27,6 +28,7 @@ export function useHookController(hasInternet, hasLatestInArchive) {
   const [state, ctrDispatch] = useReducer(reducer, initialState);
 
   useEffect(() =>  {
+  _logger.info(JSON.stringify({hasLatestInArchive}))
     if (hasInternet === true) {
 
       if (hasLatestInArchive === true) {

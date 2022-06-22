@@ -6,7 +6,7 @@ const pipe = (...fns) => x => fns.reduce((y, f) => f(y), x);
 import stripAnsi from 'strip-ansi';
 import figures, {mainSymbols} from 'figures';
 import chalk from 'chalk';
-import {_logger} from '../logger.js';
+import {_logger} from '../../devLog/logger.js';
 
 export const formatHeader = (string) => {
   const output_final = pipe(
@@ -50,7 +50,7 @@ const h6Format = (string) => {
 
 const h2Format = (string) => {
   const re = /\#\#\s\[(Week\sin\sEthereum\sNews)[^]+?(\w{3,}\s\d+.+?\d{4})\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)\)/gm
-  _logger.info({h2FormatRE: re.test(string)})
+  // _logger.info({h2FormatRE: re.test(string)})
   const group1 = chalk.bgWhite.black(' $1 ')+'\n'
   const group2 = chalk.bgWhite.black(' $2 ')+'\n'+'\n'
   const group3 = '$3 \n\n\n'
@@ -59,7 +59,7 @@ const h2Format = (string) => {
 
 const trimH2 = (string) => {
   const re = /\#\#\s\[Week\sin\sEthereum\sNews[^]+?(\w{3,}\s\d+.+?\d{4})\]/gm  
-  _logger.info({match:string.match(re)})
+  //_logger.info({match:string.match(re)})
   return string.replace('$1')
 }
 

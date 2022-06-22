@@ -6,7 +6,7 @@ const pipe = (...fns) => x => fns.reduce((y, f) => f(y), x);
 import stripAnsi from 'strip-ansi';
 import figures, {mainSymbols} from 'figures';
 import chalk from 'chalk';
-import {_logger} from '../logger.js';
+import {_logger} from '../../devLog/logger.js';
 
 export const formatPostFormat = (string) => {
   const output_final = pipe(

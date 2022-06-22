@@ -1,38 +1,34 @@
 import {_logger, logger2} from '../../devLog/logger.js' 
 import React from 'react';
-import {useState, useEffect} from 'react'  
-import https from 'https'
-import fs from 'fs'
-https.globalAgent.options.ca = fs.readFileSync('./certs/weekinethereumnews.com');
-import blessed from 'neo-blessed';
-import pkg from 'react-blessed';
-const { createBlessedRenderer } = pkg;
 import {argObj} from '../../index.js'
-const render = createBlessedRenderer(blessed);
-import {useHasInternet} from '../customHooks/useHasInternet.js' 
-import {useHasLatestInArchive} from '../customHooks/useHasLatestInArchive.js'  
+import {fetchDateFromCurrentNewsletter} from '../../utilities.js'
 import MainBox from './MainBox.js' 
+import {useHasInternet,
+  useHasLatestInArchive,
+  useGetWien, 
+  useUpdateNewsletters,
+  useHookController, 
+  useFormatWien,
+} from '../customHooks/index.js'
 
 
-function App() {
+function App(props) {
   const hasInternet = useHasInternet()
 
-  const boolHasLatestInArchive = useHasLatestInArchive()
-  //_logger.info({useHasLatestInArchiveReturn: boolHasLatestInArchive})
-    return (
-         <MainBox argObj={argObj} hasInternet={hasInternet} hasLatestInArchive={boolHasLatestInArchive } />
-    )
+  const {dateCurrentNewsletter:{dateWithMonth="waiting"}, hasLatestInArchive ="waiting"} = useHasLatestInArchive() 
+
+  logger2.info({hasLatestInArchive}) 
+
+  let [ { getHook, updateHook, loading }, {ctrDispatch}] = useHookController(hasInternet, hasLatestInArchive) 
+
+  const renderObj = useGetWien(getHook, ctrDispatch, dateWithMonth );
+
+  const renderText = useFormatWien(renderObj) 
+  useUpdateNewsletters(updateHook, ctrDispatch, dateWithMonth) 
+
+  return (
+    <MainBox argObj={argObj} renderText={renderText} renderObj={renderObj}  />
+  )
 }
 
-const screen = blessed.screen({
-//  autoPadding: true,
-  smartCSR: true,
-  title: 'wiener',
-  fullUnicode: true,
-});
-
-function start(argObj) {
-  render(<App  />, screen);
-}
-
-export {start}
+export default App
