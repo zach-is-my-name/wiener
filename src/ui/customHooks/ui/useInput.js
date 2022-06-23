@@ -6,12 +6,10 @@ import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs} from 
 export function useInput() {
 
   const [state, dispatch] = useUIReducer()
-  
+
   const refsObjArr = useGetRefs()
-  //const debugRes = useKeyHandler(refsObjArr, state, dispatch)
-  //console.log({debugRes})
-   const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refsObjArr, state, dispatch)
- 
+  const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refsObjArr, state, dispatch)
+
   useScroll(refsObjArr, dispatch)
   //console.log("followLinkUnderCursor", followLinkUnderCursor.toString())
   const [{clickHandler}] = useMouseClick(refsObjArr, state, dispatch, followLinkUnderCursor)

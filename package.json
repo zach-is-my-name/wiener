@@ -33,6 +33,7 @@
     "conf": "^10.0.3",
     "console-log-to-file": "^1.0.3",
     "fix-esm": "^1.0.1",
+    "flatted": "^3.2.5",
     "neo-blessed": "https://github.com/zach-is-my-name/neo-blessed.git",
     "nodemon": "^2.0.15",
     "parcel": "^2.4.1",

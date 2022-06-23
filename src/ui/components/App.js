@@ -17,8 +17,6 @@ function App(props) {
 
   const {dateCurrentNewsletter:{dateWithMonth="waiting"}, hasLatestInArchive ="waiting"} = useHasLatestInArchive() 
 
-  logger2.info({hasLatestInArchive}) 
-
   let [ { getHook, updateHook, loading }, {ctrDispatch}] = useHookController(hasInternet, hasLatestInArchive) 
 
   const renderObj = useGetWien(getHook, ctrDispatch, dateWithMonth );

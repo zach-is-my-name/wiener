@@ -15,7 +15,6 @@ export function useHasLatestInArchive() {
         
         const result = await getDateFromLatestInArchive() 
         const latestArchiveDate= result.date
-        logger2.info(`calling hook where date is compared to latest published: ${latestPublishedDate} `, JSON.stringify(result.date))
 
         const areEqual = Boolean(latestPublishedDate === latestArchiveDate) 
         setDateCurrentNewsletter({dateWithMonth, latestPublishedDate}) 
