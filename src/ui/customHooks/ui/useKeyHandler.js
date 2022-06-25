@@ -73,6 +73,7 @@ export function useKeyHandler(refs, state, dispatch) {
           mainBoxRef.current?.width,
           9,
         )})
+
       } else if (input === '{' || input === '}') {
         dispatch({type: "setCursorTop", payload: nextTwentyYCursorPosition(
           cursorTop,
@@ -80,32 +81,39 @@ export function useKeyHandler(refs, state, dispatch) {
           mainBoxRef.current?.getScrollHeight(),
           9,
         )})
+
       }  else if (input === 'g') {
         dispatch({type:"setCursorTop", payload:0})
         dispatch({type: "setCursorLeft", payload: 0})
         dispatch({type: "setStateCallbackFlag"})
+
       } else if (input === 'S-g') {
-
         dispatch({type:"setCursorTop", payload: mainBoxRef.current.getScreenLines().length - 2})
-
-        dispatch({type:"setCursorLeft", payload: 0})
-        dispatch({type: "setStateCallbackFlag"})
         logger2.info(stringify({cursorTop}))
+
+        //dispatch({type:"setCursorLeft", payload: 0})
+        dispatch({type: "setStateCallbackFlag"})
+
       } else if (input === '0') {
         dispatch({type:"setCursorLeft", payload: 0})
+        
       } else if (input === '$') {
         logger2.info(stringify({mainBoxWidth: mainBoxRef.current?.width}))
         dispatch({type:"setCursorLeft", payload: mainBoxRef.current?.width - 1})
+
       } else if (input === "x") {
         mainBoxRef.current?.setScrollPerc(100)
+
       } else if (input === 'C-d') {
         dispatch({type: "setCursorTop", payload: (cursorTop + mainBoxRef.current?.height) - 2})
+
         if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
           dispatch({type: "setCursorTop", payload: mainBoxRef.current?.getScrollHeight() - 1})
         }
         scrollToScrollHeightFlagRef.current = true;
         dispatch({type: "setStateCallbackFlag"})
       } else if (input === 'S-g') {
+
       } else if (input === 'C-u') {
         dispatch({type:"setCursorTop",payload: cursorTop - (mainBoxRef.current?.height)-2})
         if (cursorTop < 0) {
@@ -118,7 +126,6 @@ export function useKeyHandler(refs, state, dispatch) {
   }
 
   function followLinkUnderCursor()  {
-     
     const regexLink = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
     // check if the chunk under the cursor is a markdown link
     logger2.info(stringify({getScreenLines: mainBoxRef?.current.getScreenLines().length})) 
