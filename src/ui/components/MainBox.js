@@ -4,7 +4,7 @@ import {format} from '../format/format.js'
 import React from 'react';
 import Cursor from "./Cursor.js"  
 import  {useReducer, useEffect, useRef, useCallback} from 'react';
-import {useInput} from '../customHooks/ui/useInput.js' 
+import {useUiHooks} from '../customHooks/ui/useUiHooks.js' 
         
   /*   latest newsletter $ wienr 
     previous newsletters $ wienr (in-app)
@@ -13,8 +13,7 @@ import {useInput} from '../customHooks/ui/useInput.js'
 
 const MainBox = (props) =>  {
 
-  const debugReturnVal = useInput()
-  const [ { keyHandler, clickHandler }, {mainBoxRef, cursorRef }, {cursorLeft, cursorTop} ] = useInput()
+  const [ { keyHandler, clickHandler }, {mainBoxRef, cursorRef }, {cursorLeft, cursorTop} ] = useUiHooks()
 
   // _logger.info("renderText from props", props.renderText)
   return(

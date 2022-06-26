@@ -1,9 +1,9 @@
 import {_logger} from '../../../devLog/logger.js'
 import {useRef, useReducer} from 'react'
-import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs} from '../index.js'
+import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs, useFormatWien} from '../index.js'
 
 
-export function useInput() {
+export function useUiHooks() {
 
   const [state, dispatch] = useUIReducer()
 
@@ -13,6 +13,8 @@ export function useInput() {
   useScroll(refsObjArr, state, dispatch)
 
   const [{clickHandler}] = useMouseClick(refsObjArr, state, dispatch, followLinkUnderCursor)
+
+
 
   return [{keyHandler, clickHandler}, ...refsObjArr, state]  
 }

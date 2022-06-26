@@ -29,15 +29,22 @@ export const formatBody = async (string) => {
     topLevelStarToBullet, 
     indentedStarToBullet,
     horizontalRule,  
+    justifyLeft,
     await terminalLinks
   )(string);
 
+  // return `{left}${output_final}{/left}`
   return output_final
 }
 
 const _stripAnsi = (string) => {
   return stripAnsi(string)
 }
+
+const justifyLeft = (string) => {
+  return `{left}${string}{/left}`
+}
+
 
 const trimHeader = (string) => {
   const re = /^\*\*[^]+/m

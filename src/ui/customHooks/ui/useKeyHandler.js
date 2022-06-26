@@ -1,7 +1,11 @@
 import blessed from 'neo-blessed';
 import {logger2, _logger} from '../../../devLog/logger.js' 
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
-
+/*
+  C-d
+  g
+  "stack": "TypeError: Cannot set properties of undefined (setting 'current')\n    at updateCoordinate (file:///home/zmg/Tinker/wiener/src/ui/customHooks/ui/useKeyHandler.js:128:11)\n    at _callee$ (file:///home/zmg/Tinker/wiener/src/ui/customHooks/ui/useKeyHandler.js:23:7)\n    at tryCatch (/home/zmg/Tinker/wiener/node_modules/regenerator-runtime/runtime.js:63:40)\n    at Generator.invoke [as _invoke] (/home/zmg/Tinker/wiener/node_modules/regenerator-runtime/runtime.js:294:22)\n    at Generator.next (/home/zmg/Tinker/wiener/node_modules/regenerator-runtime/runtime.js:119:21)\n    at asyncGeneratorStep (/home/zmg/Tinker/wiener/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:24)\n    at _next (/home/zmg/Tinker/wiener/node_modules/@babel/runtime/helpers/asyncToGenerator.js:25:9)\n    at /home/zmg/Tinker/wiener/node_modules/@babel/runtime/helpers/asyncToGenerator.js:32:7\n    at new Promise (<anonymous>)\n    at /home/zmg/Tinker/wiener/node_modules/@babel/runtime/helpers/asyncToGenerator.js:21:12",
+*/
 import open from 'open'
 export function useKeyHandler(refs, state, dispatch) {
   const [{mainBoxRef, scrollToScrollHeightFlag, scrollToZeroFlagRef}] = refs

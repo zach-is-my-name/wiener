@@ -20,7 +20,7 @@ export const formatHeader = (string) => {
    // addUnderlineToDate, 
   )(string);
 
-  return output_final
+  return `{center}${output_final}\n{/}{/}\n\n`
 }
 
 const trimBody = (string) => {
@@ -73,13 +73,3 @@ const addUnderlineToDate = (string) => {
   const re = /(\#\#\s\[Week\sin\sEthereum\sNews[^]+?)(\w{3,}\s\d+.+?\d{4})\]/gm
   return string.replace(re, "$1" + chalk.underline('$2'))  
 }
-
-
-
-
-
-
-
-
-
-

@@ -9,3 +9,5 @@ Session.vim
 *.stormdb
 dist
 src/devScripts
+gitHistoryFormatting_MainBox.js
+tmpEventsWithoutHooks.js
