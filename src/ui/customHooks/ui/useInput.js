@@ -10,8 +10,8 @@ export function useInput() {
   const refsObjArr = useGetRefs()
   const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refsObjArr, state, dispatch)
 
-  useScroll(refsObjArr, dispatch)
-  //console.log("followLinkUnderCursor", followLinkUnderCursor.toString())
+  useScroll(refsObjArr, state, dispatch)
+
   const [{clickHandler}] = useMouseClick(refsObjArr, state, dispatch, followLinkUnderCursor)
 
   return [{keyHandler, clickHandler}, ...refsObjArr, state]  

@@ -4,11 +4,10 @@ import {parse, stringify, toJSON, fromJSON} from 'flatted';
 
 import open from 'open'
 export function useKeyHandler(refs, state, dispatch) {
-  const [{mainBoxRef, scrollToScrollHeightFlagRef, scrollToZeroFlag}] = refs
+  const [{mainBoxRef, scrollToScrollHeightFlag, scrollToZeroFlagRef}] = refs
   const {cursorTop, cursorLeft} = state 
   async function keyHandler(ch, key) {
-    logger2.info(stringify({cursorTop}))
-    logger2.info(stringify({cursorLeft}))
+    logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
     // _logger.info("e", e)
     // logger2.info(stringify({arguments}))
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
@@ -32,6 +31,7 @@ export function useKeyHandler(refs, state, dispatch) {
 
       return position
     }
+
     function nextTenXCursorPosition( current, forward, maxLength, adjustment )  {
       let position = current + (forward ? 10 : -10)
       position = position < 0 ? 0 : position
@@ -50,7 +50,7 @@ export function useKeyHandler(refs, state, dispatch) {
       return position
     }
 
-    function updateCoordinate (input)  {
+    function updateCoordinate(input)  {
       if (input === 'j' || input === 'k') {
         dispatch({type: "setCursorTop", payload: nextCursorPosition(
           cursorTop,
@@ -83,16 +83,18 @@ export function useKeyHandler(refs, state, dispatch) {
         )})
 
       }  else if (input === 'g') {
-        dispatch({type:"setCursorTop", payload:0})
-        dispatch({type: "setCursorLeft", payload: 0})
-        dispatch({type: "setStateCallbackFlag"})
-
+        dispatch({type:"setCursorTop", payload:0}) 
+        mainBoxRef.current?.scrollTo(cursorTop)
+          logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
+        // dispatch({type: "setCursorLeft", payload: 0})
+        // dispatch({type: "setStateCallbackFlag"})
+        if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
+          scrollToScrollHeightFlag.current = true;
+        } 
       } else if (input === 'S-g') {
         dispatch({type:"setCursorTop", payload: mainBoxRef.current.getScreenLines().length - 2})
-        logger2.info(stringify({cursorTop}))
-
-        //dispatch({type:"setCursorLeft", payload: 0})
-        dispatch({type: "setStateCallbackFlag"})
+        mainBoxRef.current?.scrollTo(cursorTop)
+        // dispatch({type: "setStateCallbackFlag"})
 
       } else if (input === '0') {
         dispatch({type:"setCursorLeft", payload: 0})
@@ -105,21 +107,31 @@ export function useKeyHandler(refs, state, dispatch) {
         mainBoxRef.current?.setScrollPerc(100)
 
       } else if (input === 'C-d') {
-        dispatch({type: "setCursorTop", payload: (cursorTop + mainBoxRef.current?.height) - 2})
+        dispatch({type: "setCursorTop", payload: (cursorTop + mainBoxRef.current?.height)})
 
         if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
           dispatch({type: "setCursorTop", payload: mainBoxRef.current?.getScrollHeight() - 1})
+          scrollToScrollHeightFlag.current = true;
+          //mainBoxRef.current?.scrollTo(cursorTop)
         }
-        scrollToScrollHeightFlagRef.current = true;
+        mainBoxRef.current?.scrollTo(cursorTop)
         dispatch({type: "setStateCallbackFlag"})
       } else if (input === 'S-g') {
-
+        setCursorTop(mainBoxRef.current?.getScreenLines().length - 1)
+        mainBoxRef.current?.scrollTo(cursorTop)
+          logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
+        setCursorLeft(0)
+        setStateCallbackFlag(true)
       } else if (input === 'C-u') {
-        dispatch({type:"setCursorTop",payload: cursorTop - (mainBoxRef.current?.height)-2})
+        dispatch({type:"setCursorTop", payload: cursorTop - (mainBoxRef.current?.height)-2})
+        if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
+          scrollToScrollHeightFlag.current = true;
+        } 
+
         if (cursorTop < 0) {
           dispatch({type:"setCursorTop", payload:0})
         }
-        scrollToZeroFlag.current = true
+        scrollToZeroFlagRef.current = true
         dispatch({type: "setStateCallbackFlag", payload: true})
       }
     }
