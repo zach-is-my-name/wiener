@@ -11,15 +11,16 @@ import {_logger} from '../../devLog/logger.js';
 export const formatHeader = (string) => {
   const output_final = pipe(
     _stripAnsi,  
+    removeDateTitleAndSubscribe,
     trimBody,
     removeH1, 
-    removeTopTitle,
+    //h6Format, 
     h2Format,
-    h6Format, 
     trimH2,
-   // addUnderlineToDate, 
+    removeTopTitle,
+    formatMainTitle1,
   )(string);
-
+  // _logger.info(string)
   return `{center}${output_final}\n{/}{/}\n\n`
 }
 
@@ -37,6 +38,7 @@ const removeH1 =  (string) => {
   const re = /\#{1}\s+?\[(Week\sin\sEthereum\sNews)\]\(https:\/\/weekinethereumnews\.com\/\)/ 
   return string.replace(re, '') 
 }
+
 const removeTopTitle = (string) => {
  const re = /\s+Week\s[i|I]n\sEthereum\sNews/m
  return string.replace(re, '')
@@ -45,7 +47,8 @@ const removeTopTitle = (string) => {
 const h6Format = (string) => {
   const re = /(#{6}\s\*\*)(.+?)\*\*/gm 
   const h6 = `${chalk.bold.bgAnsi256(103)(' $2 ')}`
-  return  string.replace(re, `${h6}\n\n`)
+  _logger.info(h6)
+   return  string.replace(re, `${h6}\n\n`)
 }
 
 const h2Format = (string) => {
@@ -72,4 +75,23 @@ const removeUnderlineFromBreakH2 = (string) => {
 const addUnderlineToDate = (string) => {
   const re = /(\#\#\s\[Week\sin\sEthereum\sNews[^]+?)(\w{3,}\s\d+.+?\d{4})\]/gm
   return string.replace(re, "$1" + chalk.underline('$2'))  
+}
+
+const removeDateTitleAndSubscribe = (string) => {
+  const re = /[\s\S]+?##/
+  return string.replace(re, "")
+}
+
+const formatMainTitle1 = (string) => {
+  const re = /\[(Week in Ethereum News[^]+?)\]/m
+  const removedBrackets = string.match(re)
+  _logger.info(removedBrackets[1])
+   // return string
+  return (`${removedBrackets[1]}
+
+
+${chalk.bold.bgAnsi256(103)('Eth News and Links ')}
+
+
+`)
 }

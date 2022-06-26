@@ -28,7 +28,6 @@ export function useHookController(hasInternet, hasLatestInArchive) {
   const [state, ctrDispatch] = useReducer(reducer, initialState);
 
   useEffect(() =>  {
-  _logger.info(JSON.stringify({hasLatestInArchive}))
     if (hasInternet === true) {
 
       if (hasLatestInArchive === true) {
