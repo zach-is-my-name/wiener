@@ -14,7 +14,5 @@ export function useUiHooks() {
 
   const [{clickHandler}] = useMouseClick(refsObjArr, state, dispatch, followLinkUnderCursor)
 
-
-
   return [{keyHandler, clickHandler}, ...refsObjArr, state]  
 }

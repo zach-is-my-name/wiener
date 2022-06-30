@@ -55,7 +55,7 @@ const MainBox = (props) =>  {
     if (isFirstRender.current) {
       isFirstRender.current = false
     }
-      mainBoxRef.current?.scrollTo(cursorTop);
+    mainBoxRef.current?.scrollTo(cursorTop);
     if (scrollToScrollHeightFlag.current) {
       mainBoxRef.current?.scrollTo(mainBoxRef.currrent?.getScrollHeight())
     } else if (scrollToZeroFlag.current) {
