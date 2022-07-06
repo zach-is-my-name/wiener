@@ -1,6 +1,6 @@
 import {_logger} from '../../../devLog/logger.js'
 import {useRef, useReducer} from 'react'
-import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs, useFormatWien} from '../index.js'
+import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs} from '../index.js'
 
 
 export function useUiHooks() {

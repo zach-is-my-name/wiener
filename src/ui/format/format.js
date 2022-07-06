@@ -5,5 +5,6 @@ import {formatPostFormat} from './formatPostFormat.js'
 export async function format(newsletter) {
   const header = formatHeader(newsletter)
   const body = formatPostFormat(await formatBody(newsletter)) 
-   return `{center}${newsletter}{/center}`
+  // return header + body 
+  return newsletter
 }

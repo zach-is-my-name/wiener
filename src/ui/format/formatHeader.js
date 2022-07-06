@@ -10,17 +10,13 @@ import {_logger} from '../../devLog/logger.js';
 
 export const formatHeader = (string) => {
   const output_final = pipe(
-    _stripAnsi,  
-    removeDateTitleAndSubscribe,
-    trimBody,
-    removeH1, 
-    //h6Format, 
-    h2Format,
-    trimH2,
-    removeTopTitle,
-    formatMainTitle1,
+    //trimBody,
+    //h2Format,
+    //trimH2,
+    //removeTopTitle,
+    //formatMainTitle1,
   )(string);
-  // _logger.info(string)
+
   return `{center}${output_final}\n{/}{/}\n\n`
 }
 
@@ -30,26 +26,26 @@ const trimBody = (string) => {
   return header 
 }
 
-const _stripAnsi = (string) => {
-  return stripAnsi(string)
-}
+// const _stripAnsi = (string) => {
+//   return stripAnsi(string)
+// }
 
-const removeH1 =  (string) => {
-  const re = /\#{1}\s+?\[(Week\sin\sEthereum\sNews)\]\(https:\/\/weekinethereumnews\.com\/\)/ 
-  return string.replace(re, '') 
-}
+// const removeH1 =  (string) => {
+//   const re = /\#{1}\s+?\[(Week\sin\sEthereum\sNews)\]\(https:\/\/weekinethereumnews\.com\/\)/ 
+//   return string.replace(re, '') 
+// }
 
 const removeTopTitle = (string) => {
  const re = /\s+Week\s[i|I]n\sEthereum\sNews/m
  return string.replace(re, '')
 }
 
-const h6Format = (string) => {
-  const re = /(#{6}\s\*\*)(.+?)\*\*/gm 
-  const h6 = `${chalk.bold.bgAnsi256(103)(' $2 ')}`
-  _logger.info(h6)
-   return  string.replace(re, `${h6}\n\n`)
-}
+// const h6Format = (string) => {
+//   const re = /(#{6}\s\*\*)(.+?)\*\*/gm 
+//   const h6 = `${chalk.bold.bgAnsi256(103)(' $2 ')}`
+//   _logger.info(h6)
+//    return  string.replace(re, `${h6}\n\n`)
+// }
 
 const h2Format = (string) => {
   const re = /\#\#\s\[(Week\sin\sEthereum\sNews)[^]+?(\w{3,}\s\d+.+?\d{4})\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)\)/gm

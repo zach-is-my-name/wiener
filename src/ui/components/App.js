@@ -9,24 +9,35 @@ import {useHasInternet,
   useUpdateNewsletters,
   useHookController, 
   useFormatWien,
+  
+  useDev,
+  useDevMarkdown
 } from '../customHooks/index.js'
 
 
 function App(props) {
-  const hasInternet = useHasInternet()
+  // const hasInternet = useHasInternet()
 
-  const {dateCurrentNewsletter:{dateWithMonth="waiting"}, hasLatestInArchive ="waiting"} = useHasLatestInArchive() 
+  // const {dateCurrentNewsletter:{dateWithMonth="waiting"}, hasLatestInArchive ="waiting"} = useHasLatestInArchive() 
 
-  let [ { getHook, updateHook, loading }, {ctrDispatch}] = useHookController(hasInternet, hasLatestInArchive) 
+  // let [ { getHook, updateHook, loading }, {ctrDispatch}] = useHookController(hasInternet, hasLatestInArchive) 
 
-  const renderObj = useGetWien(getHook, ctrDispatch, dateWithMonth );
+  //useUpdateNewsletters(updateHook, ctrDispatch, dateWithMonth) 
 
-  const renderText = useFormatWien(renderObj) 
-  useUpdateNewsletters(updateHook, ctrDispatch, dateWithMonth) 
+  //const renderObj = useGetWien(getHook, ctrDispatch, dateWithMonth );
 
+
+  // const markdownText = useFormatWien(renderObj) 
+
+  // const renderMarkdown = useRenderMarkdown()
+
+  const html = useDev()
+  const markdownText = useDevMarkdown(html);
+  _logger.info(markdownText)
   return (
-    <MainBox argObj={argObj} renderText={renderText} renderObj={renderObj}  />
-  )
+    // <MainBox argObj={argObj} renderText={markdownText} renderObj={renderObj}  />
+    // <MainBox  renderText={markdownText} />
+  <MainBox   />)
 }
 
 export default App
