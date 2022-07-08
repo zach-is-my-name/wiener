@@ -9,8 +9,9 @@
   },
   "scripts": {
     "build": "npx babel src -d dist --extensions \".js\" --source-maps --copy-files ",
-    "go": "node dist/index.js",
-    "dev": "rimraf dist && npm run build && node -r source-map-support/register dist/index.js",
+    "go": "node --trace-exit dist/index.js",
+    "def": "rimraf dist && npm run build && node --trace-warnings --inspect=127.0.0.1:9228 -r source-map-support/register dist/index.js",
+    "dev": "rimraf dist && npm run build && node --trace-warnings -r source-map-support/register dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -34,6 +35,7 @@
     "console-log-to-file": "^1.0.3",
     "fix-esm": "^1.0.1",
     "flatted": "^3.2.5",
+    "log4js": "^6.6.1",
     "neo-blessed": "https://github.com/zach-is-my-name/neo-blessed.git",
     "parcel": "^2.4.1",
     "source-map-support": "^0.5.21",
@@ -60,6 +62,7 @@
     "import-jsx": "^4.0.0",
     "import-meta-resolve": "^1.1.1",
     "is-online": "^10.0.0",
+    "is-reachable": "^5.2.1",
     "is-tmux": "^1.0.0",
     "lowdb": "^3.0.0",
     "markdown-to-jsx": "^7.1.3",

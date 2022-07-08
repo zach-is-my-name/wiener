@@ -20,6 +20,14 @@ const cli = meow({
 	}
 });
 
-export const argObj = {input: cli.input[0], flags: cli.flags}
+// export const argObj = {input: cli.input[0], flags: cli.flags}
+try {
+start()
+} catch(e) {console.log(e)}
 
-start(argObj)
+
+process.on('unhandledRejection', (reason, p) => {
+  // Will print "unhandledRejection err is not defined"
+  console.log('unhandledRejection at:', p, 'reason', reason);
+});
+

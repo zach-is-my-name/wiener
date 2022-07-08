@@ -12,31 +12,31 @@ import {parse, stringify, toJSON, fromJSON} from 'flatted';
  */
 
 const MainBox = (props) =>  {
-  const [ { keyHandler, clickHandler }, {mainBoxRef, cursorRef }, {cursorLeft, cursorTop} ] = useUiHooks()
+  const [ { keyHandler, clickHandler }, {mainBoxRef, cursorRef }, {cursorLeft, cursorTop} ] = useUiHooks(props.ctlDispatch)
 
   return(
-    <box>null</box>
+    <box 
+    top={"top"}
+    left={"left"}
+    width={"100%"}
+    height={"100%"}  
+    focused={true}
+    keyable={true}
+    input={true}
+    scrollable={true}
+    mouse={true} 
+    tags={true}
+    onKeypress={keyHandler}
+    onClick={() =>clickHandler(mainBoxRef)}
+    ref={mainBoxRef}
+    content={props.renderText || "loading"}
+    > 
+    <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} />   
+    </box>
+
   )
 }
 
-    // <box 
-    // top={"top"}
-    // left={"left"}
-    // width={"100%"}
-    // height={"100%"}  
-    // focused={true}
-    // keyable={true}
-    // input={true}
-    // scrollable={true}
-    // mouse={true} 
-    // tags={true}
-    // onKeypress={keyHandler}
-    // onClick={() =>clickHandler(mainBoxRef)}
-    // ref={mainBoxRef}
-    // content={props.renderText || "loading"}
-    // > 
-    // <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} />   
-    // </box>
 
 export default MainBox
 

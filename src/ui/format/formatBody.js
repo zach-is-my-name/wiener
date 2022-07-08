@@ -21,9 +21,6 @@ var axiosInstance = axios.create({ httpsAgent: agent });
 
 export const formatBody = async (string) => {
   const output_final = pipe(
-    _stripAnsi,  
-    trimHeader,
-    h6Format, 
     lineBreakTopLevelStars,
     lineBreaksIndentedStars,  
     topLevelStarToBullet, 

@@ -1,4 +1,5 @@
-import {_logger, logger2} from '../devLog/logger.js';
+import {logger2, logger} from '../devLog/logger.js';
+logger.level = "debug"
 import {addNewsletterToDb, loadNewsletterFromDb} from '../db/db.js'
 import {applyMarkdown} from './applyMarkdown.js'
 import {getDateFromNewsletter} from '../utilities.js'
@@ -9,16 +10,15 @@ import pkg from 'utils-deep-clone';
 const { toJSON } = pkg;
 
 export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
-  const markdownNewsletter = await applyMarkdown(htmlNewsletter) 
-  const date = await getDateFromNewsletter(markdownNewsletter) 
+  let newsletter = await applyMarkdown(htmlNewsletter)
+  const date = await getDateFromNewsletter(newsletter) 
+  validateInputDate(date) 
+
+  newsletter = newsletter.split(/\n/) 
   
-  if (dayjs(date, 'M-D-YYYY').isValid() === true) {
-    const addedNewsletterObj = await addNewsletterToDb(date, markdownNewsletter, url, prevUrl, nextUrl) 
-    // return addedNewsletterObj
-    const loadedFirstNewsletterObj = await loadNewsletterFromDb()
-    // logger2.info(JSON.stringify(loadedFirstNewsletterObj)) 
-    return loadedFirstNewsletterObj
-  } else { console.log("invalid date format")}
+  const res = await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl) 
+  if (!res) return new Error({date, newsletter, url, prevUrl, nextUrl})
+  return res
 }
 
 

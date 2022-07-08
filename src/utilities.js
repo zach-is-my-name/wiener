@@ -10,24 +10,23 @@ dayjs.extend(customParseFormat)
 import cheerio from 'cheerio'
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import {applyMarkdown} from './transform/applyMarkdown.js'
-let errorCount = 0
-
+import chalk from 'chalk';
 const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
 
-export async function fetchDateFromCurrentNewsletter() {
-  const {data} = await axios.get('http://weekinethereumnews.com');
-  const { dateWithMonth, dateNoMonth } = await getDate(data)  
-  return ({dateWithMonth, dateNoMonth, data})
+export async function fetchDateCurrent() {
+
+  const {data} = await axios.get('https://weekinethereumnews.com').catch(e => new Error(e));
+  const { dateWithMonth, dateWithMonthNumber } = await getDate(data)  
+  return ({dateWithMonth, dateWithMonthNumber})
 }
 
 function validateInputDate(date) {
 
   if (typeof date !== 'string') {
-    throw new Error(`argument must be a string ${JSON.stringify(date)}`)
+    new Error(`argument must be a string ${JSON.stringify(date)}`)
     return 
   } else if (dayjs(date, 'M-D-YYYY').isValid() === false){ 
-    throw new Error(`date format invalid ${date}`)
+    new Error(`date format invalid ${date}`)
     return 
   }
 }
@@ -65,14 +64,14 @@ async function getDate(document) {
     const execResult = re.exec(document)   
     const [match, monthName, day, year] = execResult
     let monthNum = monthNameToNumber(monthName)
-   return ({dateWithMonth:`${monthName.toLowerCase()}-${day}-${year}/`, dateNoMonth: monthNum + '-' + day + '-'+ year})
+   return ({dateWithMonthName:`${monthName.toLowerCase()}-${day}-${year}/`, dateWithMonthNumber: monthNum + '-' + day + '-'+ year})
   } catch(error) {
-    throw new Error(error)
+    new Error(error)
   }
 }
 
 export async function getDateFromNewsletter(newsletter) {
-  const {dateNoMonth:date} = await getDate(newsletter)
+  const {dateWithMonthNumber:date} = await getDate(newsletter)
   validateInputDate(date)
   return date
 }

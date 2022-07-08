@@ -3,12 +3,12 @@ import {useRef, useReducer} from 'react'
 import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs} from '../index.js'
 
 
-export function useUiHooks() {
+export function useUiHooks(ctlDispatch) {
 
   const [state, dispatch] = useUIReducer()
 
   const refsObjArr = useGetRefs()
-  const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refsObjArr, state, dispatch)
+  const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refsObjArr, state, dispatch, ctlDispatch)
 
   useScroll(refsObjArr, state, dispatch)
 

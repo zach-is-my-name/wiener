@@ -1,43 +1,55 @@
-import {_logger, logger2} from '../../devLog/logger.js' 
-import React from 'react';
-import {argObj} from '../../index.js'
-import {fetchDateFromCurrentNewsletter} from '../../utilities.js'
+import {parse, stringify, toJSON, fromJSON} from 'flatted';
+import {_logger, logger, logger2} from '../../devLog/logger.js' 
+logger.level = "debug"
+import React, {useState, useEffect} from 'react';
 import MainBox from './MainBox.js' 
-import {useHasInternet,
-  useHasLatestInArchive,
+import SearchPage from './SearchPage.js'
+
+import {
+  useCtrReducer,
+  useInitLoad, 
   useGetWien, 
   useUpdateNewsletters,
   useHookController, 
-  useFormatWien,
-  
-  useDev,
-  useDevMarkdown
 } from '../customHooks/index.js'
 
 
 function App(props) {
-  // const hasInternet = useHasInternet()
 
-  // const {dateCurrentNewsletter:{dateWithMonth="waiting"}, hasLatestInArchive ="waiting"} = useHasLatestInArchive() 
+  const [dateFromSearch, setDateFromSearch] = useState("") 
+  const [renderSearch, setRenderSearch] = useState(false)
 
-  // let [ { getHook, updateHook, loading }, {ctrDispatch}] = useHookController(hasInternet, hasLatestInArchive) 
+  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos] = useCtrReducer()
 
-  //useUpdateNewsletters(updateHook, ctrDispatch, dateWithMonth) 
+  const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch) 
 
-  //const renderObj = useGetWien(getHook, ctrDispatch, dateWithMonth );
+  useEffect(() => {
+    logger.debug("loadState", loadState)
+  }, [loadState])
 
+  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest) || {};
 
-  // const markdownText = useFormatWien(renderObj) 
+  // useEffect(() => {
+  //   logger.debug("APP NLO DATE: ", date)
+  // }, [date])
 
-  // const renderMarkdown = useRenderMarkdown()
+  useEffect(() => {
+    if (loadState === "renderSearch") setRenderSearch(state => !state)
+  }, [loadState])
 
-  const html = useDev()
-  const markdownText = useDevMarkdown(html);
-  _logger.info(markdownText)
-  return (
-    // <MainBox argObj={argObj} renderText={markdownText} renderObj={renderObj}  />
-    // <MainBox  renderText={markdownText} />
-  <MainBox   />)
+  useUpdateNewsletters(dateLatestPub, hasLatest) 
+
+  if (!renderSearch) {
+    return ( 
+      <MainBox renderText={text} ctrDispatch={ctrDispatch} savedCursorPos={savedCursorPos}  />
+    )
+  } else if (renderSearch) {
+    return (
+      <SearchPage setDateFromSearch={setDateFromSearch} ctrDispatch={ctrDispatch}/>
+    )
+  } else if (loadState === 'loading') {
+    return null
+  }
 }
 
 export default App

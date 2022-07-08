@@ -16,7 +16,7 @@ function reducer(state, action) {
     case 'setStateCallbackFlag':
       return {...state, stateCallbackFlag:!state.stateCallbackFlag};
     default:
-      _logger.warn("reducer error", {type: action.type, payload:action.payload})
+     throw new Error("UI reducer error") 
   }
 }
 

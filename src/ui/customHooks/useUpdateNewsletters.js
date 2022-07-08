@@ -1,19 +1,23 @@
 import {_logger} from '../../devLog/logger.js' 
 import {useEffect} from 'react'
-import axios from 'axios';
-import rateLimit from 'axios-rate-limit';
-import {loadNewsletterFromDb} from '../../db/db.js' 
 import {applyMarkdown} from '../../transform/applyMarkdown.js'
 import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
 
-export function useUpdateNewsletters(hookBool, dispatch, dateWithMonth ) {
+export function useUpdateNewsletters(dateLatestPub, hasLatest) {
   useEffect(() => {
-    if (hookBool === true) {
+    if (hasLatest /*hasInternet && dateLatestPub && text && text.length*/) {
     (async () => {
-      await fetchBackFromLocalLatest(dispatch, dateWithMonth)
-    })()
+      await fetchBackFromLocalLatest(dateWithMonthName)
+    })();
     }
-    return () => dispatch({type: "updateHook", payload: false})
-  }, [hookBool])
+  }, [hasLatest])
 }
+
+
+
+
+
+
+
+
 
