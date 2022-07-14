@@ -1,12 +1,25 @@
 import {_logger} from '../../devLog/logger.js'
 import {useHasInternet, useHasLatestInArchive } from './index.js'
-import {useEffect} from 'react'
+import {useReducer, useEffect} from 'react'
+
+const initialState = {loadState: false, savedCursorPos: null}
+const loadStates = ['fetchLatest','getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook',  'closeSearch'] 
+function reducer (state, action) {
+  if (loadStates.includes(action.type)) {
+    return ({loadState: action.type})
+  } else if (action.type === 'renderSearch') {
+    return ({...state, loadState: 'renderSearch', savedCursorPos: action.payload })
+    } else if (action.type === 'closeSearch') {
+      return ({...state, loadState: 'restoreWien'}) 
+    }
+  }
 
 
-
-export function useInitLoad(ctrDispatch) {
+export function useInitLoad() {
+  const [state, ctrDispatch] = useReducer(reducer, initialState);
   const hasInternet = useHasInternet()
   const {hasLatestInArchive, dateLatestPub} = useHasLatestInArchive(hasInternet)
+ 
 
   useEffect(() =>  {
     if (hasInternet === true) {
@@ -20,16 +33,14 @@ export function useInitLoad(ctrDispatch) {
       } else if (hasLatestInArchive === "loading") {
         ctrDispatch({type: "loading"}) 
       }
-    } 
-
-    else if (hasInternet === false) { //no internet
+    } else if (hasInternet === false) { //no internet
       ctrDispatch({type: "getArchiveMostRecent"})
-
-    } else if (hasInternet === "loading") {
+    }
+    else if (hasInternet === "loading") {
       ctrDispatch({type: "loading"}) 
     } 
   }, [hasInternet, hasLatestInArchive])
-  return [dateLatestPub, hasInternet, hasLatestInArchive]  
+  return [state.loadState , ctrDispatch, dateLatestPub, hasInternet, state.savedCursorPos]  
 }
 
 

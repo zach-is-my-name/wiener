@@ -1,3 +1,7 @@
+process.on('uncaughtException', function(error) {
+console.clear;
+console.log(error)
+});
 import meow from 'meow'
 import figures, {mainSymbols} from 'figures';
 import {start} from './ui/start.js';
@@ -24,10 +28,3 @@ const cli = meow({
 try {
 start()
 } catch(e) {console.log(e)}
-
-
-process.on('unhandledRejection', (reason, p) => {
-  // Will print "unhandledRejection err is not defined"
-  console.log('unhandledRejection at:', p, 'reason', reason);
-});
-

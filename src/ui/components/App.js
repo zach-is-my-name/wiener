@@ -1,61 +1,39 @@
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
-import {_logger, logger, logger2} from '../../devLog/logger.js' 
-logger.level = "debug"
+import {_logger, logger2} from '../../devLog/logger.js' 
 import React, {useState, useEffect} from 'react';
 import MainBox from './MainBox.js' 
 import SearchPage from './SearchPage.js'
-import HelpPage from './HelpPage.js'
 
 import {
-  useCtrReducer,
   useInitLoad, 
   useGetWien, 
   useUpdateNewsletters,
-  useHookController, 
 } from '../customHooks/index.js'
 
 
 function App(props) {
 
   const [dateFromSearch, setDateFromSearch] = useState("") 
-  const [renderSearch, setRenderSearch] = useState(false)
+  const [lineFromSearch, setLineFromSearch] = useState(null) 
 
-  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden] = useCtrReducer()
+  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden, searchPageHidden] = useCtrReducer()
 
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch) 
 
-  useEffect(() => {
-    logger.debug("loadState", loadState)
-  }, [loadState])
-
-  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest) || {};
+  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
 
   // useEffect(() => {
   //   logger.debug("APP NLO DATE: ", date)
   // }, [date])
 
-  useEffect(() => {
-    if (loadState === "renderSearch") setRenderSearch(state => !state)
-  }, [loadState])
-
   useUpdateNewsletters(dateLatestPub, hasLatest) 
 
-  if (!renderSearch) {
-    return ( 
-      <MainBox renderText={text} ctrDispatch={ctrDispatch} savedCursorPos={savedCursorPos} helpPageHidden={helpPageHidden}  />
-    )
-  } else if (renderSearch) {
-    return (
-      <SearchPage setDateFromSearch={setDateFromSearch} ctrDispatch={ctrDispatch}/>
-    )
-  } else if (loadState === 'loading') {
-    return null
+  if (loadState === 'loading') {
+    return "loading..."
   } 
-  // else if (loadState === 'showHelp') {
-  //   return (
-  //     <HelpPage />
-  //   )
-  // }
+    return ( 
+      <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden}  />
+    )
 }
 
 export default App

@@ -1,29 +1,32 @@
-import {_logger, logger2} from '../../devLog/logger.js' 
+import {_logger} from '../../devLog/logger.js' 
 import React, {useEffect, useState} from 'react'
-import {getDateFromLatestInArchive} from '../../db/db.js' 
-import {fetchDateFromCurrentNewsletter} from '../../utilities.js'
+import {getDateLatestInArchive} from '../../db/db.js' 
+import {fetchDateCurrent} from '../../utilities.js'
 
 export function useHasLatestInArchive(hasInternet) {
   const [hasLatestInArchive, setHasLatestInArchive] = useState("loading") 
-  const [dateCurrentNewsletter, setDateCurrentNewsletter] = useState({dateCurrentNewsletter: {dateWithMonthName: null, dateWithMonthNumber:null}} ) 
+  const [dateLatestPub, setDateLatestPub] = useState(null) 
 
 
 
   useEffect(()=> {
-    if (hasLatestInArchive === "loading" && hasInternet) {
+    // _logger.info(JSON.stringify({hasLatestInArchive})) 
+    if (hasLatestInArchive === "loading") {
       (async () => {
+        const { dateWithMonth, dateWithMonthNumber:latestPublishedDate } = await fetchDateCurrent()
+        const latestArchiveDate  = await getDateLatestInArchive();
+        // _logger.info(JSON.stringify({dateWithMonth, latestPublishedDate}))
+        // _logger.info(JSON.stringify({latestArchiveDate })) 
+        if (!latestArchiveDate) {
+          setHasLatestInArchive(false)
+        } else {
+          setHasLatestInArchive(Boolean(latestPublishedDate === latestArchiveDate))
+        }
 
-        const { dateWithMonthName, dateWithMonthNumber:latestPublishedDate } = await fetchDateFromCurrentNewsletter()
-        
-        const result = await getDateFromLatestInArchive() 
-        const latestArchiveDate= result.date
+        setDateLatestPub(dateWithMonth) 
 
-        const areEqual = Boolean(latestPublishedDate === latestArchiveDate) 
-        setDateCurrentNewsletter({dateWithMonthName, latestPublishedDate}) 
-        setHasLatestInArchive(areEqual)
-
-      })()
+      })();
     }
-  })
+  }, )
   return {hasLatestInArchive, dateLatestPub} 
 }

@@ -1,4 +1,5 @@
-import {logger, logger2} from '../devLog/logger.js'
+#!/usr/bin/env node
+// import {_logger} from '../devLog/logger.js'
 import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
@@ -15,11 +16,24 @@ axiosRetry(http, { retryDelay: () => {return 50000}})
 let count = 0
 let reqCount = 0
 
-export async function fetchBackFromLocalLatest(dateLatestPub) {
+export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
+  // _logger.info("fetchBackCalled")
+  let count = 0
+  const __dirname = dirname(fileURLToPath(await resolve("../db/db.json", import.meta.url)));
+  const file = join(__dirname, 'db.json')
+  const adapter = new JSONFile(file)
+  const db = new Low(adapter)
+  await db.read()
+
+  db.data ||= { newsletters: [ ] }
+
+  const { newsletters } = db.data
+
+  let storedNewsletters  
+  storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
   let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`
-  //  storedNewsletters = await replaceBlankNextUrl(storedNewsletters)
-   //let storedNewsletters 
-  let count = 0 
+
+
   while (targetUrl) {
 
   let storedNewsletters = await loadNewsletterFromDb("all")

@@ -14,9 +14,18 @@ const screen = blessed.screen({
   smartCSR: true,
   title: 'wiener',
   fullUnicode: true,
+  handleUncaughtExceptions: false,
+  ignoreDockContrast: true,
+  dockBorders:true
 });
 
-export function start (argObj) {
+screen.key(['q', 'C-c', 'C-e', 'enter', 'C-enter'], (ch, key) => {
+  if (key.sequence === '\x1B') {
+    process.exit(0)
+  }
+});
+
+export function start () {
   render(<App  />, screen);
 }
 

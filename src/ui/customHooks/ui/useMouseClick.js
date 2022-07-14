@@ -1,4 +1,4 @@
-import {_logger} from '../../../devLog/logger.js' 
+// import {_logger} from '../../../devLog/logger.js' 
 import {useEffect} from 'react'
 
 export function useMouseClick([{mainBoxRef}], {wasMouseClicked, cursorLeft, cursorTop},  dispatch, followLinkUnderCursor)  { 
@@ -12,7 +12,7 @@ export function useMouseClick([{mainBoxRef}], {wasMouseClicked, cursorLeft, curs
 
   const clickHandler = (mouse) => {
     // move the cursor
-    _logger.info("useClick args", {arguments})
+    // _logger.info("useClick args", {arguments})
     const { x, y } = mouse
     dispatch({type:"setCursorLeft", payload: x})
     dispatch({type:"setCursorTop", payload: mainBoxRef.current?.childBase + y})

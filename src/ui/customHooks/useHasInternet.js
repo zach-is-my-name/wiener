@@ -9,9 +9,9 @@ export function useHasInternet() {
   const [wienIsReachable, setWienIsReachable] = useState("loading")
   useEffect(() => {
     (async () => {
-
       setHasInternet(await isOnline() && await isReachable('https://weekinethereumnews.com') );
     })()
   } );
+  
  return hasInternet
 }

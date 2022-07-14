@@ -11,13 +11,6 @@ export const logger = log4js.getLogger();
 import { createRequire } from 'module';
 import winston, {format, createLogger, transports}  from 'winston';
 
-
-
-
-
-
-
-
 export const logger2 = winston.createLogger({
   transports: [
     new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/text.log' })]
@@ -30,26 +23,31 @@ winston.add(new winston.transports.File({
   handleRejections: true,
 }));
 
-// const prettyJson = format.printf(info => {
-//   if (info.message.constructor === Object) {
-//     info.message = JSON.stringify(info.message, null, 4)
-//   }
-//   return `${info.level}: ${info.message}`
-// })
+const prettyJson = format.printf(info => {
+  if (info.message.constructor === Object) {
+    info.message = JSON.stringify(info.message, null, 4)
+  }
+  return `${info.level}: ${info.message}`
+})
 
 export const _logger = winston.createLogger({
+  format: format.combine(
+    format.prettyPrint(),
+    format.splat(),
+    prettyJson
+  ),
   transports: [
     new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/combined.log' })
   ]
 });
 
 
-let _logger_info_old = _logger.info;
+// let _logger_info_old = _logger.info;
 
-_logger.info = function(msg) {
-  var fileAndLine = traceCaller(1);
-  return _logger_info_old.call(this, fileAndLine + ":" + msg);
-}
+// _logger.info = function(msg) {
+//   var fileAndLine = traceCaller(1);
+//   return _logger_info_old.call(this, fileAndLine + ":" + msg);
+// }
 
 // let logger2_info_old = logger2.info;
 // logger2.info = function(msg) {

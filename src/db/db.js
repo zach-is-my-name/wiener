@@ -1,5 +1,3 @@
-import {logger2, logger} from '../devLog/logger.js';
-logger.level = "debug"
 import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
@@ -16,6 +14,7 @@ export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl) {
   db.data ||= { newsletters: [] }             
   db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl });
   await db.write()
+
   await db.read()
   db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
 
@@ -47,21 +46,8 @@ export async function loadNewsletterFromDb(by, param) {
   }
 }
 
-export async function addNextUrl(index, arr) {
-  if (arr.length > 1) {
-    db.data = { newsletters: arr  }             
-    let newsletters = db.data.newsletters 
-    const nextUrl = newsletters[index+1].url 
-    const targetObj  = {...newsletters[index], url: nextUrl} 
-    newsletters = newsletters.splice(index, 1, targetObj) 
-    await db.write()   
-    return await loadNewsletterFromDb("all")  
-  }
-  return arr
-}
-
 export async function getDateLatestInArchive() {
    const result = await loadNewsletterFromDb("first")
-  const {date} = result
-  return result 
+   const {date} = result || false 
+  return date 
 }

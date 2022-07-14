@@ -1,6 +1,5 @@
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
 import TurndownService from 'turndown';
-
 import chalk from 'chalk';
 import boxen from 'boxen'
 import wrapAnsi from 'wrap-ansi';
@@ -23,12 +22,11 @@ turndownService.remove(turndownFilter);
 export const applyMarkdown = async (html) => {
 
   turndownService
-    .addRule('center align h2 entry-title', {
+    .addRule('center align h2: entry-title', {
       filter: (node, content) => /entry-title/.test(node.className),
       replacement: (content, node) => {
         const noBreakText = content.replace(/\<br\>\s/,"")
-        return `{center}
-${chalk.bold(noBreakText)}{/center}` +"\n"+"\n"
+        return "\n" + `{center}${chalk.bold(noBreakText)}{/center}` +"\n"+"\n"
       }
     })
 
@@ -37,8 +35,8 @@ ${chalk.bold(noBreakText)}{/center}` +"\n"+"\n"
       replacement: (content) => {
         //giving the box a leading newline cures it
         const noAnsi = chalk.blue(stripAnsi(content))
-        const box = boxen(noAnsi, {borderColor: 'gray', borderStyle: 'bold'})
-        return ("\n" + box  )
+        const box = boxen(noAnsi, {borderColor: 'grey', borderStyle: 'bold'})
+        return ("\n" +  `{center}${box}` + "\n")
       }}
     ) 
 
