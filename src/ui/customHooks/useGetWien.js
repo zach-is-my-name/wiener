@@ -47,7 +47,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
       })();
 
     } else if (loadState === "loadNextHook" && adjacentDates.nextUrl.length) {
-      logger.debug(`adjacentDates.nextUrl, ${adjacentDates.nextUrl}`);
+      // logger.debug(`adjacentDates.nextUrl, ${adjacentDates.nextUrl}`);
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.nextUrl)
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})

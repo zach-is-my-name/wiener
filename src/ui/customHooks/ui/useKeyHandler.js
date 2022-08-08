@@ -1,5 +1,6 @@
 import blessed from 'neo-blessed';
-import {logger2, _logger} from '../../../devLog/logger.js' 
+import {logger, logger2, _logger} from '../../../devLog/logger.js' 
+logger.level = "debug"
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
 /*
   C-d
@@ -11,18 +12,11 @@ export function useKeyHandler(refs, state, dispatch, ctlDispatch) {
   const [{mainBoxRef, scrollToScrollHeightFlag, scrollToZeroFlagRef}] = refs
   const {cursorTop, cursorLeft} = state 
   async function keyHandler(ch, key) {
-    logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
-    // _logger.info("e", e)
-    // logger2.info(stringify({arguments}))
-    if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
+    if (key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
 
     } else if (key.full === 'enter') {
       await followLinkUnderCursor()
-    } else if (key.full === 'H') {
-      await newsletterBack()
-    } else if (key.full === 'L') {
-      await newsletterForward() 
     } else {
       updateCoordinate(key.full)
     }
@@ -70,6 +64,8 @@ export function useKeyHandler(refs, state, dispatch, ctlDispatch) {
           mainBoxRef.current?.width,
           3,
         )})
+      } else if (input === 'escape') {
+        ctrDispatch({type: "toggleHelpPage"})
       } else if (input === 'S-h') {
         ctlDispatch({type:"loadPrevHook", true })
       } else if (input === 'S-l') {
@@ -82,6 +78,12 @@ export function useKeyHandler(refs, state, dispatch, ctlDispatch) {
           9,
         )})
 
+      } else if (input === '?' ) { 
+        ctrDispatch({type: "toggleHelpPage"}) 
+
+      } else if (input === 'S-s') {
+        // _logger.info("Shift S renderSearch")
+        ctrDispatch({type: "renderSearch", payload: {cursorTop: state.cursorTop, cursorLeft: state.cursorLeft }})
       } else if (input === '{' || input === '}') {
         dispatch({type: "setCursorTop", payload: nextTwentyYCursorPosition(
           cursorTop,
@@ -89,7 +91,6 @@ export function useKeyHandler(refs, state, dispatch, ctlDispatch) {
           mainBoxRef.current?.getScrollHeight(),
           9,
         )})
-
       }  else if (input === 'g') {
         dispatch({type:"setCursorTop", payload:0}) 
         mainBoxRef.current?.scrollTo(cursorTop)

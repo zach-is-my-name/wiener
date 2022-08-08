@@ -51,7 +51,6 @@ export async function addNextUrl(index, arr) {
   if (arr.length > 1) {
     db.data = { newsletters: arr  }             
     let newsletters = db.data.newsletters 
-    logger.debug({index})
     const nextUrl = newsletters[index+1].url 
     const targetObj  = {...newsletters[index], url: nextUrl} 
     newsletters = newsletters.splice(index, 1, targetObj) 

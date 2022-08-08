@@ -4,6 +4,7 @@ logger.level = "debug"
 import React, {useState, useEffect} from 'react';
 import MainBox from './MainBox.js' 
 import SearchPage from './SearchPage.js'
+import HelpPage from './HelpPage.js'
 
 import {
   useCtrReducer,
@@ -19,7 +20,7 @@ function App(props) {
   const [dateFromSearch, setDateFromSearch] = useState("") 
   const [renderSearch, setRenderSearch] = useState(false)
 
-  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos] = useCtrReducer()
+  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden] = useCtrReducer()
 
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch) 
 
@@ -41,7 +42,7 @@ function App(props) {
 
   if (!renderSearch) {
     return ( 
-      <MainBox renderText={text} ctrDispatch={ctrDispatch} savedCursorPos={savedCursorPos}  />
+      <MainBox renderText={text} ctrDispatch={ctrDispatch} savedCursorPos={savedCursorPos} helpPageHidden={helpPageHidden}  />
     )
   } else if (renderSearch) {
     return (
@@ -49,7 +50,12 @@ function App(props) {
     )
   } else if (loadState === 'loading') {
     return null
-  }
+  } 
+  // else if (loadState === 'showHelp') {
+  //   return (
+  //     <HelpPage />
+  //   )
+  // }
 }
 
 export default App

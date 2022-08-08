@@ -25,13 +25,13 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   let storedNewsletters = await loadNewsletterFromDb("all")
   const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
+      // logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
       targetUrl = newsletterObj.prevUrl
     } else {
-      logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
+      // logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
 
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
-      logger2.info(`UPDATE added ${writtenNewsletterObj.date} on count ${count}`)
+      // logger2.info(`UPDATE added ${writtenNewsletterObj.date} on count ${count}`)
       targetUrl = writtenNewsletterObj.prevUrl 
     }
     count++
@@ -54,9 +54,11 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
       url === "https://weekinethereumnews.com/january-4-2019/" ? prevUrl = "https://weekinethereumnews.com/december-28-2018/" : prevUrl = prevUrl
 
       const storedNewsletterObj = await convertAndStore(fetchedNewsletter, url, prevUrl, nextUrl) 
+      
+
       return storedNewsletterObj 
     }
-
+    
     return  
   }
 
@@ -67,5 +69,6 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
       } 
     }
   }
+  // logger2.info("return fetchBackFromLatest")
   return 
 }
