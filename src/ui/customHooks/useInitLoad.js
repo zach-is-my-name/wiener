@@ -14,14 +14,13 @@ function reducer (state, action) {
     }
   }
 
-
-export function useInitLoad() {
-  const [state, ctrDispatch] = useReducer(reducer, initialState);
+export function useInitLoad(ctrDispatch) {
   const hasInternet = useHasInternet()
   const {hasLatestInArchive, dateLatestPub} = useHasLatestInArchive(hasInternet)
  
 
   useEffect(() =>  {
+    _logger.info(`hasInternet === true: ${hasInternet === true}`)
     if (hasInternet === true) {
 
       if (hasLatestInArchive === true) {

@@ -27,7 +27,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
 
         const nlo  = await convertAndStore(data, url, prevUrl, nextUrl)
         setNewsletterObj(nlo)
-        if (hasLatestInArchive && hasInternet) {
+        if (hasLatestInArchive === true && hasInternet === true) {
           setHasLatest(true) 
         }
         ctrDispatch({type: "loaded"})
@@ -37,7 +37,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
       (async () => {
         const nlo = await loadNewsletterFromDb("first")
         setNewsletterObj(nlo)
-        if (hasLatestInArchive && hasInternet) {
+        if (hasLatestInArchive === true && hasInternet === true) {
           setHasLatest(true) 
         }
         ctrDispatch({type: "loaded"})

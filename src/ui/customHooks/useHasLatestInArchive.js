@@ -10,8 +10,8 @@ export function useHasLatestInArchive(hasInternet) {
 
 
   useEffect(()=> {
-    // _logger.info(JSON.stringify({hasLatestInArchive})) 
-    if (hasLatestInArchive === "loading") {
+    if (hasLatestInArchive === "loading" && hasInternet === true ) {
+      _logger.info(hasInternet);
       (async () => {
         const { dateWithMonth, dateWithMonthNumber:latestPublishedDate } = await fetchDateCurrent()
         const latestArchiveDate  = await getDateLatestInArchive();
