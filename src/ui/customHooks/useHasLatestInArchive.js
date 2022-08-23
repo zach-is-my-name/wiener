@@ -1,4 +1,4 @@
-import {_logger} from '../../devLog/logger.js' 
+import {_logger, logger2} from '../../devLog/logger.js' 
 import React, {useEffect, useState} from 'react'
 import {getDateLatestInArchive} from '../../db/db.js' 
 import {fetchDateCurrent} from '../../utilities.js'
@@ -11,7 +11,6 @@ export function useHasLatestInArchive(hasInternet) {
 
   useEffect(()=> {
     if (hasLatestInArchive === "loading" && hasInternet === true ) {
-      _logger.info(hasInternet);
       (async () => {
         const { dateWithMonth, dateWithMonthNumber:latestPublishedDate } = await fetchDateCurrent()
         const latestArchiveDate  = await getDateLatestInArchive();
@@ -27,6 +26,6 @@ export function useHasLatestInArchive(hasInternet) {
 
       })();
     }
-  }, )
-  return {hasLatestInArchive, dateLatestPub} 
+  })
+  return {hasLatestInArchive, dateLatestPub, setHasLatestInArchive} 
 }

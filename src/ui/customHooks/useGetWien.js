@@ -6,7 +6,7 @@ import cheerio from 'cheerio'
 import {loadNewsletterFromDb} from '../../db/db.js' 
 import {convertAndStore} from '../../transform/convert.js'
 
-export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch ) {
+export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive,  hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) {
   const [newsletterObj, setNewsletterObj] = useState(null)
   const [adjacentDates, setAdjacentDates] = useState(null)
 
@@ -27,9 +27,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
 
         const nlo  = await convertAndStore(data, url, prevUrl, nextUrl)
         setNewsletterObj(nlo)
-        if (hasLatestInArchive === true && hasInternet === true) {
-          setHasLatest(true) 
-        }
+        setHasLatestInArchive(true) 
         ctrDispatch({type: "loaded"})
       })();
      
@@ -37,9 +35,9 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
       (async () => {
         const nlo = await loadNewsletterFromDb("first")
         setNewsletterObj(nlo)
-        if (hasLatestInArchive === true && hasInternet === true) {
-          setHasLatest(true) 
-        }
+        // if (hasLatestInArchive === true && hasInternet === true) {
+        //   setHasLatest(true) 
+        // }
         ctrDispatch({type: "loaded"})
       })();
      

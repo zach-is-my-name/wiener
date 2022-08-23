@@ -32,17 +32,18 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
   let storedNewsletters  
   storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
   let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`
-
-
+  //  storedNewsletters = await replaceBlankNextUrl(storedNewsletters)
+  //let storedNewsletters 
+  let count = 0 
   while (targetUrl) {
 
-  let storedNewsletters = await loadNewsletterFromDb("all")
-  const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
+    let storedNewsletters = await loadNewsletterFromDb("all")
+    const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      // logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
+      logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
       targetUrl = newsletterObj.prevUrl
     } else {
-      // logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
+      logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
 
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
       // logger2.info(`UPDATE added ${writtenNewsletterObj.date} on count ${count}`)
@@ -68,11 +69,11 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
       url === "https://weekinethereumnews.com/january-4-2019/" ? prevUrl = "https://weekinethereumnews.com/december-28-2018/" : prevUrl = prevUrl
 
       const storedNewsletterObj = await convertAndStore(fetchedNewsletter, url, prevUrl, nextUrl) 
-      
+
 
       return storedNewsletterObj 
     }
-    
+
     return  
   }
 

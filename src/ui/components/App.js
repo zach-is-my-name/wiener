@@ -18,15 +18,11 @@ function App(props) {
 
   const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden, searchPageHidden] = useCtrReducer()
 
-  const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch) 
+  const [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive] = useInitLoad(ctrDispatch) 
 
-  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
+  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
 
-  // useEffect(() => {
-  //   logger.debug("APP NLO DATE: ", date)
-  // }, [date])
-
-  useUpdateNewsletters(dateLatestPub, hasLatest) 
+  useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) 
 
   if (loadState === 'loading') {
     return "loading..."

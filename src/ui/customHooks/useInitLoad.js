@@ -1,4 +1,4 @@
-import {_logger} from '../../devLog/logger.js'
+import {_logger, logger2} from '../../devLog/logger.js'
 import {useHasInternet, useHasLatestInArchive } from './index.js'
 import {useReducer, useEffect} from 'react'
 
@@ -16,11 +16,11 @@ function reducer (state, action) {
 
 export function useInitLoad(ctrDispatch) {
   const hasInternet = useHasInternet()
-  const {hasLatestInArchive, dateLatestPub} = useHasLatestInArchive(hasInternet)
- 
-
+  const {hasLatestInArchive, dateLatestPub, setHasLatestInArchive} = useHasLatestInArchive(hasInternet)
+  
   useEffect(() =>  {
-    _logger.info(`hasInternet === true: ${hasInternet === true}`)
+
+    logger2.info(`hasLatestInArchive: ${hasLatestInArchive}`)
     if (hasInternet === true) {
 
       if (hasLatestInArchive === true) {
@@ -39,7 +39,7 @@ export function useInitLoad(ctrDispatch) {
       ctrDispatch({type: "loading"}) 
     } 
   }, [hasInternet, hasLatestInArchive])
-  return [state.loadState , ctrDispatch, dateLatestPub, hasInternet, state.savedCursorPos]  
+  return [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive]  
 }
 
 
