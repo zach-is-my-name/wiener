@@ -1,4 +1,4 @@
-import blessed from 'neo-blessed';
+import blessed from 'blessed';
 import {logger, logger2, _logger} from '../../../devLog/logger.js' 
 logger.level = "debug"
 import {parse, stringify, toJSON, fromJSON} from 'flatted';

@@ -74,7 +74,6 @@ export async function getDateFromNewsletter(newsletter) {
   return date
 }
 
-
 export function monthNameToNumber(monthName){ if (typeof monthName === 'number') {
     return monthName
   }

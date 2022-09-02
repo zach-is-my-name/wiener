@@ -1,9 +1,7 @@
-import blessed from 'neo-blessed';
+import blessed from 'blessed';
 import React from 'react'
-import pkg from 'react-blessed';
+import {render} from 'react-blessed';
 import App from './components/App.js'
-const { createBlessedRenderer } = pkg;
-const render = createBlessedRenderer(blessed);
 import https from 'https'
 import fs from 'fs'
 https.globalAgent.options.ca = fs.readFileSync('./certs/weekinethereumnews.com');
