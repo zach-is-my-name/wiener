@@ -15,6 +15,7 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
   const text = useMemo(() => renderText &&  renderText.join('\n'), [renderText]) 
   const searchPage = <SearchPage searchPageHidden={searchPageHidden} setLineFromSearch={setLineFromSearch} setDateFromSearch={setDateFromSearch} ctrDispatch={ctrDispatch}/>
 
+   
     return  ( 
       <box 
       top={"top"}

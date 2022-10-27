@@ -13,8 +13,6 @@ function reducer(state, action) {
       return {...state, cursorLeft: action.payload};
     case 'toggleWasMouseClicked':
       return {...state, wasMouseClicked: !state.wasMouseClicked};
-    case 'setStateCallbackFlag':
-      return {...state, stateCallbackFlag:!state.stateCallbackFlag};
     default:
      throw new Error("UI reducer error") 
   }

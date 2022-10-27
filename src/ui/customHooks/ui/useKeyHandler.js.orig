@@ -4,13 +4,14 @@ logger.level = "debug"
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
 import open from 'open'
 export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
+<<<<<<< HEAD
+  const [{mainBoxRef, scrollToScrollHeightFlag, scrollToZeroFlagRef}] = refs
+=======
   const [{mainBoxRef, scrollToScrollHeightFlagRef}] = refs
+>>>>>>> a3d76c2 (fix scroll bug; remove comments)
   const {cursorTop, cursorLeft} = state 
   async function keyHandler(ch, key) {
-    //logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
-    // _logger.info("e", e)
-    // logger2.info(stringify({arguments}))
-    if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
+    if (key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
 
     } else if (key.full === 'enter') {
@@ -76,6 +77,10 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
           mainBoxRef.current?.width,
           9,
         )})
+
+      } else if (input === '?' ) { 
+        ctrDispatch({type: "toggleHelpPage"}) 
+
       } else if (input === 'S-s') {
           ctrDispatch({type: "toggleRenderSearch"})
       } else if (input === '{' || input === '}') {
@@ -110,6 +115,54 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         let position = cursorTop + mainBoxRef?.current?.height 
         position = position >= mainBoxRef?.current?.getScrollHeight() ? mainBoxRef?.current?.getScrollHeight() - 1 : position  
 
+<<<<<<< HEAD
+        if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
+          dispatch({type: "setCursorTop", payload: mainBoxRef.current?.getScrollHeight() - 1})
+          scrollToScrollHeightFlag.current = true;
+          //mainBoxRef.current?.scrollTo(cursorTop)
+        }
+        mainBoxRef.current?.scrollTo(cursorTop)
+        dispatch({type: "setStateCallbackFlag"})
+      } else if (input === 'd') {
+        dispatch({type: "setCursorTop", payload: (cursorTop + mainBoxRef.current?.height)})
+
+        if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
+          dispatch({type: "setCursorTop", payload: mainBoxRef.current?.getScrollHeight() - 1})
+          scrollToScrollHeightFlag.current = true;
+          //mainBoxRef.current?.scrollTo(cursorTop)
+        }
+        mainBoxRef.current?.scrollTo(cursorTop)
+        dispatch({type: "setStateCallbackFlag"})
+      } 
+      else if (input === 'S-g') {
+        setCursorTop(mainBoxRef.current?.getScreenLines().length - 1)
+        mainBoxRef.current?.scrollTo(cursorTop)
+        setCursorLeft(0)
+        setStateCallbackFlag(true)
+      } else if (input === 'C-u') {
+        dispatch({type:"setCursorTop", payload: cursorTop - (mainBoxRef.current.height)-2})
+        if (cursorTop > mainBoxRef.current.getScrollHeight()) {
+          scrollToScrollHeightFlag.current = true;
+        } 
+
+        if (cursorTop < 0) {
+          dispatch({type:"setCursorTop", payload:0})
+        }
+        scrollToZeroFlagRef.current = true
+        dispatch({type: "setStateCallbackFlag", payload: true})
+      } else if (input === 'u') {
+        dispatch({type:"setCursorTop", payload: cursorTop - (mainBoxRef.current?.height)-2})
+        if (cursorTop > mainBoxRef.current?.getScrollHeight()) {
+          scrollToScrollHeightFlag.current = true;
+        } 
+
+        if (cursorTop < 0) {
+          dispatch({type:"setCursorTop", payload:0})
+        }
+        scrollToZeroFlagRef.current = true
+        dispatch({type: "setStateCallbackFlag", payload: true})
+      }
+=======
         dispatch({type: "setCursorTop", payload: position })
 
       } else if (input === 'C-u' || input ==='u' || input === 'U') {
@@ -122,6 +175,7 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         mainBoxRef.current?.scrollTo(cursorTop)
         setCursorLeft(0)
       } 
+>>>>>>> a3d76c2 (fix scroll bug; remove comments)
     }
   }
 

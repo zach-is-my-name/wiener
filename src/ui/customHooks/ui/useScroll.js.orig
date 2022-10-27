@@ -4,7 +4,11 @@ logger.level = "debug"
 import {useEffect} from 'react'
 
 export function useScroll(refs, state, dispatch, lineFromSearch, setLineFromSearch) {
+<<<<<<< HEAD
+  const [{mainBoxRef, isFirstRender, scrollToZeroFlag, scrollToScrollHeightFlag}] = refs
+=======
   const [{mainBoxRef, scrollToZeroFlag, scrollToScrollHeightFlagRef}] = refs
+>>>>>>> a3d76c2 (fix scroll bug; remove comments)
 
   const {cursorLeft, cursorTop} = state 
   
@@ -15,10 +19,6 @@ export function useScroll(refs, state, dispatch, lineFromSearch, setLineFromSear
        mainBoxRef.current?.scrollTo(i);
        dispatch({type: "setCursorTop", payload: i})
        setLineFromSearch(null);
-    if (lineFromSearch) {
-      mainBoxRef.current?.scrollTo(lineFromSearch);
-      dispatch({type: "setCursorTop", payload: lineFromSearch})
-      setLineFromSearch(null);
     }
   }, [lineFromSearch])
 
@@ -26,14 +26,29 @@ export function useScroll(refs, state, dispatch, lineFromSearch, setLineFromSear
     logger.debug("ran useEffect -> useScroll")  
     mainBoxRef.current?.scrollTo(cursorTop);
 
+<<<<<<< HEAD
+    if (scrollToScrollHeightFlag?.current) {
+
+      mainBoxRef.current?.scrollTo(mainBoxRef.currrent.getScrollHeight())
+=======
     if (scrollToScrollHeightFlagRef.current) {
      
       mainBoxRef?.current?.scrollTo(mainBoxRef.current?.getScrollHeight())
+>>>>>>> a3d76c2 (fix scroll bug; remove comments)
     } else if (scrollToZeroFlag?.current) {
 
       mainBoxRef?.current?.scrollTo(0)
     }
 
+<<<<<<< HEAD
+    // return () => {
+    //   dispatch({type: "setStateCallbackFlag"})
+    //   // scrollToScrollHeightFlag.current = false 
+    //   scrollToZeroFlag.current = false
+    // }
+  }, [cursorLeft, cursorTop, stateCallbackFlag])
+=======
   }, [cursorLeft, cursorTop])
+>>>>>>> a3d76c2 (fix scroll bug; remove comments)
 }
 
