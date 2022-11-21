@@ -14,7 +14,8 @@ const screen = blessed.screen({
   fullUnicode: true,
   handleUncaughtExceptions: false,
   ignoreDockContrast: true,
-  dockBorders:true
+  dockBorders:true,
+  ignoreDockContrast: true
 });
 
 screen.key(['q', 'C-c', 'C-e', 'enter', 'C-enter'], (ch, key) => {

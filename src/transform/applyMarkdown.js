@@ -99,12 +99,13 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
         return chalk.bgAnsi256(103).bold(content)
       }})
 
-    .addRule("link to terminalLink", {
-      filter: 'a',
-      replacement: (content, node) => {
-        const url =  node.getAttribute('href');
-        return `${terminalLink(content, url)}` 
       }})
+    // .addRule("link to terminalLink", {
+    //   filter: 'a',
+    //   replacement: (content, node) => {
+    //     const url =  node.getAttribute('href');
+    //     return `\u001b]8;;${url},\u0007${content}\u001b]8;;\u0007` 
+    //   }})
 
     .addRule("advert image", {
       filter: 'img',
@@ -127,6 +128,19 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
     );
   }
 
-  const markdown = await turndownService.turndown(html);
-  return markdown;
+  let markdown = await turndownService.turndown(html);
+
+  const markdownLinkRe = /\[([^]+?)\]\((https?:\/\/.*?)\)/g
+ 
+  let linkcount = -1
+  const linkObjArr = []
+  function replacer(match, p1, p2) {
+    linkcount++
+    linkObjArr.push({linkText: p1, linkUrl: p2})
+    return `{underline}${p1}{/underline}{invisible}${linkcount}{/invisible}`
+  }
+
+  markdown = markdown.replace(markdownLinkRe, replacer)
+
+  return {markdown, linkObjArr};
 }

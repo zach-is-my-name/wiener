@@ -1,11 +1,15 @@
 import blessed from 'blessed';
+import ansiRegex from 'ansi-regex';
+import stripAnsi from 'strip-ansi'
+import open from 'open'
 import {logger, logger2, _logger} from '../../../devLog/logger.js' 
 logger.level = "debug"
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
-import open from 'open'
+
 export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const [{mainBoxRef, scrollToScrollHeightFlagRef}] = refs
   const {cursorTop, cursorLeft} = state 
+
   async function keyHandler(ch, key) {
     //logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
     // _logger.info("e", e)
@@ -14,7 +18,7 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
       return process.exit(0);
 
     } else if (key.full === 'enter') {
-      await followLinkUnderCursor()
+      await activateLinkBox()     //followLinkUnderCursor()
     } else {
       updateCoordinate(key.full)
     }
@@ -125,16 +129,59 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
     }
   }
 
+  function activateLinkBox() {
+    /*
+    const lines = mainBoxRef?.current.getScreenLines()
+    if (cursorTop > lines?.length) {
+      return
+    }
+    // const linkRe = /^.+\d\$$/ 
+    // if cursor is on an underline
+      // if is followed by an invisible number
+        // launch the LinkBox with the url corresponding to the invisible number
+
+    const lines = mainBoxRef?.current.getScreenLines()
+    const cursorLine = lines[cursorTop] 
+    if (cursorLine.match(ansiRegex()).some(el => /(?:[\u001B][[4m)(?:)/
+......*/
+    const lines = mainBoxRef.current?.getScreenLines()
+    const before = lines?.slice(0, cursorTop)
+    const cursorIndex = before?.join('').length + cursorLeft
+    const cursorLine = lines[cursorTop]
+
+    if (cursorLeft <= cursorLine.length) {
+      const text = lines.join('')
+      const regexUnderline = /(\x1B\[4m.+?\x1B\[24m)(\x1B\[8m\d+\x1B\[28m)/gm
+      let match = regexUnderline.exec(text)
+      while (match) {
+        const start = match.index
+        const end = start + match[0].length
+
+        if (start <= cursorIndex && cursorIndex < end) {
+          let linkIndex = match[2]
+          linkIndex = stripAnsi(linkIndex)
+          linkIndex = parseInt(linkIndex, 10)
+          dispatch({type: "openLink", payload: {linkIndex, line: cursorTop}  })
+          break
+        }
+
+        match = regexUnderline.exec(text)
+      }
+      // dispatch({type: "toggleWasMouseClicked"})
+    }
+  }
+
   function followLinkUnderCursor()  {
     const regexLink = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gm
     // check if the chunk under the cursor is a markdown link
     const lines = mainBoxRef?.current.getScreenLines()
-    if (cursorTop >= lines?.length) {
+    if (cursorTop > lines?.length) {
       return
     }
     const before = lines?.slice(0, cursorTop)
     const cursorIndex = blessed.stripTags(before?.join('')).length + cursorLeft
     const cursorLine = blessed.stripTags(lines[cursorTop])
+
     if (cursorLeft <= cursorLine.length) {
       const text = blessed.stripTags(lines.join(''))
       let match = regexLink.exec(text)
@@ -143,7 +190,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         const end = start + match[0].length
 
         if (start <= cursorIndex && cursorIndex < end) {
-          // jump to the link destination
           open(match[1])
           break
         }

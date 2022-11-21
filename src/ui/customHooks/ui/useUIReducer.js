@@ -2,7 +2,7 @@
 
 import {useReducer} from 'react'
 
-const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false}
+const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, linkIndex: false, linkLine: null}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -13,6 +13,10 @@ function reducer(state, action) {
       return {...state, cursorLeft: action.payload};
     case 'toggleWasMouseClicked':
       return {...state, wasMouseClicked: !state.wasMouseClicked};
+    case 'openLink':
+      return {...state, linkIndex: action.payload.linkIndex, linkLine: action.payload.line }; 
+    case 'closeLinkBox':
+      return {...state, linkIndex: false};
     default:
      throw new Error("UI reducer error") 
   }

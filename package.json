@@ -8,9 +8,11 @@
     "wienr": "./index.js"
   },
   "scripts": {
-    "build": "npx babel src -d dist --extensions \".js\" --source-maps --copy-files ",
+    "build": "npx babel src -d dist --extensions \".js\"  --source-maps --copy-files ",
+    "build1": "npx babel src -d dist --extensions \".js\" --copy-files ",
     "go": "node --trace-exit dist/index.js",
-    "def": "rimraf dist && npm run build && node --inspect-brk  dist/index.js",
+    "dec": "rimraf dist && npm run build && node -r source-map-support/register --inspect dist/index.js",
+    "def": "rimraf dist && npm run build1 && node -r source-map-support/register --inspect-brk dist/index.js",
     "dev": "rimraf dist && npm run build && node --trace-warnings -r source-map-support/register dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,6 +35,7 @@
     "fix-esm": "^1.0.1",
     "flatted": "^3.2.5",
     "log4js": "^6.6.1",
+    "parse5": "^7.1.2",
     "react-devtools": "^4.27.0",
     "source-map-support": "^0.5.21",
     "stack-trace": "^1.0.0-pre1",

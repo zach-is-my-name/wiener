@@ -9,16 +9,17 @@ import pkg from 'utils-deep-clone';
 const { toJSON } = pkg;
 
 export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
-  let newsletter = await applyMarkdown(htmlNewsletter)
+  
+  let {markdown: newsletter, linkObjArr}  = await applyMarkdown(htmlNewsletter)
   const date = await getDateFromNewsletter(newsletter) 
 
   validateInputDate(date) 
 
   newsletter = newsletter.split(/\n/) 
-
-  await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl) 
-  // _logger.info(`added ${date}`)
-  return await loadNewsletterFromDb("first")
+  
+  const res = await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl, linkObjArr) 
+  if (!res) return new Error({date, newsletter, url, prevUrl, nextUrl})
+  return res
 }
 
 

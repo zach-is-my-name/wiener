@@ -12,13 +12,13 @@ function Cursor(props) {
   }
   return (
     <box 
-    top={cursorTop}
-    left={cursorLeft}
-    width={1}
-    height={1}
-    ref={props.cursorRef}
-    style ={{fg: 'white', bg: 'white'}}>
-    {null}
+      top={cursorTop}
+      left={cursorLeft}
+      width={1}
+      height={1}
+      ref={props.cursorRef}
+      style ={{fg: 'white', bg: 'white'}}>
+      {null}
     </box>
   )
 }                 

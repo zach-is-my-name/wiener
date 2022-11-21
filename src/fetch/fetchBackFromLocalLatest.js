@@ -40,10 +40,10 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     let storedNewsletters = await loadNewsletterFromDb("all")
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
+      // logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
       targetUrl = newsletterObj.prevUrl
     } else {
-      logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
+      // logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
 
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
       // logger2.info(`UPDATE added ${writtenNewsletterObj.date} on count ${count}`)

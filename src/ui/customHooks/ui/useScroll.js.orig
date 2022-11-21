@@ -23,7 +23,7 @@ export function useScroll(refs, state, dispatch, lineFromSearch, setLineFromSear
   }, [lineFromSearch])
 
   useEffect(() => {
-    logger.debug("ran useEffect -> useScroll")  
+    // logger.debug("ran useEffect -> useScroll")  
     mainBoxRef.current?.scrollTo(cursorTop);
 
 <<<<<<< HEAD

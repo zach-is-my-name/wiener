@@ -9,10 +9,10 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
-export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl) {
+export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl, linkObjArr) {
   await db.read()
   db.data ||= { newsletters: [] }             
-  db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl });
+  db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl, linkObjArr });
   await db.write()
 
   await db.read()
