@@ -1,5 +1,3 @@
-import {_logger, logger2} from '../../devLog/logger.js' 
-import {parse, stringify, toJSON, fromJSON} from 'flatted';
 import cliTruncate from 'cli-truncate'
 import fs from 'fs'
 import chalk from 'chalk';

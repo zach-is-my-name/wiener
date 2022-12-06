@@ -1,4 +1,3 @@
-import {_logger} from './devLog/logger.js'
 import fs from 'fs'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'

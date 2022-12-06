@@ -21,10 +21,7 @@ export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl, linkO
   await db.write()
   
   const addedNewsletter = await loadNewsletterFromDb("date", date)
-  // logger.debug("date trying to load by", date)
-  // logger.debug("loadall", await loadNewsletterFromDb("all"))
 
-  // logger.debug("addedNewsletter", addedNewsletter)
   return addedNewsletter 
 }
 
@@ -35,7 +32,6 @@ export async function loadNewsletterFromDb(by, param) {
   if (storedNewsletters.length === 0) return "none" 
   switch (by) {
     case "date":
-      // logger.debug(`find by ${param}`, storedNewsletters.find(obj => obj.date === param))
       return storedNewsletters.find(obj => obj.date === param)
     case "first":
       return storedNewsletters.slice(0,1).pop()

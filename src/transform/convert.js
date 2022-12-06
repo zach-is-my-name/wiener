@@ -1,4 +1,3 @@
-// import {_logger, logger2} from '../devLog/logger.js';
 import {addNewsletterToDb, loadNewsletterFromDb} from '../db/db.js'
 import {applyMarkdown} from './applyMarkdown.js'
 import {getDateFromNewsletter, validateInputDate} from '../utilities.js'

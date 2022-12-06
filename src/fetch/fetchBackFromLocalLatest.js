@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-// import {_logger} from '../devLog/logger.js'
 import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
@@ -17,7 +15,6 @@ let count = 0
 let reqCount = 0
 
 export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
-  // _logger.info("fetchBackCalled")
   let count = 0
   const __dirname = dirname(fileURLToPath(await resolve("../db/db.json", import.meta.url)));
   const file = join(__dirname, 'db.json')
@@ -40,13 +37,10 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     let storedNewsletters = await loadNewsletterFromDb("all")
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      // logger2.info(`pass ${count} ${newsletterObj.date} in archive`)
       targetUrl = newsletterObj.prevUrl
     } else {
-      // logger2.info(`pass ${count} ${targetUrl}  NOT in archive, fetching...`)
 
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
-      // logger2.info(`UPDATE added ${writtenNewsletterObj.date} on count ${count}`)
       targetUrl = writtenNewsletterObj.prevUrl 
     }
     count++
@@ -84,6 +78,5 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
       } 
     }
   }
-  // logger2.info("return fetchBackFromLatest")
   return 
 }

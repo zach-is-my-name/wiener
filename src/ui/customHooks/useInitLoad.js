@@ -1,4 +1,3 @@
-import {_logger, logger2} from '../../devLog/logger.js'
 import {useHasInternet, useHasLatestInArchive } from './index.js'
 import {useReducer, useEffect} from 'react'
 
@@ -20,7 +19,6 @@ export function useInitLoad(ctrDispatch) {
   
   useEffect(() =>  {
 
-    logger2.info(`hasLatestInArchive: ${hasLatestInArchive}`)
     if (hasInternet === true) {
 
       if (hasLatestInArchive === true) {

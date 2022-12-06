@@ -1,6 +1,3 @@
-import {logger, logger2} from '../../devLog/logger.js'
-logger.level = "debug"
-
 import {useReducer, useState} from 'react'
 
 const initialState = {loadState: false, helpPageHidden: true, searchPageHidden: true }

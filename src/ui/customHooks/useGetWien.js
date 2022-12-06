@@ -1,7 +1,4 @@
-import {parse, stringify, toJSON, fromJSON} from 'flatted';
-import {logger, _logger, logger2, logger3} from '../../devLog/logger.js' 
 import fs from 'fs'
-logger.level = "debug"
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
 import cheerio from 'cheerio' 
@@ -60,8 +57,8 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
         ctrDispatch({type: "loaded"})
         }
       })();
-     
-    } else if (loadState === "loadNextHook" && adjacentDates.nextUrl) {
+
+    } else if (loadState === "loadNextHook" && adjacentDates.nextUrl.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.nextUrl)
         setNewsletterObj(nlo)

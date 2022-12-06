@@ -1,5 +1,3 @@
-// import {_logger} from '../../../devLog/logger.js' 
-
 import {useReducer} from 'react'
 
 const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, linkIndex: false, linkLine: null}
@@ -9,7 +7,6 @@ function reducer(state, action) {
     case 'setCursorTop':
       return {...state, cursorTop: action.payload};
     case 'setCursorLeft':
-      //state.count - 1??? 
       return {...state, cursorLeft: action.payload};
     case 'toggleWasMouseClicked':
       return {...state, wasMouseClicked: !state.wasMouseClicked};

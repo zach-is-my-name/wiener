@@ -2,8 +2,6 @@ import blessed from 'blessed';
 import ansiRegex from 'ansi-regex';
 import stripAnsi from 'strip-ansi'
 import open from 'open'
-import {logger, logger2, _logger} from '../../../devLog/logger.js' 
-logger.level = "debug"
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
 
 export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
@@ -11,9 +9,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const {cursorTop, cursorLeft} = state 
 
   async function keyHandler(ch, key) {
-    //logger2.info(stringify({cursorTop, cursorLeft, scrollIndex: mainBoxRef?.current.getScroll()}))
-    // _logger.info("e", e)
-    // logger2.info(stringify({arguments}))
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
 
@@ -130,20 +125,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   }
 
   function activateLinkBox() {
-    /*
-    const lines = mainBoxRef?.current.getScreenLines()
-    if (cursorTop > lines?.length) {
-      return
-    }
-    // const linkRe = /^.+\d\$$/ 
-    // if cursor is on an underline
-      // if is followed by an invisible number
-        // launch the LinkBox with the url corresponding to the invisible number
-
-    const lines = mainBoxRef?.current.getScreenLines()
-    const cursorLine = lines[cursorTop] 
-    if (cursorLine.match(ansiRegex()).some(el => /(?:[\u001B][[4m)(?:)/
-......*/
     const lines = mainBoxRef.current?.getScreenLines()
     const before = lines?.slice(0, cursorTop)
     const cursorIndex = before?.join('').length + cursorLeft
@@ -167,7 +148,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
 
         match = regexUnderline.exec(text)
       }
-      // dispatch({type: "toggleWasMouseClicked"})
     }
   }
 
