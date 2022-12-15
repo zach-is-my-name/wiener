@@ -20,15 +20,25 @@ function App(props) {
 
   const [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive] = useInitLoad(ctrDispatch) 
 
-  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
+  const {text, date, linkObjArr} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
 
   useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) 
 
+  const [message, setMessage] = useState("")
+
+  useEffect(() => {
+  if (!hasInternet && loadState === 'none') {
+    setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
+  }
+
   if (loadState === 'loading') {
-    return "loading..."
+   setMessage("Loading...") 
   } 
+
+  }, [hasInternet, loadState])
+    
     return ( 
-      <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden}  />
+      <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} linkObjArr={linkObjArr} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden}  message={message}/>
     )
 }
 

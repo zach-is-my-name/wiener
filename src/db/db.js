@@ -32,7 +32,7 @@ export async function loadNewsletterFromDb(by, param) {
   await db.read()
   db.data ||= { newsletters: [] }             
   const storedNewsletters = db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
-  
+  if (storedNewsletters.length === 0) return "none" 
   switch (by) {
     case "date":
       // logger.debug(`find by ${param}`, storedNewsletters.find(obj => obj.date === param))

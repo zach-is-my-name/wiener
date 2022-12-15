@@ -5,7 +5,7 @@ import {useReducer, useState} from 'react'
 
 const initialState = {loadState: false, helpPageHidden: true, searchPageHidden: true }
 
-const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded'] 
+const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded', 'none'] 
 
 function reducer (state, action) {
   if (loadStates.includes(action.type)) {

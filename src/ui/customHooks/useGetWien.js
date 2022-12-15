@@ -1,5 +1,7 @@
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
-import {_logger, logger2, logger3} from '../../devLog/logger.js' 
+import {logger, _logger, logger2, logger3} from '../../devLog/logger.js' 
+import fs from 'fs'
+logger.level = "debug"
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
 import cheerio from 'cheerio' 
@@ -34,11 +36,29 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
     } else if (loadState === "getArchiveMostRecent") {
       (async () => {
         const nlo = await loadNewsletterFromDb("first")
+        if (nlo === "none") {
+          ctrDispatch({type: "none"})
+        } else {
+        let prevUrl 
+        let nextUrl 
+        if (nlo?.prevUrl){
+          prevUrl = nlo.prevUrl
+        } else { 
+          prevUrl = null
+        }
+
+        if (nlo?.nextUrl){
+          nextUrl = nlo.nextUrl
+        } else { 
+          nextUrl = null
+        }
+        setAdjacentDates({prevUrl: prevUrl, nextUrl: nextUrl})
         setNewsletterObj(nlo)
         // if (hasLatestInArchive === true && hasInternet === true) {
         //   setHasLatest(true) 
         // }
         ctrDispatch({type: "loaded"})
+        }
       })();
      
     } else if (loadState === "loadNextHook" && adjacentDates.nextUrl) {
