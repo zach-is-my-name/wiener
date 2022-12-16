@@ -38,7 +38,6 @@
     "parse5": "^7.1.2",
     "react-devtools": "^4.27.0",
     "source-map-support": "^0.5.21",
-    "stack-trace": "^1.0.0-pre1",
     "utils-deep-clone": "^0.0.3",
     "winston": "^3.3.3",
     "winston-array-transport": "^1.1.5"

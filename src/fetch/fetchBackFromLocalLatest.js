@@ -1,4 +1,3 @@
-import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
 import axios from 'axios';
@@ -14,24 +13,11 @@ axiosRetry(http, { retryDelay: () => {return 50000}})
 let count = 0
 let reqCount = 0
 
-export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
-  let count = 0
-  const __dirname = dirname(fileURLToPath(await resolve("../db/db.json", import.meta.url)));
-  const file = join(__dirname, 'db.json')
-  const adapter = new JSONFile(file)
-  const db = new Low(adapter)
-  await db.read()
-
-  db.data ||= { newsletters: [ ] }
-
-  const { newsletters } = db.data
-
-  let storedNewsletters  
-  storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
+export async function fetchBackFromLocalLatest(dateLatestPub) {
   let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`
-  //  storedNewsletters = await replaceBlankNextUrl(storedNewsletters)
-  //let storedNewsletters 
-  let count = 0 
+  let storedNewsletters =  await loadNewsletterFromDb("all")
+  storedNewsletters = await replaceBlankNextUrl(storedNewsletters)
+  
   while (targetUrl) {
 
     let storedNewsletters = await loadNewsletterFromDb("all")
