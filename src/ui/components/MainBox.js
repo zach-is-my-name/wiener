@@ -62,6 +62,8 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
     > 
     <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} savedCursorPos={savedCursorPos} />   
     </box>
+    <HelpPage helpPageHidden={helpPageHidden} /> 
+    {!searchPageHidden ? searchPage : null}
     </>
   )
 
@@ -90,7 +92,11 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
     <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} savedCursorPos={savedCursorPos} />   
     <LinkBox linkLine={linkLine} linkBoxRef={linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
     </box>
+    <HelpPage helpPageHidden={helpPageHidden} /> 
+    {!searchPageHidden ? searchPage : null}
+
     </>
+
   )
 
     if (linkBoxHidden === true) {
@@ -98,9 +104,9 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
     } else if (linkBoxHidden === false) {
       return ( mainWithLinkBox)
     }
+
+
 }
-// <HelpPage helpPageHidden={helpPageHidden} /> 
-// {!searchPageHidden ? searchPage : null}
 
 
 export default MainBox

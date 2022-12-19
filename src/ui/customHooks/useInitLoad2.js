@@ -3,7 +3,6 @@ import {useReducer, useEffect} from 'react'
 
 const initialState = {loadState: false, savedCursorPos: null}
 const loadStates = ['fetchLatest','getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook',  'closeSearch'] 
-
 function reducer (state, action) {
   if (loadStates.includes(action.type)) {
     return ({loadState: action.type})
