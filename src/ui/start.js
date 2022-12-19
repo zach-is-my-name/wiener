@@ -19,12 +19,11 @@ const screen = blessed.screen({
 });
 
 screen.key(['q', 'C-c', 'C-e', 'enter', 'C-enter'], (ch, key) => {
-  if (key.sequence === '\x1B') {
     process.exit(0)
-  }
 });
 
 export function start () {
   render(<App  />, screen);
 }
+   // render(Hello)
 

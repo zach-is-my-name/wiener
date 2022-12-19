@@ -98,13 +98,6 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
         return chalk.bgAnsi256(103).bold(content)
       }})
 
-      }})
-    // .addRule("link to terminalLink", {
-    //   filter: 'a',
-    //   replacement: (content, node) => {
-    //     const url =  node.getAttribute('href');
-    //     return `\u001b]8;;${url},\u0007${content}\u001b]8;;\u0007` 
-    //   }})
 
     .addRule("advert image", {
       filter: 'img',

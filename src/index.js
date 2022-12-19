@@ -1,7 +1,3 @@
-process.on('uncaughtException', function(error) {
-console.clear;
-console.log(error)
-});
 import meow from 'meow'
 import figures, {mainSymbols} from 'figures';
 import {start} from './ui/start.js';
@@ -24,7 +20,9 @@ const cli = meow({
 	}
 });
 
-// export const argObj = {input: cli.input[0], flags: cli.flags}
+
 try {
-start()
-} catch(e) {console.log(e)}
+  start()
+} catch(e) {
+  throw new Error("error")
+}
