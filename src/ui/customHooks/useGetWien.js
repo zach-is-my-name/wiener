@@ -1,6 +1,7 @@
 import fs from 'fs'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
+import rateLimit from 'axios-rate-limit'
 import cheerio from 'cheerio' 
 import {loadNewsletterFromDb} from '../../db/db.js' 
 import {convertAndStore} from '../../transform/convert.js'

@@ -29,15 +29,15 @@ export const applyMarkdown = async (html) => {
       }
     })
 
-    .addRule("add box to title", { 
-      filter: "title",
-      replacement: (content) => {
-        //giving the box a leading newline cures it
-        const noAnsi = chalk.blue(stripAnsi(content))
-        const box = boxen(noAnsi, {borderColor: 'grey', borderStyle: 'bold'})
-        return ("\n" +  `{center}${box}` + "\n")
-      }}
-    ) 
+    //.addRule("add box to title", { 
+    //  filter: "title",
+    //  replacement: (content) => {
+    //    //giving the box a leading newline cures it
+    //    const noAnsi = chalk.blue(stripAnsi(content))
+    //    const box = boxen(noAnsi, {borderColor: 'grey', borderStyle: 'bold'})
+    //    return ("\n" +  `{center}${box}` + "\n")
+    //  }}
+    //) 
 
     .addRule('chalk <strong> (<b>)', {
       filter: "strong",
@@ -65,9 +65,9 @@ ${bullet} ${content}`
       replacement: (content) => `{left}${content}{/left}`
     })
 
-    .addRule('remove h1; add logo', 
-      {filter: (node) => /site-title/.test(node.className),
-        replacement: (node) => `${logo}` })
+    // .addRule('remove h1; add logo', 
+    //   {filter: (node) => /site-title/.test(node.className),
+    //     replacement: (node) => `${logo}` })
 
     .addRule('remove subscribe link', 
       {filter:(node) => {return /menu-1/.test(node.className)},
@@ -107,18 +107,6 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
     )
 
 
-  function inHtmlContext(node, selector) {
-    let currentNode = node;
-    // start at the closest element
-    while (currentNode != null && currentNode.nodeType !== 1) {
-      currentNode = currentNode.parentElement || currentNode.parentNode;
-    }
-    return (
-      currentNode !== null
-      && currentNode.nodeType === 1
-      && currentNode.closest(selector) !== null
-    );
-  }
 
   let markdown = await turndownService.turndown(html);
 
@@ -126,13 +114,14 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
  
   let linkcount = -1
   const linkObjArr = []
+
   function replacer(match, p1, p2) {
     linkcount++
     linkObjArr.push({linkText: p1, linkUrl: p2})
     return `{underline}${p1}{/underline}{invisible}${linkcount}{/invisible}`
   }
 
-  markdown = markdown.replace(markdownLinkRe, replacer)
+  // markdown = markdown.replace(markdownLinkRe, replacer)
 
   return {markdown, linkObjArr};
 }

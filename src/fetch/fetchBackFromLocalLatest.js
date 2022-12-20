@@ -1,3 +1,4 @@
+import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
 import axios from 'axios';
@@ -14,31 +15,25 @@ let count = 0
 let reqCount = 0
 
 export async function fetchBackFromLocalLatest(dateLatestPub) {
-
   let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`
-  
-  let storedNewsletters =  await replaceBlankNextUrl(await loadNewsletterFromDb("all"))
-  
+  //  storedNewsletters = await replaceBlankNextUrl(storedNewsletters)
+  //let storedNewsletters 
+  let count = 0 
   while (targetUrl) {
+
+    let storedNewsletters = await loadNewsletterFromDb("all")
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
       targetUrl = newsletterObj.prevUrl
     } else {
+
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
       targetUrl = writtenNewsletterObj.prevUrl 
     }
     count++
   }
 
-  async function replaceBlankNextUrl(newsletters) {
-    for (let i = 0; i < newsletters.length; i++) {
-      if (!newsletters[i].nextUrl && newsletters[i].date !== dateLatestPub) {
-        return await addNextUrl(i, newsletters)   
-      } else {
-        return newsletters 
-      }
-    }
-  }
+
 
   async function fetchAndAdd(url) {
     if (url) {
@@ -63,5 +58,12 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
     return  
   }
 
+  async function replaceBlankNextUrl(newsletters) {
+    for (let i = 0; i < newsletters.length; i++) {
+      if (!newsletters[i].nextUrl && newsletters[i].date !== dateLatestPub) {
+        return await addNextUrl(i, newsletters)   
+      } 
+    }
+  }
   return 
 }

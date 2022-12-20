@@ -1,41 +1,45 @@
 import React, {useState, useEffect} from 'react';
 import MainBox from './MainBox.js' 
 import SearchPage from './SearchPage.js'
-import {useGetWien} from '../customHooks/useGetWien.js'
-import {useInitLoad} from '../customHooks/useInitLoad.js'
-import {useUpdateNewsletters} from '../customHooks/useUpdateNewsletters.js'
+import HelpPage from './HelpPage.js'
+
+import {
+  useCtrReducer,
+  useInitLoad, 
+  useGetWien, 
+  useUpdateNewsletters,
+} from '../customHooks/index.js'
+
 
 function App(props) {
 
-  // const [dateFromSearch, setDateFromSearch] = useState("") 
-  // const [lineFromSearch, setLineFromSearch] = useState(null) 
+  const [dateFromSearch, setDateFromSearch] = useState("") 
+  const [lineFromSearch, setLineFromSearch] = useState(null) 
 
-  // const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden, searchPageHidden] = useCtrReducer()
+  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden, searchPageHidden] = useCtrReducer()
 
-  // const [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive] = useInitLoad(ctrDispatch) 
+  const [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive] = useInitLoad(ctrDispatch) 
 
-   // const {text, date, linkObjArr} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
+  const {text, date, linkObjArr} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
 
-  // useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) 
+  useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) 
 
-  // const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("")
 
-  // useEffect(() => {
-  // if (!hasInternet && loadState === 'none') {
-  //   setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
-  // }
+  useEffect(() => {
+  if (!hasInternet && loadState === 'none') {
+    setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
+  }
 
-  // if (loadState === 'loading') {
-  //  setMessage("Loading...") 
-  // } 
+  if (loadState === 'loading') {
+   setMessage("Loading...") 
+  } 
 
-  // }, [hasInternet, loadState])
+  }, [hasInternet, loadState])
     
-     return ( 
-        <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} linkObjArr={linkObjArr} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden}  message={message}/>
-     )
+    return ( 
+      <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} linkObjArr={linkObjArr} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden}  message={message}/>
+    )
 }
 
 export default App
-
-
