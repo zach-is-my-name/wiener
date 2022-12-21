@@ -1,3 +1,7 @@
+import fs from "fs"
+import {logger} from '../devLog/logger.js' 
+logger.level = "debug"
+
 import TurndownService from 'turndown';
 import chalk from 'chalk';
 import boxen from 'boxen'
@@ -18,31 +22,35 @@ const turndownFilter = ['script', 'footer', 'style', 'center', 'table'];
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
 
-export const applyMarkdown = async (html) => {
+let linkcount = -1
+const linkObjArr = []
 
+export const applyMarkdown = async (html) => {
   turndownService
+
     .addRule('center align h2: entry-title', {
       filter: (node, content) => /entry-title/.test(node.className),
       replacement: (content, node) => {
-        const noBreakText = content.replace(/\<br\>\s/,"")
-        return "\n" + `{center}${chalk.bold(noBreakText)}{/center}` +"\n"+"\n"
+        const noBreakTag = content.replace(/\<br\>\s/g,"")
+        const noLineBreak = noBreakTag.replace(/\r?\n|\r/, "")  
+        return "\n" + `{center}{bold}${noLineBreak}{/bold}{/center}` +"\n"+"\n"
       }
     })
 
-    //.addRule("add box to title", { 
-    //  filter: "title",
-    //  replacement: (content) => {
-    //    //giving the box a leading newline cures it
-    //    const noAnsi = chalk.blue(stripAnsi(content))
-    //    const box = boxen(noAnsi, {borderColor: 'grey', borderStyle: 'bold'})
-    //    return ("\n" +  `{center}${box}` + "\n")
-    //  }}
-    //) 
+    .addRule("add box to title", { 
+      filter: "title",
+      replacement: (content) => {
+        //giving the box a leading newline cures it
+        const noAnsi = chalk.blue(stripAnsi(content))
+        const box = boxen(noAnsi, {borderColor: 'grey', borderStyle: 'bold'})
+        return ("\n" +  `{center}${box}` + "\n")
+      }}
+    ) 
 
     .addRule('chalk <strong> (<b>)', {
       filter: "strong",
       replacement: (content) => {
-        return chalk.bold(content)
+        return `{bold}${content}{/bold}`
       }
     })
 
@@ -60,14 +68,14 @@ ${bullet} ${content}`
       replacement: (content) => `{center}${content}{/center}`
     })
 
-    .addRule('left aligh \"body\"', {
+    .addRule('left align \"body\"', {
       filter: (node, content) => /entry-content/.test(node.className),
       replacement: (content) => `{left}${content}{/left}`
     })
 
-    // .addRule('remove h1; add logo', 
-    //   {filter: (node) => /site-title/.test(node.className),
-    //     replacement: (node) => `${logo}` })
+    .addRule('remove h1; add logo', 
+      {filter: (node) => /site-title/.test(node.className),
+        replacement: (node) => `${logo}` })
 
     .addRule('remove subscribe link', 
       {filter:(node) => {return /menu-1/.test(node.className)},
@@ -80,7 +88,7 @@ ${bullet} ${content}`
         const re2 = /(^[^\(]+)/
         match = match.match(/.*?[^!]+/)[0]
         match = match.match(re2)[1]
-        return `${chalk.whiteBright.bold(content)} 
+        return `{bold}${chalk.whiteBright(content)}{/bold} 
 
 
 ${figlet.textSync(match)}
@@ -89,15 +97,24 @@ ${figlet.textSync(match)}
     .addRule( "jobs", { 
 filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[jJ]ob/.test(node.textContent),
       replacement: (content) => {
-          return `${chalk.whiteBright.bold(content)}`
+          return `{bold}${chalk.whiteBright(content)}{/bold}`
       }})
 
     .addRule("chalk h6", {
       filter: 'h6',
       replacement: (content) => {
+        let text = chalk.bgAnsi256(103).bold(content);
         return chalk.bgAnsi256(103).bold(content)
       }})
 
+    .addRule("link to terminalLink", {
+      filter: 'a',
+      replacement: (content, node) => {
+        linkcount++
+        const url =  node.getAttribute('href');
+        linkObjArr.push({linkText: content, linkUrl: url})
+        return `{underline}${content}{/underline}{invisible}${linkcount}{/invisible}`
+      }})
 
     .addRule("advert image", {
       filter: 'img',
@@ -106,22 +123,9 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
       }}
     )
 
-
-
   let markdown = await turndownService.turndown(html);
-
-  const markdownLinkRe = /\[([^]+?)\]\((https?:\/\/.*?)\)/g
  
-  let linkcount = -1
-  const linkObjArr = []
-
-  function replacer(match, p1, p2) {
-    linkcount++
-    linkObjArr.push({linkText: p1, linkUrl: p2})
-    return `{underline}${p1}{/underline}{invisible}${linkcount}{/invisible}`
-  }
-
-  // markdown = markdown.replace(markdownLinkRe, replacer)
-
+  fs.writeFileSync("/home/zmg/tmp/md2.md", markdown)
   return {markdown, linkObjArr};
+  
 }

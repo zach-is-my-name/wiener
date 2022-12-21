@@ -22,7 +22,7 @@ function App(props) {
 
   const {text, date, linkObjArr} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
 
-  useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) 
+  // useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) 
 
   const [message, setMessage] = useState("")
 
