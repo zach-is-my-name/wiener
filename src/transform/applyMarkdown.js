@@ -1,18 +1,10 @@
-import fs from "fs"
-import {logger} from '../devLog/logger.js' 
-logger.level = "debug"
 import cheerio from 'cheerio'
 import TurndownService from 'turndown';
 import chalk from 'chalk';
-import boxen from 'boxen'
-import wrapAnsi from 'wrap-ansi';
 import figures, {mainSymbols} from 'figures';
 import cfonts from 'cfonts'
 import figlet from 'figlet'
-import terminalLink from 'terminal-link'
-import {logo} from '../logo2.js'
 import stripAnsi from 'strip-ansi'
-import got from 'got'
 const turndownOptions = {
   headingStyle: 'atx',
   bulletListMarker: '*',
@@ -63,11 +55,6 @@ ${bullet} ${content}`
       }
     })
 
-    // .addRule('center align header', {
-    //   filter: (node, content) => /site-header/.test(node.className),
-    //   replacement: (content) => `{center}${content}{/center}`
-    // })
-
     .addRule('left align \"body\"', {
       filter: (node, content) => /entry-content/.test(node.className),
       replacement: (content) => `{left}${content}{/left}`
@@ -110,13 +97,6 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
       {filter:(node) => {return /menu-1/.test(node.className)},
         replacement: (node) => ""})
 
-    // .addRule('remove h1; add logo', 
-    //   {filter: (node) => /site-title/.test(node.className),
-    //     replacement: (content) => `{center}${content}{/center}
-
-    //      ${logo}
-    //     ` })
-
     .addRule("link to terminalLink", {
       filter: 'a',
       replacement: (content, node) => {
@@ -127,10 +107,8 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
       }})
 
   let markdown = await turndownService.turndown(html);
-  fs.writeFileSync("/home/zmg/tmp/md.md", markdown) 
   markdown = markdown.trim()
   markdown =  "\n" + markdown 
-  // markdown = markdown.replace(/(\n{6})(?=\{center})/, )
   return {markdown, linkObjArr};
   
 }
