@@ -1,7 +1,7 @@
 import fs from "fs"
 import {logger} from '../devLog/logger.js' 
 logger.level = "debug"
-
+import cheerio from 'cheerio'
 import TurndownService from 'turndown';
 import chalk from 'chalk';
 import boxen from 'boxen'
@@ -22,12 +22,22 @@ const turndownFilter = ['script', 'footer', 'style', 'center', 'table'];
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
 
-let linkcount = -1
-const linkObjArr = []
+let linkcount = 0
+let linkObjArr = []
 
-export const applyMarkdown = async (html) => {
-  turndownService
 
+export const applyMarkdown = async (sourceHtml) => {
+const $ = cheerio.load(sourceHtml)
+
+$('h1').children('a').contents().unwrap() //remove h1 anchor tag
+$('.menu-signup-container').remove()
+$('.site-header').children('center').remove()
+$('table').remove()
+$('title').remove()
+$('h1').remove()
+const html = $.root().html() 			
+
+turndownService
     .addRule('center align h2: entry-title', {
       filter: (node, content) => /entry-title/.test(node.className),
       replacement: (content, node) => {
@@ -36,16 +46,6 @@ export const applyMarkdown = async (html) => {
         return "\n" + `{center}{bold}${noLineBreak}{/bold}{/center}` +"\n"+"\n"
       }
     })
-
-    .addRule("add box to title", { 
-      filter: "title",
-      replacement: (content) => {
-        //giving the box a leading newline cures it
-        const noAnsi = chalk.blue(stripAnsi(content))
-        const box = boxen(noAnsi, {borderColor: 'grey', borderStyle: 'bold'})
-        return ("\n" +  `{center}${box}` + "\n")
-      }}
-    ) 
 
     .addRule('chalk <strong> (<b>)', {
       filter: "strong",
@@ -63,23 +63,15 @@ ${bullet} ${content}`
       }
     })
 
-    .addRule('center align header', {
-      filter: (node, content) => /site-header/.test(node.className),
-      replacement: (content) => `{center}${content}{/center}`
-    })
+    // .addRule('center align header', {
+    //   filter: (node, content) => /site-header/.test(node.className),
+    //   replacement: (content) => `{center}${content}{/center}`
+    // })
 
     .addRule('left align \"body\"', {
       filter: (node, content) => /entry-content/.test(node.className),
       replacement: (content) => `{left}${content}{/left}`
     })
-
-    .addRule('remove h1; add logo', 
-      {filter: (node) => /site-title/.test(node.className),
-        replacement: (node) => `${logo}` })
-
-    .addRule('remove subscribe link', 
-      {filter:(node) => {return /menu-1/.test(node.className)},
-        replacement: (node) => ""})
 
     .addRule( "sponsor", { 
       filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[tT]hanks\s?[Tt]o(.+?$)/.test(node.textContent),
@@ -107,25 +99,38 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
         return chalk.bgAnsi256(103).bold(content)
       }})
 
-    .addRule("link to terminalLink", {
-      filter: 'a',
-      replacement: (content, node) => {
-        linkcount++
-        const url =  node.getAttribute('href');
-        linkObjArr.push({linkText: content, linkUrl: url})
-        return `{underline}${content}{/underline}{invisible}${linkcount}{/invisible}`
-      }})
 
     .addRule("advert image", {
       filter: 'img',
       replacement: (content,node) => {
         return ""
-      }}
-    )
+      }})
+
+    .addRule('remove subscribe link', 
+      {filter:(node) => {return /menu-1/.test(node.className)},
+        replacement: (node) => ""})
+
+    // .addRule('remove h1; add logo', 
+    //   {filter: (node) => /site-title/.test(node.className),
+    //     replacement: (content) => `{center}${content}{/center}
+
+    //      ${logo}
+    //     ` })
+
+    .addRule("link to terminalLink", {
+      filter: 'a',
+      replacement: (content, node) => {
+        const url =  node.getAttribute('href');
+          linkObjArr.push({linkText: content, linkUrl: url})
+          linkcount++
+          return `{underline}${content}{/underline}{invisible}${linkcount}{/invisible}`
+      }})
 
   let markdown = await turndownService.turndown(html);
- 
-  fs.writeFileSync("/home/zmg/tmp/md2.md", markdown)
+  fs.writeFileSync("/home/zmg/tmp/md.md", markdown) 
+  markdown = markdown.trim()
+  markdown =  "\n" + markdown 
+  // markdown = markdown.replace(/(\n{6})(?=\{center})/, )
   return {markdown, linkObjArr};
   
 }

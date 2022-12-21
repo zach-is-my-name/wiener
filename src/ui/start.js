@@ -18,7 +18,7 @@ const screen = blessed.screen({
   ignoreDockContrast: true
 });
 
-screen.key(['q', 'C-c', 'C-e', 'enter', 'C-enter'], (ch, key) => {
+screen.key(['q', 'C-c' ], (ch, key) => {
     process.exit(0)
 });
 

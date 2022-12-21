@@ -1,3 +1,6 @@
+import fs from "fs"
+import {logger} from '../../../devLog/logger.js' 
+logger.level = "debug"
 import blessed from 'blessed';
 import ansiRegex from 'ansi-regex';
 import stripAnsi from 'strip-ansi'
@@ -129,11 +132,13 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
     const before = lines?.slice(0, cursorTop)
     const cursorIndex = before?.join('').length + cursorLeft
     const cursorLine = lines[cursorTop]
-
     if (cursorLeft <= cursorLine.length) {
       const text = lines.join('')
-      const regexUnderline = /(\x1B\[4m.+?\x1B\[24m)(\x1B\[8m\d+\x1B\[28m)/gm
+      const regexUnderline = /(\x1B\[4m.+?\x1B\[24m)(\x1B\[8m\d+\x1B\[28m)/
       let match = regexUnderline.exec(text)
+      fs.writeFileSync("/home/zmg/tmp/text.js", text) 
+      logger.debug({match:match[0], linkIndex: stripAnsi(match[2])})
+
       while (match) {
         const start = match.index
         const end = start + match[0].length

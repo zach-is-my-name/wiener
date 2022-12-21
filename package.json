@@ -24,9 +24,9 @@
 
     "go": "node --trace-exit dist/index.js",
 
-    "dec": "rimraf dist && npm run build && node -r source-map-support/register --inspect dist/index.js",
+    "dec": "rimraf dist && npm run build1 && node --inspect dist/index.js",
 
-    "def": "rimraf dist && npm run build1 && node -r source-map-support/register --inspect-brk dist/index.js",
+    "def": "rimraf dist && npm run build1 && node --inspect-brk dist/index.js",
 
     "dev": "rimraf dist && npm run build && node --trace-warnings -r source-map-support/register dist/index.js",
 

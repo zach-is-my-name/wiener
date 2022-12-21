@@ -48,7 +48,7 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
 
       // logger.debug("form focused?: ", formRef.current?.height)
       // logger.debug("button 1: ", {top:button1Ref.current?.top,left: button1Ref.current?.left })
-      logger.debug("form focused?: ", formRef.current?.height)
+      //logger.debug("form focused?: ", formRef.current?.height)
     }
   }, [])
 
