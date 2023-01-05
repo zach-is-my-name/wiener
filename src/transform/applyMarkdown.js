@@ -35,7 +35,7 @@ turndownService
       replacement: (content, node) => {
         const noBreakTag = content.replace(/\<br\>\s/g,"")
         const noLineBreak = noBreakTag.replace(/\r?\n|\r/, "")  
-        return "\n" + `{center}{bold}${noLineBreak}{/bold}{/center}` +"\n"+"\n"
+        return "\n" + `{center}${noLineBreak}{/center}` +"\n"+"\n"
       }
     })
 
@@ -76,7 +76,7 @@ ${figlet.textSync(match)}
     .addRule( "jobs", { 
 filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[jJ]ob/.test(node.textContent),
       replacement: (content) => {
-          return `{bold}${chalk.whiteBright(content)}{/bold}`
+          return `${chalk.whiteBright(content)}`
       }})
 
     .addRule("chalk h6", {
@@ -103,7 +103,7 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
         const url =  node.getAttribute('href');
           linkObjArr.push({linkText: content, linkUrl: url})
           linkcount++
-          return `{underline}${content}{/underline}{invisible}${linkcount}{/invisible}`
+          return `{underline}${content}{/underline} [${linkcount}]`
       }})
 
   let markdown = await turndownService.turndown(html);

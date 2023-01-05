@@ -14,9 +14,11 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   async function keyHandler(ch, key) {
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
-
     } else if (key.full === 'enter') {
       await activateLinkBox()     //followLinkUnderCursor()
+    } else if (key.full === 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9) {
+      await activateRefBox(key.full)
+    }
     } else {
       updateCoordinate(key.full)
     }
@@ -126,32 +128,34 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
       } 
     }
   }
+  function activateRefBox(initialNum) {
+    dispatch({type: "openRefBox", payload: {initialNum, line: cursorTop}})
+  }
 
   function activateLinkBox() {
     const lines = mainBoxRef.current?.getScreenLines()
     const before = lines?.slice(0, cursorTop)
     const cursorIndex = before?.join('').length + cursorLeft
+    // const cursorIndex = blessed.stripTags(before?.join('')).length + cursorLeft
     const cursorLine = lines[cursorTop]
     if (cursorLeft <= cursorLine.length) {
-      const text = lines.join('')
-      const regexUnderline = /(\x1B\[4m.+?\x1B\[24m)(\x1B\[8m\d+\x1B\[28m)/
-      let match = regexUnderline.exec(text)
-      fs.writeFileSync("/home/zmg/tmp/text.js", text) 
-      logger.debug({match:match[0], linkIndex: stripAnsi(match[2])})
+      const text = blessed.stripTags(lines.join(''))
+      const re = /\[(\d+)\]/g
+      let match = re.exec(text)
 
       while (match) {
         const start = match.index
         const end = start + match[0].length
 
         if (start <= cursorIndex && cursorIndex < end) {
-          let linkIndex = match[2]
+          let linkIndex = match[1]
           linkIndex = stripAnsi(linkIndex)
           linkIndex = parseInt(linkIndex, 10)
-          dispatch({type: "openLink", payload: {linkIndex, line: cursorTop}  })
+          dispatch({type: "openLinkBox", payload: {linkIndex, line: cursorTop}  })
           break
         }
 
-        match = regexUnderline.exec(text)
+        match = re.exec(text)
       }
     }
   }
