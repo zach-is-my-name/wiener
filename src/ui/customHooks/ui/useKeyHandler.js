@@ -16,9 +16,8 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
       return process.exit(0);
     } else if (key.full === 'enter') {
       await activateLinkBox()     //followLinkUnderCursor()
-    } else if (key.full === 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9) {
+    } else if (["1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9"].includes(key.full)) {
       await activateRefBox(key.full)
-    }
     } else {
       updateCoordinate(key.full)
     }
@@ -128,15 +127,15 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
       } 
     }
   }
-  function activateRefBox(initialNum) {
-    dispatch({type: "openRefBox", payload: {initialNum, line: cursorTop}})
+
+  function activateRefBox(initialRefNum) {
+    dispatch({type: "openRefBox", payload: initialRefNum})
   }
 
   function activateLinkBox() {
     const lines = mainBoxRef.current?.getScreenLines()
     const before = lines?.slice(0, cursorTop)
     const cursorIndex = before?.join('').length + cursorLeft
-    // const cursorIndex = blessed.stripTags(before?.join('')).length + cursorLeft
     const cursorLine = lines[cursorTop]
     if (cursorLeft <= cursorLine.length) {
       const text = blessed.stripTags(lines.join(''))
@@ -148,10 +147,10 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         const end = start + match[0].length
 
         if (start <= cursorIndex && cursorIndex < end) {
-          let linkIndex = match[1]
-          linkIndex = stripAnsi(linkIndex)
-          linkIndex = parseInt(linkIndex, 10)
-          dispatch({type: "openLinkBox", payload: {linkIndex, line: cursorTop}  })
+          let openLinkIndex = match[1]
+          openLinkIndex = stripAnsi(openLinkIndex)
+          openLinkIndex = parseInt(openLinkIndex, 10)
+          dispatch({type: "openLinkBox", payload: {openLinkIndex, line: cursorTop}  })
           break
         }
 
