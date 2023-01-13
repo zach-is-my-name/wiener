@@ -63,10 +63,16 @@ ${bullet} ${content}`
     .addRule( "sponsor", { 
       filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[tT]hanks\s?[Tt]o(.+?$)/.test(node.textContent),
       replacement: (content) => {
-        let match = stripAnsi(content).match(/[tT]hanks\s?[Tt]o(.+?$)/)[1]
-        const re2 = /(^[^\(]+)/
-        match = match.match(/.*?[^!]+/)[0]
-        match = match.match(re2)[1]
+        let match = blessed.stripTags(content).match(/[tT]hanks\s?[Tt]o(.+?$)/)
+        match = match[1].trim()
+        const orgLinkRegex = /(.*?)\s\[\d\d\]/ 
+        const orgFirstWordRegex = /^([\S]+)/
+
+        if (orgLinkRegex.test(match)) {
+          match = match.match(orgLinkRegex)[1]
+        } else if (orgFirstWordRegex.test(match)) {
+          match = match.match(orgFirstWordRegex)[1]
+        } 
         return `{bold}${chalk.whiteBright(content)}{/bold} 
 
 
