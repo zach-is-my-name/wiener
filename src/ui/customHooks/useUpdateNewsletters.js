@@ -4,14 +4,12 @@ import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
 
 export function useUpdateNewsletters(dateLatestPub, hasLatest, hasInternet) {
   useEffect(() => {
-
-    if (hasLatest && hasInternet /* && dateLatestPub && text && text.length*/) {
-    (async () => {
-      if (dateLatestPub) {
-        await fetchBackFromLocalLatest(dateLatestPub)
-      }
-    })();
-    }
+    // if (hasLatest && hasInternet /* && dateLatestPub && text && text.length*/) {
+    // (async () => {
+    //   if (dateLatestPub) {
+    //     await fetchBackFromLocalLatest(dateLatestPub)
+    //   }
+    // })();
   }, [hasLatest, hasInternet, dateLatestPub])
 }
 
