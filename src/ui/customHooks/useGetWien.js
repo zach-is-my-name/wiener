@@ -62,6 +62,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
     } else if (loadState === "loadNextHook" && adjacentDates.nextUrl.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.nextUrl)
+        setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
         ctrDispatch({type: "loaded"})
       })();
@@ -69,6 +70,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
     } else if (loadState === "loadPrevHook" && adjacentDates.prevUrl) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.prevUrl)
+        setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
         ctrDispatch({type: "loaded"})
       })();
