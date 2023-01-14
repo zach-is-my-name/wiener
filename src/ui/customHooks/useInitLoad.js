@@ -21,11 +21,10 @@ export function useInitLoad(ctrDispatch) {
   useEffect(() =>  {
 
     if (hasInternet === true) {
-
-      if (hasLatestInArchive === true) {
+      if (hasLatestInArchive === false) {
         ctrDispatch({type: "getArchiveMostRecent"})
 
-      } else if (hasLatestInArchive === false) {
+      } else if (hasLatestInArchive === true) {
         ctrDispatch({type: "fetchLatest"})
 
       } else if (hasLatestInArchive === "loading") {

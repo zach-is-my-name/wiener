@@ -1,16 +1,14 @@
 import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
-import rateLimit from 'axios-rate-limit';
+import got from 'got'
 import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
 import {getNewsletterFromDate, getDateFromNewsletter} from '../utilities.js'
 import {loadNewsletterFromDb, addNextUrl} from '../db/db.js'
-const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 5000 })
+import {logger} from '../devLog/logger.js' 
+logger.level = "debug"
 
-axiosRetry(http, { retryDelay: () => {return 50000}}) 
 let count = 0
 let reqCount = 0
 
@@ -24,7 +22,7 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   let count = 0 
 
   while (targetUrl) {
-
+    // logger.debug({count}) 
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
       targetUrl = newsletterObj.prevUrl
@@ -38,7 +36,7 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
 
   async function fetchAndAdd(url) {
     if (url) {
-      let fetchResult =  await http.get(url)/*.catch(e => new Error(e));*/
+      let fetchResult =  await got(url).text()/*.catch(e => new Error(e));*/
       reqCount++
       const {data: fetchedNewsletter} = fetchResult
       // if (typeof fetchedNewsletter !== 'string') return new Error(`error on fetched newsletter, value: ${fetchedNewsletter}`)

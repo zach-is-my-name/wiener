@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import MainBox from './MainBox.js' 
 import SearchPage from './SearchPage.js'
 import HelpPage from './HelpPage.js'
+import {logger} from '../../devLog/logger.js' 
+logger.level = "debug"
 
 import {
   useCtrReducer,
@@ -9,7 +11,6 @@ import {
   useGetWien, 
   useUpdateNewsletters,
 } from '../customHooks/index.js'
-
 
 function App(props) {
 
@@ -27,6 +28,7 @@ function App(props) {
   const [message, setMessage] = useState("")
 
   useEffect(() => {
+    logger.debug({loadState})
   if (!hasInternet && loadState === 'none') {
     setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
   }

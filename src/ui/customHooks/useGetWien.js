@@ -1,7 +1,6 @@
 import fs from 'fs'
 import React, {useEffect, useState} from 'react'
-import axios from 'axios';
-import rateLimit from 'axios-rate-limit'
+import got from 'got'
 import cheerio from 'cheerio' 
 import {loadNewsletterFromDb} from '../../db/db.js' 
 import {convertAndStore} from '../../transform/convert.js'
@@ -14,9 +13,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
     if (loadState === "fetchLatest" && dateLatestPub ){
       (async () => {
 
-        const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
-
-        const {data} = await http.get(`https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`);
+        const data = await got(`https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`).text();
 
         const $ = cheerio.load(data)
         const url = $('link[rel="canonical"]').attr('href')

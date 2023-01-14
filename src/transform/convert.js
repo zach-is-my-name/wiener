@@ -4,8 +4,6 @@ import {getDateFromNewsletter, validateInputDate} from '../utilities.js'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 dayjs.extend(customParseFormat)
-import pkg from 'utils-deep-clone';
-const { toJSON } = pkg;
 
 export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
   
@@ -17,7 +15,7 @@ export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
   newsletter = newsletter.split(/\n/) 
   
   const res = await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl, linkObjArr) 
-  if (!res) return new Error({date, newsletter, url, prevUrl, nextUrl})
+  // if (!res) return new Error({date, newsletter, url, prevUrl, nextUrl})
   return res
 }
 

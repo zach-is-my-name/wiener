@@ -5,14 +5,11 @@ import duration from 'dayjs/plugin/duration.js'
 dayjs.extend(duration)
 dayjs.extend(customParseFormat)
 import cheerio from 'cheerio'
-import axios from 'axios';
-import rateLimit from 'axios-rate-limit';
+import got from 'got';
 import chalk from 'chalk';
 
-const http = rateLimit(axios.create(), { maxRequests: 1, perMilliseconds: 2500 })
-
 export async function fetchDateCurrent() {
-  const {data} = await axios.get('https://weekinethereumnews.com');
+  const data = await got('https://weekinethereumnews.com').text();
   const { dateWithMonth, dateWithMonthNumber } = await getDate(data)  
   return ({dateWithMonth, dateWithMonthNumber})
 }
@@ -20,10 +17,10 @@ export async function fetchDateCurrent() {
 export function validateInputDate(date) {
 
   if (typeof date !== 'string') {
-    new Error(`argument must be a string ${JSON.stringify(date)}`)
+    // new Error(`argument must be a string ${JSON.stringify(date)}`)
     return 
   } else if (dayjs(date, 'M-D-YYYY').isValid() === false){ 
-    new Error(`date format invalid ${date}`)
+    // new Error(`date format invalid ${date}`)
     return 
   }
 }
@@ -63,7 +60,7 @@ async function getDate(document) {
     let monthNum = monthNameToNumber(monthName)
    return ({dateWithMonth:`${monthName.toLowerCase()}-${day}-${year}/`, dateWithMonthNumber: monthNum + '-' + day + '-'+ year})
   } catch(error) {
-    new Error(error)
+    // new Error(error)
   }
 }
 
@@ -150,11 +147,4 @@ export function monthNameToNumber(monthName){ if (typeof monthName === 'number')
         break;
     }
 }
-
-process.on('unhandledRejection', error => {
-  // Will print "unhandledRejection err is not defined"
-  console.log('unhandledRejection', error);
-});
-
-
 

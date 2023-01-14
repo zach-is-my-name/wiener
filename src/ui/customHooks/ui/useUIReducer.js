@@ -22,7 +22,7 @@ function reducer(state, action) {
       return {...state, initialRefNum: null} 
 
     default:
-     throw new Error("UI reducer error") 
+     // throw new Error("UI reducer error") 
   }
 }
 

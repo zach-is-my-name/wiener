@@ -23,23 +23,23 @@ export const logger2 = winston.createLogger({
 //   handleRejections: true,
 // }));
 
-const prettyJson = format.printf(info => {
-  if (info.message.constructor === Object) {
-    info.message = JSON.stringify(info.message, null, 4)
-  }
-  return `${info.level}: ${info.message}`
-})
+// const prettyJson = format.printf(info => {
+//   if (info.message.constructor === Object) {
+//     info.message = JSON.stringify(info.message, null, 4)
+//   }
+//   return `${info.level}: ${info.message}`
+// })
 
-export const _logger = winston.createLogger({
-  format: format.combine(
-    format.prettyPrint(),
-    format.splat(),
-    prettyJson
-  ),
-  transports: [
-    new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/combined.log' })
-  ]
-});
+// export const _logger = winston.createLogger({
+//   format: format.combine(
+//     format.prettyPrint(),
+//     format.splat(),
+//     prettyJson
+//   ),
+//   transports: [
+//     new winston.transports.File({ filename: '/home/zmg/Tinker/wiener/logs/combined.log' })
+//   ]
+// });
 
 
 // let _logger_info_old = _logger.info;

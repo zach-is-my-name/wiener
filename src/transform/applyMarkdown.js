@@ -3,6 +3,7 @@ import TurndownService from 'turndown';
 import chalk from 'chalk';
 import figures, {mainSymbols} from 'figures';
 import cfonts from 'cfonts'
+import blessed from 'blessed'
 import figlet from 'figlet'
 import stripAnsi from 'strip-ansi'
 const turndownOptions = {
@@ -116,5 +117,4 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
   markdown = markdown.trim()
   markdown =  "\n" + markdown 
   return {markdown, linkObjArr};
-  
 }

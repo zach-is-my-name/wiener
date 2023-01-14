@@ -5,7 +5,6 @@ import blessed from 'blessed';
 import ansiRegex from 'ansi-regex';
 import stripAnsi from 'strip-ansi'
 import open from 'open'
-import {parse, stringify, toJSON, fromJSON} from 'flatted';
 
 export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const [{mainBoxRef, scrollToScrollHeightFlagRef}] = refs

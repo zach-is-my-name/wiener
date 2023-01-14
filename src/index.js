@@ -21,8 +21,4 @@ const cli = meow({
 });
 
 
-try {
   start()
-} catch(e) {
-  throw new Error(e)
-}
