@@ -116,5 +116,5 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
   let markdown = await turndownService.turndown(html);
   markdown = markdown.trim()
   markdown =  "\n" + markdown 
-  return {markdown, linkObjArr};
+  return {markdown/*, linkObjArr*/};
 }

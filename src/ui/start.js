@@ -12,7 +12,7 @@ const screen = blessed.screen({
   smartCSR: true,
   title: 'wiener',
   fullUnicode: true,
-  handleUncaughtExceptions: false,
+  /*handleUncaughtExceptions: true,*/
   ignoreDockContrast: true,
   dockBorders:true,
   ignoreDockContrast: true

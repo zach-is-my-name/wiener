@@ -14,7 +14,7 @@ let reqCount = 0
 
 export async function fetchBackFromLocalLatest(dateLatestPub) {
   let storedNewsletters = await loadNewsletterFromDb("all")
-  
+    
   await replaceBlankNextUrl(storedNewsletters)
 
   let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`
@@ -22,24 +22,25 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   let count = 0 
 
   while (targetUrl) {
-    // logger.debug({count}) 
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
+      logger.debug(`newsletter exists: ${newsletterObj.date} `)
       targetUrl = newsletterObj.prevUrl
     } else {
-
+      logger.debug(`none; fetching: ${targetUrl}`)
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
+      // logger.debug(`written newsletter; next to check: ${writtenNewsletterObj.targetUrl}`)
       targetUrl = writtenNewsletterObj.prevUrl 
+      logger.debug(`written newsletter; next to check: ${targetUrl}`)
     }
     count++
   }
 
   async function fetchAndAdd(url) {
     if (url) {
-      let fetchResult =  await got(url).text()/*.catch(e => new Error(e));*/
+      let fetchedNewsletter =  await got(url).text()/*.catch(e => new Error(e));*/
       reqCount++
-      const {data: fetchedNewsletter} = fetchResult
-      // if (typeof fetchedNewsletter !== 'string') return new Error(`error on fetched newsletter, value: ${fetchedNewsletter}`)
+      if (typeof fetchedNewsletter !== 'string') return new Error(`error on fetched newsletter, value: ${fetchedNewsletter}`)
       const $ = cheerio.load(fetchedNewsletter)
       const $url = $('link[rel="canonical"]').attr('href')
       let prevUrl = $('.nav-previous').children('a').attr('href');

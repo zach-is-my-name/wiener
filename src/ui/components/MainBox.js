@@ -8,7 +8,7 @@ import RefBox from './RefBox.js'
 import  {useLayoutEffect, useEffect, useState, useMemo} from 'react';
 import {useUiHooks} from '../customHooks/ui/useUiHooks.js' 
 
-const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPageHidden, renderText, linkObjArr, ctrDispatch, savedCursorPos=undefined, helpPageHidden, message}) =>  {
+const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPageHidden, renderText, /*linkObjArr,*/ ctrDispatch, savedCursorPos=undefined, helpPageHidden, message}) =>  {
 
   const [ { keyHandler, clickHandler, dispatch }, {cursorRef, mainBoxRef, linkBoxRef}, {cursorLeft, cursorTop, openLinkIndex, linkLine, initialRefNum} ] = useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch)
 
@@ -25,6 +25,7 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
   const [linkBoxHidden, setLinkBoxHidden] = useState(true)
   const [linkUrl, setLinkUrl] = useState("")
 
+  /*
   useEffect(() => {
     if (typeof openLinkIndex === 'number' && openLinkIndex >= 0) {
       setLinkUrl(linkObjArr[openLinkIndex].linkUrl)
@@ -33,7 +34,7 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
       setLinkBoxHidden(true)
     }
   }, [openLinkIndex])
-
+*/
   const [refBoxHidden, setRefBoxHidden] = useState(true)
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
 
   const linkBox = <LinkBox linkLine={linkLine} linkBoxRef={linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
 
-  const refBox = <RefBox mainBoxRef={mainBoxRef} initialRefNum={initialRefNum} linkObjArr={linkObjArr} hidden={refBoxHidden} dispatch={dispatch} />
+  const refBox = <RefBox mainBoxRef={mainBoxRef} initialRefNum={initialRefNum} /*linkObjArr={linkObjArr}*/ hidden={refBoxHidden} dispatch={dispatch} />
 
     return (
       <>

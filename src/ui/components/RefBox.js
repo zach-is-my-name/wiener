@@ -3,7 +3,7 @@ import open from 'open'
 import {logger} from '../../devLog/logger.js' 
 logger.level = "debug"
 
-function RefBox({initialRefNum, dispatch, mainBoxRef, linkObjArr, hidden}) {
+function RefBox({initialRefNum, dispatch, mainBoxRef, /*linkObjArr,*/ hidden}) {
   const formRef = useRef(null)
   const textAreaRef = useRef(null)
   const [refNum, setRefNum] = useState(initialRefNum)
@@ -19,7 +19,7 @@ function RefBox({initialRefNum, dispatch, mainBoxRef, linkObjArr, hidden}) {
     const linkIndex = parseInt(refNum, 10)
     logger.debug({linkIndex, type: typeof linkIndex})
     if (typeof linkIndex === 'number') {
-      const linkUrl = linkObjArr[parseInt(refNum, 10)].linkUrl
+      /*const linkUrl = linkObjArr[parseInt(refNum, 10)].linkUrl*/
       logger.debug("linkUrl", linkUrl)
       open(linkUrl)
       dispatch({type: "closeRefBox"})  
