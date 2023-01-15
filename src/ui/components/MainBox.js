@@ -7,49 +7,52 @@ import SearchPage from './SearchPage.js'
 import RefBox from './RefBox.js' 
 import  {useLayoutEffect, useEffect, useState, useMemo} from 'react';
 import {useUiHooks} from '../customHooks/ui/useUiHooks.js' 
+import {logger} from '../../devLog/logger.js' 
+logger.level = "debug"
 
-const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPageHidden, renderText, /*linkObjArr,*/ ctrDispatch, savedCursorPos=undefined, helpPageHidden, message}) =>  {
+const MainBox = props =>  {
 
-  const [ { keyHandler, clickHandler, dispatch }, {cursorRef, mainBoxRef, linkBoxRef}, {cursorLeft, cursorTop, openLinkIndex, linkLine, initialRefNum} ] = useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch)
+  const [ handlers, dispatch, refs, state] = useUiHooks(props.ctrDispatch, props.lineFromSearch, props.setLineFromSearch)
 
-  let memo = useMemo(() => renderText &&  renderText.join('\n'), [renderText]) 
+  let memo = useMemo(() => props.renderText &&  props.renderText.join('\n'), [props.renderText]) 
   const [text, setText] = useState("")
+
   useEffect(() => {
     if (memo?.length) {
       setText(memo)
-    } else if (renderText === undefined && message.length) {
-      setText(message)
+    } else if (props.renderText === undefined && props.message.length) {
+      setText(props.message)
     } 
-  }, [renderText, message])
+  }, [props.renderText, props.message])
 
   const [linkBoxHidden, setLinkBoxHidden] = useState(true)
   const [linkUrl, setLinkUrl] = useState("")
 
   /*
   useEffect(() => {
-    if (typeof openLinkIndex === 'number' && openLinkIndex >= 0) {
-      setLinkUrl(linkObjArr[openLinkIndex].linkUrl)
+    if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0) {
+      setLinkUrl(linkObjArr[state.openLinkIndex].linkUrl)
       setLinkBoxHidden(false)
     } else {
       setLinkBoxHidden(true)
     }
-  }, [openLinkIndex])
+  }, [state.openLinkIndex])
 */
   const [refBoxHidden, setRefBoxHidden] = useState(true)
 
   useEffect(() => {
-    if (initialRefNum) {
+    if (state.initialRefNum) {
       setRefBoxHidden(false)
     } else {
       setRefBoxHidden(true)
     }
-  }, [initialRefNum])
+  }, [state.initialRefNum])
 
-  const searchPage = <SearchPage searchPageHidden={searchPageHidden} setLineFromSearch={setLineFromSearch} setDateFromSearch={setDateFromSearch} ctrDispatch={ctrDispatch}/>
+  const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
 
-  const linkBox = <LinkBox linkLine={linkLine} linkBoxRef={linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
+  const linkBox = <LinkBox linkLine={state.linkLink} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
 
-  const refBox = <RefBox mainBoxRef={mainBoxRef} initialRefNum={initialRefNum} /*linkObjArr={linkObjArr}*/ hidden={refBoxHidden} dispatch={dispatch} />
+  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} /*linkObjArr={linkObjArr}*/ hidden={refBoxHidden} dispatch={dispatch} />
 
     return (
       <>
@@ -58,25 +61,25 @@ const MainBox = ({setDateFromSearch, setLineFromSearch, lineFromSearch, searchPa
       left={"left"}
       width={"100%"}
       height={"100%"}  
-      focused={searchPageHidden && helpPageHidden && linkBoxHidden}
-      hidden={!helpPageHidden || !searchPageHidden}
+      focused={props.searchPageHidden && props.helpPageHidden && linkBoxHidden}
+      hidden={!props.helpPageHidden || !props.searchPageHidden}
       keyable={true}
       input={true}
       scrollable={true}
       mouse={true} 
       tags={true}
-      onKeypress={keyHandler}
-      onClick={clickHandler}
-      ref={mainBoxRef}
+      onKeypress={handlers.keyHandler}
+      onClick={handlers.clickHandler}
+      ref={state.mainBoxRef}
       name={"mainbox"}
       fullUnicode
       forceUnicode
       content={text}
       > 
-      <Cursor cursorRef={cursorRef} cursorTop={cursorTop} cursorLeft={cursorLeft} savedCursorPos={savedCursorPos} />   
+      <Cursor cursorRef={refs.cursorRef} cursorTop={state.cursorTop} cursorLeft={state.cursorLeft} savedCursorPos={props.savedCursorPos} />   
       </box>
-      <HelpPage helpPageHidden={helpPageHidden} /> 
-      {!searchPageHidden ? searchPage : null}
+      <HelpPage helpPageHidden={props.helpPageHidden} /> 
+      {!props.searchPageHidden ? searchPage : null}
       {!linkBoxHidden ? linkBox : null}
       {!refBoxHidden ? refBox : null}
       </>
