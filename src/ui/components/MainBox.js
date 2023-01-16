@@ -1,12 +1,12 @@
 import React from 'react';
-import fs from 'fs'
 import Cursor from "./Cursor.js"  
 import LinkBox from "./LinkBox.js"
 import HelpPage from './HelpPage.js'
 import SearchPage from './SearchPage.js'
 import RefBox from './RefBox.js' 
-import  {useLayoutEffect, useEffect, useState, useMemo} from 'react';
+import {useLayoutEffect, useEffect, useState, useMemo} from 'react';
 import {useUiHooks} from '../customHooks/ui/useUiHooks.js' 
+import {useTransformText} from '../customHooks/ui/useTransformText.js'
 import {logger} from '../../devLog/logger.js' 
 logger.level = "debug"
 
@@ -14,30 +14,23 @@ const MainBox = props =>  {
 
   const [ handlers, dispatch, refs, state] = useUiHooks(props.ctrDispatch, props.lineFromSearch, props.setLineFromSearch)
 
-  let memo = useMemo(() => props.renderText &&  props.renderText.join('\n'), [props.renderText]) 
-  const [text, setText] = useState("")
+  const [text, linkObjArr] = useTransformText(props.renderText, props.message)
 
-  useEffect(() => {
-    if (memo?.length) {
-      setText(memo)
-    } else if (props.renderText === undefined && props.message.length) {
-      setText(props.message)
-    } 
-  }, [props.renderText, props.message])
-
-  const [linkBoxHidden, setLinkBoxHidden] = useState(true)
   const [linkUrl, setLinkUrl] = useState("")
 
-  /*
+  const [linkBoxHidden, setLinkBoxHidden] = useState(true)
+
   useEffect(() => {
-    if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0) {
+    if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkObjArr.length) {
       setLinkUrl(linkObjArr[state.openLinkIndex].linkUrl)
       setLinkBoxHidden(false)
     } else {
       setLinkBoxHidden(true)
     }
   }, [state.openLinkIndex])
-*/
+
+  const linkBox = <LinkBox linkLine={state.linkLink} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
+
   const [refBoxHidden, setRefBoxHidden] = useState(true)
 
   useEffect(() => {
@@ -48,11 +41,10 @@ const MainBox = props =>  {
     }
   }, [state.initialRefNum])
 
+
+  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkObjArr={linkObjArr.length && linkObjArr} hidden={refBoxHidden} dispatch={dispatch} />
+
   const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
-
-  const linkBox = <LinkBox linkLine={state.linkLink} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
-
-  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} /*linkObjArr={linkObjArr}*/ hidden={refBoxHidden} dispatch={dispatch} />
 
     return (
       <>
@@ -84,9 +76,6 @@ const MainBox = props =>  {
       {!refBoxHidden ? refBox : null}
       </>
     )
-
-
-
 }
 
 

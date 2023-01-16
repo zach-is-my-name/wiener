@@ -24,14 +24,14 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   while (targetUrl) {
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      logger.debug(`newsletter exists: ${newsletterObj.date} `)
+      // logger.debug(`newsletter exists: ${newsletterObj.date} `)
       targetUrl = newsletterObj.prevUrl
     } else {
-      logger.debug(`none; fetching: ${targetUrl}`)
+      // logger.debug(`none; fetching: ${targetUrl}`)
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
       // logger.debug(`written newsletter; next to check: ${writtenNewsletterObj.targetUrl}`)
       targetUrl = writtenNewsletterObj.prevUrl 
-      logger.debug(`written newsletter; next to check: ${targetUrl}`)
+      // logger.debug(`written newsletter; next to check: ${targetUrl}`)
     }
     count++
   }

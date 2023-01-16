@@ -104,17 +104,15 @@ filter: (node, content) => node.nodeType === 1 && node.localName === 'h3' && /[j
       {filter:(node) => {return /menu-1/.test(node.className)},
         replacement: (node) => ""})
 
-    // .addRule("link to terminalLink", {
-    //   filter: 'a',
-    //   replacement: (content, node) => {
-    //     const url =  node.getAttribute('href');
-    //       linkObjArr.push({linkText: content, linkUrl: url})
-    //       linkcount++
-    //       return `{underline}${content}{/underline} [${linkcount}]`
-    //   }})
+    .addRule("link to terminalLink", {
+      filter: 'a',
+      replacement: (content, node) => {
+        const url =  node.getAttribute('href');
+          return `{underline}${content}{/underline} $$${url}$$`
+      }})
 
   let markdown = await turndownService.turndown(html);
   markdown = markdown.trim()
   markdown =  "\n" + markdown 
-  return {markdown/*, linkObjArr*/};
+  return {markdown};
 }

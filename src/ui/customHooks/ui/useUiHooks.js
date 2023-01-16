@@ -14,5 +14,5 @@ export function useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch) {
 
   const [{clickHandler}] = useMouseClick(refs, state, dispatch, followLinkUnderCursor)
   
-  return [{keyHandler, clickHandler} , dispatch, refs, state]  
+  return [{keyHandler, clickHandler} , dispatch, ...refs, state]  
 }

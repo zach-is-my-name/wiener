@@ -1,4 +1,3 @@
-//export * from "./functions.js"
 export * from "./useCtrReducer.js"
 export * from "./useGetWien.js"
 export * from "./useUpdateNewsletters.js"  
