@@ -6,5 +6,5 @@ export function useGetRefs () {
   const scrollToScrollHeightFlagRef = useRef(false)
   const cursorRef = useRef(null)
   const linkBoxRef = useRef(null) 
-  return [{mainBoxRef, scrollToScrollHeightFlagRef, cursorRef, linkBoxRef}]
+  return {mainBoxRef, scrollToScrollHeightFlagRef, cursorRef, linkBoxRef}
 }

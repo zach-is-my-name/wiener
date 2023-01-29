@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 
-export function useMouseClick([{mainBoxRef}], {wasMouseClicked, cursorLeft, cursorTop},  dispatch, followLinkUnderCursor)  { 
+export function useMouseClick({mainBoxRef}, {wasMouseClicked, cursorLeft, cursorTop},  dispatch, followLinkUnderCursor)  { 
 
   useEffect(() => {
     (async () => {

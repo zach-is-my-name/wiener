@@ -1,16 +1,19 @@
 import fs from "fs"
-import {logger} from '../../../devLog/logger.js' 
-logger.level = "debug"
 import blessed from 'blessed';
 import ansiRegex from 'ansi-regex';
 import stripAnsi from 'strip-ansi'
 import open from 'open'
 
+import {logger} from '../../../devLog/logger.js' 
+logger.level = "debug"
+
 export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
-  const [{mainBoxRef, scrollToScrollHeightFlagRef}] = refs
+  // logger.debug("refs", refs.mainBoxRef?.current)
+  const {mainBoxRef, scrollToScrollHeightFlagRef} = refs
   const {cursorTop, cursorLeft} = state 
 
   async function keyHandler(ch, key) {
+    logger.debug("key.full", key.full)
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
     } else if (key.full === 'enter') {
@@ -53,9 +56,10 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         dispatch({type: "setCursorTop", payload: nextCursorPosition(
           cursorTop,
           input === 'j',
-          mainBoxRef.current?.getScrollHeight(),
+          mainBoxRef?.current?.getScrollHeight(),
           1,
         )})
+        logger.debug("dispatched")
         mainBoxRef.current?.scrollTo(cursorTop)
 
       } else if (input === 'h' || input === 'l') {
@@ -110,6 +114,9 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
 
       } else if (input === 'C-d' || input === 'd' || input === 'D') {
         let position = cursorTop + mainBoxRef?.current?.height 
+        logger.debug("mainBoxRef", mainBoxRef?.current)
+        logger.debug({position})
+        logger.debug("mainBoxRef?.current?.getScrollHeight()", mainBoxRef?.current?.getScrollHeight())
         position = position >= mainBoxRef?.current?.getScrollHeight() ? mainBoxRef?.current?.getScrollHeight() - 1 : position  
 
         dispatch({type: "setCursorTop", payload: position })

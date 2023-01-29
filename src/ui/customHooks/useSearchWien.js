@@ -25,9 +25,14 @@ export function useSearchWien(textBoxInput, setItems, setDateIndex) {
     shouldSort: false,
     keys: ['text']
   }
-
-  const index = Fuse.createIndex(options.keys, db.data.newsletters) 
-  const fuse = new Fuse(db.data.newsletters, options, index)
+  let newsletters
+  if (db.data?.newsletters && db.data.newsletters.length) {
+   newsletters = db.data.newsletters 
+  } else {
+    newsletters = []
+  }
+  const index = Fuse.createIndex(options.keys, newsletters) 
+  const fuse = new Fuse(newsletters, options, index)
   let searchResults = fuse.search(textBoxInput) || []
 
   setItems(searchResults.map((resObj, index) => hlQueryMatch(resObj, index)))

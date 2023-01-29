@@ -1,6 +1,6 @@
+import {useReducer} from 'react'
 import {logger} from '../../../devLog/logger.js' 
 logger.level = "debug"
-import {useReducer} from 'react'
 
 const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, openLinkIndex: false, linkLine: null, initialRefNum: null}
 

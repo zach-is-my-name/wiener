@@ -28,8 +28,9 @@ function App(props) {
   const [message, setMessage] = useState("")
 
   useEffect(() => {
-    logger.debug({loadState})
+    // logger.debug({loadState})
   if (!hasInternet && loadState === 'none') {
+    setTimeout(() => null, 5000)
     setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
   }
 

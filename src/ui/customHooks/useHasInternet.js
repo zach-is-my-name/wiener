@@ -8,7 +8,7 @@ export function useHasInternet() {
     (async () => {
       setHasInternet(await isReachable('https://weekinethereumnews.com'));
     })()
-  });
+  }, [hasInternet]);
   
  return hasInternet
 }

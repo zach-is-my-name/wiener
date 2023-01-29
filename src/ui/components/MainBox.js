@@ -21,6 +21,10 @@ const MainBox = props =>  {
   const [linkBoxHidden, setLinkBoxHidden] = useState(true)
 
   useEffect(() => {
+
+  })
+
+  useEffect(() => {
     if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkObjArr.length) {
       setLinkUrl(linkObjArr[state.openLinkIndex].linkUrl)
       setLinkBoxHidden(false)
@@ -62,7 +66,7 @@ const MainBox = props =>  {
       tags={true}
       onKeypress={handlers.keyHandler}
       onClick={handlers.clickHandler}
-      ref={state.mainBoxRef}
+      ref={refs.mainBoxRef}
       name={"mainbox"}
       fullUnicode
       forceUnicode

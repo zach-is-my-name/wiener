@@ -14,6 +14,12 @@ export async function fetchDateCurrent() {
   return ({dateWithMonth, dateWithMonthNumber})
 }
 
+export async function fetchPermaLinkCurrent() {
+  const data = await got('https://weekinethereumnews.com').text();
+  const $ = cheerio.load(data)
+  return $('h2.entry-title').children('a').attr('href')
+}
+
 export function validateInputDate(date) {
 
   if (typeof date !== 'string') {

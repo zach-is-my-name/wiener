@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 
 export function useScroll(refs, state, dispatch, lineFromSearch, setLineFromSearch) {
-  const [{mainBoxRef, scrollToZeroFlag, scrollToScrollHeightFlagRef}] = refs
+  const {mainBoxRef, scrollToZeroFlag, scrollToScrollHeightFlagRef} = refs
 
   const {cursorLeft, cursorTop} = state 
   

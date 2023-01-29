@@ -8,11 +8,12 @@ export function useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch) {
   const [state, dispatch] = useUIReducer()
 
   const refs = useGetRefs()
+
   const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refs, state, dispatch, ctrDispatch)
 
   useScroll(refs, state, dispatch, lineFromSearch, setLineFromSearch)
 
   const [{clickHandler}] = useMouseClick(refs, state, dispatch, followLinkUnderCursor)
   
-  return [{keyHandler, clickHandler} , dispatch, ...refs, state]  
+  return [{keyHandler, clickHandler} , dispatch, refs, state]  
 }

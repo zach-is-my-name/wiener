@@ -6,12 +6,10 @@ export function useHasLatestInArchive(hasInternet) {
   const [hasLatestInArchive, setHasLatestInArchive] = useState("loading") 
   const [dateLatestPub, setDateLatestPub] = useState(null) 
 
-
-
   useEffect(()=> {
     if (hasLatestInArchive === "loading" && hasInternet === true ) {
       (async () => {
-        const { dateWithMonth, dateWithMonthNumber:latestPublishedDate } = await fetchDateCurrent()
+        const { dateWithMonth, dateWithMonthNumber:latestPublishedDate } =       await fetchDateCurrent()
         const latestArchiveDate  = await getDateLatestInArchive();
         if (!latestArchiveDate) {
           setHasLatestInArchive(false)

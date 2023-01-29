@@ -4,7 +4,7 @@ import url from 'url'
 import got from 'got'
 import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
-import {getNewsletterFromDate, getDateFromNewsletter} from '../utilities.js'
+import {fetchPermaLinkCurrent, getDateFromNewsletter} from '../utilities.js'
 import {loadNewsletterFromDb, addNextUrl} from '../db/db.js'
 import {logger} from '../devLog/logger.js' 
 logger.level = "debug"
@@ -16,8 +16,7 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   let storedNewsletters = await loadNewsletterFromDb("all")
     
   await replaceBlankNextUrl(storedNewsletters)
-
-  let targetUrl = `https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`
+  let targetUrl = await fetchPermaLinkCurrent()
   
   let count = 0 
 
