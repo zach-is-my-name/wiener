@@ -3,9 +3,11 @@ import fs from 'fs'
 import chalk from 'chalk';
 import stripAnsi from 'strip-ansi'
 import Fuse from 'fuse.js'
-import { join, dirname } from 'path'
-import { Low, JSONFile } from 'lowdb'
-import { fileURLToPath } from 'url'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { Low } from 'lowdb'
+import { JSONFile } from 'lowdb/node'
 
 // const __dirname = dirname(fileURLToPath(import.meta.url)); production db file
 const __dirname = '/home/zmg/Tinker/wiener/src/db/'

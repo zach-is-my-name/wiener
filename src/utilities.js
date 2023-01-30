@@ -20,7 +20,7 @@ export async function fetchPermaLinkCurrent() {
   return $('h2.entry-title').children('a').attr('href')
 }
 
-export function validateInputDate(date) {
+export async function validateInputDate(date) {
 
   if (typeof date !== 'string') {
     // new Error(`argument must be a string ${JSON.stringify(date)}`)

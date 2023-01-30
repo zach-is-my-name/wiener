@@ -26,7 +26,7 @@
 
     "dec": "rimraf dist && npm run build && node --inspect dist/index.js",
 
-    "def": "rimraf dist && npm run build1 && node --inspect-brk dist/index.js",
+    "def": "rimraf dist && npm run build  && node --inspect-brk dist/index.js",
 
     "dev": "rimraf dist && npm run build && node --trace-warnings -r source-map-support/register dist/index.js",
 
@@ -102,6 +102,8 @@
 
     "cfonts": "^3.1.0",
 
+    "cheerio": "^1.0.0-rc.12",
+
     "cli-truncate": "^3.1.0",
 
     "dayjs": "^1.10.7",
@@ -126,7 +128,7 @@
 
     "is-tmux": "^1.0.0",
 
-    "lowdb": "^3.0.0",
+    "lowdb": "^5.0.5",
 
     "markdown-to-jsx": "^7.1.3",
 

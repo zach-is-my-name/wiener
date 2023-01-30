@@ -1,6 +1,10 @@
-import { join, dirname } from 'path'
-import { Low, JSONFile } from 'lowdb'
-import { fileURLToPath } from 'url'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { Low } from 'lowdb'
+import { JSONFile } from 'lowdb/node'
+import {logger} from '../devLog/logger.js'
+logger.level = "debug"
 
 // const __dirname = dirname(fileURLToPath(import.meta.url)); //production db file
 const __dirname = '/home/zmg/Tinker/wiener/src/db/'
@@ -8,18 +12,23 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
-db.data ||= { newsletters: [] }             // For Node >= 15.x
 
 export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl ) {
   await db.read()
   db.data ||= { newsletters: [] }             
+  logger.debug("before write", db.data.newsletters.length)
   db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl});
   await db.write()
-
+  await db.read()
+  db.data ||= { newsletters: [] }             // For Node >= 15.x
+  logger.debug("after write", db.data.newsletters.length)
+  
   await db.read()
   db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
 
   await db.write()
+  
+  await db.read()
   
   const addedNewsletter = await loadNewsletterFromDb("date", date)
 
@@ -57,3 +66,4 @@ export async function getDateLatestInArchive() {
    const {date} = result || false 
   return date 
 }
+

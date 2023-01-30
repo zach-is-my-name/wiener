@@ -4,21 +4,23 @@ import {getDateFromNewsletter, validateInputDate} from '../utilities.js'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 dayjs.extend(customParseFormat)
+import {logger} from '../devLog/logger.js'
+logger.level = "debug"
 
 export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
   
   let {markdown: newsletter}  = await applyMarkdown(htmlNewsletter)
   const date = await getDateFromNewsletter(newsletter) 
 
-  validateInputDate(date) 
+  await validateInputDate(date) 
 
   newsletter = newsletter.split(/\n/) 
   
+  debugger;
   const res = await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl) 
   // if (!res) return new Error({date, newsletter, url, prevUrl, nextUrl})
   return res
 }
-
 
 
 
