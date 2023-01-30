@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useLayoutEffect} from 'react';
 import open from 'open'
 import {logger} from '../../devLog/logger.js' 
 logger.level = "debug"
@@ -14,9 +14,8 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
   const openPress = () => {
     open(linkUrl) 
     dispatch({type: "closeLinkBox"})  
-    logger.debug("called open")
+    logger.debug("called open on: ", linkUrl)
   }
-
   const handleKeyPressLinkBox = (ch, key) => {
     /* logger.debug("keypress: ", key)*/
     setImmediate(() => {

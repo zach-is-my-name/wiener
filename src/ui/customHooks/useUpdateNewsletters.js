@@ -4,16 +4,16 @@ import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
 import {logger} from '../../devLog/logger.js' 
 logger.level = "debug"
 
-export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet) {
+export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) {
   useEffect(() => {
-    if (hasLatestInArchive && hasInternet /* && dateLatestPub && text && text.length*/) {
+    if (hasLatestInArchive && hasInternet && text && text.length) {
       (async () => {
         if (dateLatestPub) {
           await fetchBackFromLocalLatest(dateLatestPub)
         }
       })();
       }
-    }, [hasLatestInArchive, hasInternet, dateLatestPub])
+    }, [hasLatestInArchive, hasInternet, dateLatestPub, text])
 }
 
 

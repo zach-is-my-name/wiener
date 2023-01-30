@@ -15,10 +15,6 @@ const turndownFilter = ['script', 'footer', 'style', 'center', 'table'];
 const turndownService = new TurndownService(turndownOptions);
 turndownService.remove(turndownFilter);
 
-let linkcount = 0
-let linkObjArr = []
-
-
 export const applyMarkdown = async (sourceHtml) => {
 const $ = cheerio.load(sourceHtml)
 

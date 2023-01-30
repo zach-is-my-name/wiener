@@ -7,14 +7,14 @@ dayjs.extend(customParseFormat)
 
 export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
   
-  let {markdown: newsletter/*, linkObjArr*/}  = await applyMarkdown(htmlNewsletter)
+  let {markdown: newsletter}  = await applyMarkdown(htmlNewsletter)
   const date = await getDateFromNewsletter(newsletter) 
 
   validateInputDate(date) 
 
   newsletter = newsletter.split(/\n/) 
   
-  const res = await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl /*, linkObjArr*/) 
+  const res = await addNewsletterToDb(date, newsletter, url, prevUrl, nextUrl) 
   // if (!res) return new Error({date, newsletter, url, prevUrl, nextUrl})
   return res
 }

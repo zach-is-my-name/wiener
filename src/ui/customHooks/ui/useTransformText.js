@@ -7,16 +7,16 @@ logger.level = "debug"
 export function useTransformText(renderText, message) {
 
   const [text, setText] = useState("")
-
+  const [linkArray, setLinkObjArr]= useState([])
+   
   let joinedText = useMemo(() => renderText && renderText.join('\n'), [renderText]) 
 
   let linkCount = -1
-  const linkObjArr = []
 
   useEffect(() => {
     if (joinedText?.length) {
       const replacer = (match, linkUrl) => {
-        linkObjArr.push({linkUrl})
+        setLinkObjArr(current => [...current, linkUrl])
         linkCount++
         const replacement = `[${linkCount}]`
         return replacement 
@@ -31,5 +31,8 @@ export function useTransformText(renderText, message) {
     } 
   }, [renderText, message, joinedText])
 
-  return [text, linkObjArr]
+  // logger.debug("debug linkArray", Array.isArray(linkArray))
+  // logger.debug("linkArray length",  linkArray?.length)
+
+  return [text, linkArray]
 }

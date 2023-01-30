@@ -23,36 +23,23 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   while (targetUrl) {
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      // logger.debug(`newsletter exists: ${newsletterObj.date} `)
+      logger.debug(`newsletter exists: ${newsletterObj.date} `)
       targetUrl = newsletterObj.prevUrl
     } else {
-      // logger.debug(`none; fetching: ${targetUrl}`)
+      logger.debug(`targetUrl not found: fetching: ${targetUrl}`)
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
-      // logger.debug(`written newsletter; next to check: ${writtenNewsletterObj.targetUrl}`)
+
+      logger.debug("writtenNewsletterObj", writtenNewsletterObj)  
       targetUrl = writtenNewsletterObj.prevUrl 
-      // logger.debug(`written newsletter; next to check: ${targetUrl}`)
+      logger.debug(`end loop iteration. new targetUrl ${targetUrl}`)
     }
     count++
-  }
-
-  async function fetchAndAdd(url) {
-    if (url) {
-      let fetchedNewsletter =  await got(url).text()/*.catch(e => new Error(e));*/
-      reqCount++
-      if (typeof fetchedNewsletter !== 'string') return new Error(`error on fetched newsletter, value: ${fetchedNewsletter}`)
-      const $ = cheerio.load(fetchedNewsletter)
-      const $url = $('link[rel="canonical"]').attr('href')
-      let prevUrl = $('.nav-previous').children('a').attr('href');
-      let nextUrl = $('.nav-next').children('a').attr('href');
-      !nextUrl ? nextUrl = "" : nextUrl = nextUrl
-      url === "https://weekinethereumnews.com/january-4-2019/" ? prevUrl = "https://weekinethereumnews.com/december-28-2018/" : prevUrl = prevUrl
-
-      const storedNewsletterObj = await convertAndStore(fetchedNewsletter, url, prevUrl, nextUrl) 
-
-      return storedNewsletterObj 
+    if (!targetUrl) {
+      logger.debug("no target url", targetUrl)
+      break
     }
-    return  
   }
+
 
   async function replaceBlankNextUrl(newsletters) {
     if (newsletters.length > 1) {
@@ -65,3 +52,24 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
   }
 
 }
+  async function fetchAndAdd(url) {
+    if (url) {
+      let fetchedNewsletter =  await got(url).text().catch(e => new Error(e))
+      reqCount++
+      if (typeof fetchedNewsletter !== 'string') return new Error(`error on fetched newsletter, value: ${fetchedNewsletter}`)
+      const $ = cheerio.load(fetchedNewsletter)
+      const $url = $('link[rel="canonical"]').attr('href')
+      let prevUrl = $('.nav-previous').children('a').attr('href');
+      let nextUrl = $('.nav-next').children('a').attr('href');
+      !nextUrl ? nextUrl = "" : nextUrl = nextUrl
+      url === "https://weekinethereumnews.com/january-4-2019/" ? prevUrl = "https://weekinethereumnews.com/december-28-2018/" : prevUrl = prevUrl
+
+      const storedNewsletterObj = await convertAndStore(fetchedNewsletter, url, prevUrl, nextUrl) 
+      // logger.debug(`written newsletter; next to check: ${storedNewsletterObj.prevUrl}`)
+      logger.debug("storedNewsletterObj", storedNewsletterObj) 
+      return storedNewsletterObj 
+    }
+    logger.debug("early return fetchAndAdd")
+    return  
+  }
+

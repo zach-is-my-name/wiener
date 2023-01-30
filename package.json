@@ -24,7 +24,7 @@
 
     "go": "node --trace-exit dist/index.js",
 
-    "dec": "rimraf dist && npm run build1 && node --inspect dist/index.js",
+    "dec": "rimraf dist && npm run build && node --inspect dist/index.js",
 
     "def": "rimraf dist && npm run build1 && node --inspect-brk dist/index.js",
 

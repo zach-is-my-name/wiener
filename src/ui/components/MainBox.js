@@ -14,26 +14,28 @@ const MainBox = props =>  {
 
   const [ handlers, dispatch, refs, state] = useUiHooks(props.ctrDispatch, props.lineFromSearch, props.setLineFromSearch)
 
-  const [text, linkObjArr] = useTransformText(props.renderText, props.message)
+  const [text, linkArray] = useTransformText(props.renderText, props.message)
 
   const [linkUrl, setLinkUrl] = useState("")
 
   const [linkBoxHidden, setLinkBoxHidden] = useState(true)
 
   useEffect(() => {
-
-  })
+    // logger.debug("linkIndex", state.openLinkIndex)
+  // logger.debug("debug linkArray", Array.isArray(linkArray))
+  // logger.debug("linkArray length",  linkArray?.length)
+  }, [state.openLinkIndex, linkArray] )
 
   useEffect(() => {
-    if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkObjArr.length) {
-      setLinkUrl(linkObjArr[state.openLinkIndex].linkUrl)
+    if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkArray.length) {
+      setLinkUrl(linkArray[state.openLinkIndex])
       setLinkBoxHidden(false)
     } else {
       setLinkBoxHidden(true)
     }
-  }, [state.openLinkIndex])
+  }, [state.openLinkIndex, linkArray])
 
-  const linkBox = <LinkBox linkLine={state.linkLink} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
+  const linkBox = <LinkBox linkLine={state.linkLine} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
 
   const [refBoxHidden, setRefBoxHidden] = useState(true)
 
@@ -46,7 +48,7 @@ const MainBox = props =>  {
   }, [state.initialRefNum])
 
 
-  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkObjArr={linkObjArr.length && linkObjArr} hidden={refBoxHidden} dispatch={dispatch} />
+  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkArray={linkArray?.length && linkArray} hidden={refBoxHidden} dispatch={dispatch} />
 
   const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
 

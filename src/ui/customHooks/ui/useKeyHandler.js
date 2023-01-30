@@ -13,7 +13,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const {cursorTop, cursorLeft} = state 
 
   async function keyHandler(ch, key) {
-    logger.debug("key.full", key.full)
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
     } else if (key.full === 'enter') {
@@ -59,7 +58,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
           mainBoxRef?.current?.getScrollHeight(),
           1,
         )})
-        logger.debug("dispatched")
         mainBoxRef.current?.scrollTo(cursorTop)
 
       } else if (input === 'h' || input === 'l') {
@@ -114,9 +112,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
 
       } else if (input === 'C-d' || input === 'd' || input === 'D') {
         let position = cursorTop + mainBoxRef?.current?.height 
-        logger.debug("mainBoxRef", mainBoxRef?.current)
-        logger.debug({position})
-        logger.debug("mainBoxRef?.current?.getScrollHeight()", mainBoxRef?.current?.getScrollHeight())
         position = position >= mainBoxRef?.current?.getScrollHeight() ? mainBoxRef?.current?.getScrollHeight() - 1 : position  
 
         dispatch({type: "setCursorTop", payload: position })
@@ -138,7 +133,7 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
     dispatch({type: "openRefBox", payload: initialRefNum})
   }
 
-  function activateLinkBox() {
+  async function activateLinkBox() {
     const lines = mainBoxRef.current?.getScreenLines()
     const before = lines?.slice(0, cursorTop)
     const cursorIndex = before?.join('').length + cursorLeft
@@ -147,7 +142,8 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
       const text = blessed.stripTags(lines.join(''))
       const re = /\[(\d+)\]/g
       let match = re.exec(text)
-
+      // logger.debug("lastIndex", re.lastIndex)
+      // logger.debug("match", match.slice(0,2))
       while (match) {
         const start = match.index
         const end = start + match[0].length
@@ -161,6 +157,9 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         }
 
         match = re.exec(text)
+        logger.debug("lastIndex", re.lastIndex)
+        logger.debug("match", match.slice(0,2))
+
       }
     }
   }

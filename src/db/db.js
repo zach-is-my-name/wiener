@@ -8,10 +8,12 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
-export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl /*, linkObjArr*/) {
+db.data ||= { newsletters: [] }             // For Node >= 15.x
+
+export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl ) {
   await db.read()
   db.data ||= { newsletters: [] }             
-  db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl/*, linkObjArr */});
+  db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl});
   await db.write()
 
   await db.read()
@@ -28,7 +30,7 @@ export async function loadNewsletterFromDb(by, param) {
   await db.read()
   db.data ||= { newsletters: [] }             
   const storedNewsletters = db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
-  if (storedNewsletters.length === 0) return "none" 
+  if (storedNewsletters.length === 0) return storedNewsletters 
   switch (by) {
     case "date":
       return storedNewsletters.find(obj => obj.date === param)
