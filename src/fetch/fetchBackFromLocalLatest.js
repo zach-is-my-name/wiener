@@ -42,8 +42,9 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
   let storedNewsletters  
   storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
   let targetUrl = await fetchPermaLinkCurrent()
-  //  storedNewsletters = await replaceBlankNextUrl(storedNewsletters)
-  //let storedNewsletters 
+
+  await replaceBlankNextUrl(storedNewsletters, dateLatestPub)
+
   let count = 0 
   while (targetUrl) {
 
@@ -59,11 +60,26 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     count++
   }
 
-
+  async function replaceBlankNextUrl(newsletters, dateLatestPub) {
+    if (newsletters.length > 1) {
+      for (let i = 0; i < newsletters.length; i++) {
+        if (!newsletters[i].nextUrl && newsletters[i].date !== dateLatestPub) {
+          await addNextUrl(i, newsletters)   
+        } 
+      }
+    }
+  }
 
   async function fetchAndAdd(url) {
     if (url) {
-      let fetchedNewsletter  =  await got(url).text()
+      let fetchedNewsletter 
+      try {
+        fetchedNewsletter = setTimeout(async () => await got(url).text(), 5000)
+      } catch (error) {
+        logger.debug("error", error) 
+        return 
+      }
+
       reqCount++
       if (typeof fetchedNewsletter !== 'string') return new Error(`error on fetched newsletter, value: ${fetchedNewsletter}`)
       const $ = cheerio.load(fetchedNewsletter)
@@ -82,14 +98,6 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
 
     return  
   }
-
-  async function replaceBlankNextUrl(newsletters) {
-    for (let i = 0; i < newsletters.length; i++) {
-      if (!newsletters[i].nextUrl && newsletters[i].date !== dateLatestPub) {
-        return await addNextUrl(i, newsletters)   
-      } 
-    }
-  }
-  return 
 }
+
 

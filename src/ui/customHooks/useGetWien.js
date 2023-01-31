@@ -12,8 +12,14 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
   useEffect(() => {
     if (loadState === "fetchLatest" && dateLatestPub ){
       (async () => {
+        let data 
+        try {
+          data = await got(`https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`).text();
+        } catch (error) {
+          logger.debug("error", error) 
+          return 
+        }
 
-        const data = await got(`https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`).text();
 
         const $ = cheerio.load(data)
         const url = $('link[rel="canonical"]').attr('href')

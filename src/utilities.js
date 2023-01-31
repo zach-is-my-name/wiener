@@ -1,3 +1,4 @@
+import got from 'got';
 import fs from 'fs'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
@@ -8,14 +9,29 @@ import cheerio from 'cheerio'
 import got from 'got';
 import chalk from 'chalk';
 
+import {logger} from './devLog/logger.js'
+logger.level = "debug"
+
 export async function fetchDateCurrent() {
-  const data = await got('https://weekinethereumnews.com').text();
+  let data 
+  try {
+    data = await got('https://weekinethereumnews.com').text();
+  } catch (error) {
+     logger.debug("error", error) 
+     return 
+  }
   const { dateWithMonth, dateWithMonthNumber } = await getDate(data)  
   return ({dateWithMonth, dateWithMonthNumber})
 }
 
 export async function fetchPermaLinkCurrent() {
-  const data = await got('https://weekinethereumnews.com').text();
+  let data 
+  try {
+    data =  await got('https://weekinethereumnews.com').text();
+  } catch (error) {
+     logger.debug("error", error) 
+     return 
+  }
   const $ = cheerio.load(data)
   return $('h2.entry-title').children('a').attr('href')
 }
@@ -153,4 +169,6 @@ export function monthNameToNumber(monthName){ if (typeof monthName === 'number')
         break;
     }
 }
+
+
 
