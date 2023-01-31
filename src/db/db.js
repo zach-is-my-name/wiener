@@ -52,13 +52,13 @@ export async function loadNewsletterFromDb(by, param) {
   }
 }
 
-export async function addNextUrl(index, arr) {
-    db.data = {newsletters: arr}
-    let newsletters = db.data.newsletters 
+export async function addNextUrl(index, newsletters) {
     const nextUrl = newsletters[index+1].url 
     const targetObj = {...newsletters[index], url: nextUrl} 
-    newsletters = newsletters.splice(index, 1, targetObj) 
-    await db.write()   
+    // logger.debug({url: newsletters[index].url, actualNextUrl:newsletters[index].nextUrl, proposedNextUrl: nextUrl})
+    // logger.debug(targetObj)
+    // newsletters = newsletters.splice(index, 1, targetObj) 
+    // await db.write()   
 }
 
 export async function getDateLatestInArchive() {

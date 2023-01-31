@@ -14,11 +14,6 @@ import { fileURLToPath } from 'node:url'
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 
-// File path
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const file = join(__dirname, 'db.json')
-
-
 
 
 import {logger} from '../devLog/logger.js' 
@@ -43,7 +38,6 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
   storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
   let targetUrl = await fetchPermaLinkCurrent()
 
-  await replaceBlankNextUrl(storedNewsletters, dateLatestPub)
 
   let count = 0 
   while (targetUrl) {
@@ -60,15 +54,6 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     count++
   }
 
-  async function replaceBlankNextUrl(newsletters, dateLatestPub) {
-    if (newsletters.length > 1) {
-      for (let i = 0; i < newsletters.length; i++) {
-        if (!newsletters[i].nextUrl && newsletters[i].date !== dateLatestPub) {
-          await addNextUrl(i, newsletters)   
-        } 
-      }
-    }
-  }
 
   async function fetchAndAdd(url) {
     if (url) {
@@ -77,6 +62,7 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
         fetchedNewsletter = await throttledGot(url)
         logger.debug("throttled fetch", fetchedNewsletter)
       } catch (error) {
+        console.trace()
         logger.debug("error", error) 
         return 
       }

@@ -19,9 +19,9 @@ function App(props) {
 
   const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden, searchPageHidden] = useCtrReducer()
 
-  const [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive] = useInitLoad(ctrDispatch) 
+  const [dateLatestPub, hasInternet, hasLatestInArchive/*, setHasLatestInArchive*/] = useInitLoad(ctrDispatch) 
 
-  const {text, date /*, linkObjArr*/} = useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive, hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) || {};
+  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setHasLatest, setDateFromSearch) || {};
 
   useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
 

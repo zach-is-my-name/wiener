@@ -4,18 +4,22 @@ import got from 'got'
 import cheerio from 'cheerio' 
 import {loadNewsletterFromDb} from '../../db/db.js' 
 import {convertAndStore} from '../../transform/convert.js'
-
-export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLatestInArchive,  hasInternet, dateLatestPub, dateFromSearch, setHasLatest, setDateFromSearch) {
+import {logger} from '../../devLog/logger.js'
+logger.level = "debug"
+import {fetchPermaLinkCurrent} from '../../utilities.js'
+export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasLatestInArchive,*/  hasInternet, dateFromSearch, setHasLatest, setDateFromSearch) {
   const [newsletterObj, setNewsletterObj] = useState(null)
   const [adjacentDates, setAdjacentDates] = useState(null)
 
   useEffect(() => {
-    if (loadState === "fetchLatest" && dateLatestPub ){
+    if (loadState === "fetchLatest"){
       (async () => {
         let data 
         try {
-          data = await got(`https://weekinethereumnews.com/week-in-ethereum-news-${dateLatestPub}`).text();
+          let url = await fetchPermaLinkCurrent()
+          data = await got(url).text();
         } catch (error) {
+          console.trace()
           logger.debug("error", error) 
           return 
         }
@@ -30,7 +34,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
 
         const nlo  = await convertAndStore(data, url, prevUrl, nextUrl)
         setNewsletterObj(nlo)
-        setHasLatestInArchive(true) 
+        // setHasLatestInArchive(true) 
         ctrDispatch({type: "loaded"})
       })();
      
@@ -87,7 +91,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,setHasLate
         ctrDispatch({type: "loaded"})
       })();
     }
-  }, [loadState, dateLatestPub, dateFromSearch])
+  }, [loadState, dateFromSearch])
 
   return newsletterObj
 }

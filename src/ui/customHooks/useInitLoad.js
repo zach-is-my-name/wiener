@@ -16,7 +16,7 @@ function reducer (state, action) {
 
 export function useInitLoad(ctrDispatch) {
   const hasInternet = useHasInternet()
-  const {hasLatestInArchive, dateLatestPub, setHasLatestInArchive} = useHasLatestInArchive(hasInternet)
+  const {hasLatestInArchive, dateLatestPub} = useHasLatestInArchive(hasInternet)
   
   useEffect(() =>  {
 
@@ -37,7 +37,7 @@ export function useInitLoad(ctrDispatch) {
       ctrDispatch({type: "loading"}) 
     } 
   }, [hasInternet, hasLatestInArchive])
-  return [dateLatestPub, hasInternet, hasLatestInArchive, setHasLatestInArchive]  
+  return [dateLatestPub, hasInternet, hasLatestInArchive]  
 }
 
 

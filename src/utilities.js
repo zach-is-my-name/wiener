@@ -17,11 +17,14 @@ export async function fetchDateCurrent() {
   try {
     data = await got('https://weekinethereumnews.com').text();
   } catch (error) {
+    console.clear()
+    console.trace()
      logger.debug("error", error) 
      return 
   }
-  const { dateWithMonth, dateWithMonthNumber } = await getDate(data)  
-  return ({dateWithMonth, dateWithMonthNumber})
+  const { dateNumberFormat, dateWordFormat } = await getDate(data)  
+  // logger.debug({dateNumberFormat, dateWordFormat})
+  return ({ dateNumberFormat, dateWordFormat })
 }
 
 export async function fetchPermaLinkCurrent() {
@@ -29,6 +32,8 @@ export async function fetchPermaLinkCurrent() {
   try {
     data =  await got('https://weekinethereumnews.com').text();
   } catch (error) {
+     console.clear()
+     console.trace() 
      logger.debug("error", error) 
      return 
   }
@@ -80,14 +85,14 @@ async function getDate(document) {
     const execResult = re.exec(document)   
     const [match, monthName, day, year] = execResult
     let monthNum = monthNameToNumber(monthName)
-   return ({dateWithMonth:`${monthName.toLowerCase()}-${day}-${year}/`, dateWithMonthNumber: monthNum + '-' + day + '-'+ year})
+    return ({dateWordFormat:`${monthName.toLowerCase()}-${day}-${year}/`, dateNumberFormat: monthNum + '-' + day + '-'+ year})
   } catch(error) {
     // new Error(error)
   }
 }
 
 export async function getDateFromNewsletter(newsletter) {
-  const {dateWithMonthNumber:date} = await getDate(newsletter)
+  const {dateNumberFormat: date} = await getDate(newsletter)
   validateInputDate(date)
   return date
 }

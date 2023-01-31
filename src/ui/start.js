@@ -5,6 +5,8 @@ import App from './components/App.js'
 import https from 'https'
 import fs from 'fs'
 https.globalAgent.options.ca = fs.readFileSync('./certs/weekinethereumnews.com');
+import {logger} from '../devLog/logger.js'
+logger.level = "debug"
 
 
 const screen = blessed.screen({
@@ -23,7 +25,5 @@ screen.key(['q', 'C-c' ], (ch, key) => {
 });
 
 export function start () {
-  render(<App  />, screen);
+  render(<App  /> , screen);
 }
-   // render(Hello)
-
