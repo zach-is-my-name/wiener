@@ -17,11 +17,11 @@ export const logger2 = winston.createLogger({
 });
 
 
-// winston.add(new winston.transports.File({
-//   filename: '/home/zmg/Tinker/wiener/logs/errors.log',
-//   handleExceptions: true,
-//   handleRejections: true,
-// }));
+winston.add(new winston.transports.File({
+  filename: '/home/zmg/Tinker/wiener/logs/errors.log',
+  handleExceptions: true,
+  handleRejections: true,
+}));
 
 // const prettyJson = format.printf(info => {
 //   if (info.message.constructor === Object) {
