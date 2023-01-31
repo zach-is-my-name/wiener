@@ -1,4 +1,3 @@
-import got from 'got';
 import fs from 'fs'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
@@ -7,6 +6,7 @@ dayjs.extend(duration)
 dayjs.extend(customParseFormat)
 import cheerio from 'cheerio'
 import got from 'got';
+import pThrottle from 'p-throttle';
 import chalk from 'chalk';
 
 import {logger} from './devLog/logger.js'
@@ -170,5 +170,12 @@ export function monthNameToNumber(monthName){ if (typeof monthName === 'number')
     }
 }
 
+const throttle = pThrottle({
+	limit: 2,
+	interval: 5000
+});
 
+export const throttledGot = throttle( async url => {
+ return got(url).text()  
+})
 

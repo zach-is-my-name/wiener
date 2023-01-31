@@ -5,7 +5,7 @@ import url from 'url'
 import got from 'got'
 import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
-import {getDateFromNewsletter, fetchPermaLinkCurrent} from '../utilities.js'
+import {getDateFromNewsletter, fetchPermaLinkCurrent, throttledGot} from '../utilities.js'
 import {loadNewsletterFromDb, addNextUrl} from '../db/db.js'
 
 import { join, dirname } from 'node:path'
@@ -74,7 +74,8 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     if (url) {
       let fetchedNewsletter 
       try {
-        fetchedNewsletter = setTimeout(async () => await got(url).text(), 5000)
+        fetchedNewsletter = await throttledGot(url)
+        logger.debug("throttled fetch", fetchedNewsletter)
       } catch (error) {
         logger.debug("error", error) 
         return 
