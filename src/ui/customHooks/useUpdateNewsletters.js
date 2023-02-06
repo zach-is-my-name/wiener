@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {applyMarkdown} from '../../transform/applyMarkdown.js'
 import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
-import {replaceBlankNextUrl} from '../../fetch/replaceBlankNextUrl.js'
+// import {replaceBlankNextUrl} from '../../fetch/replaceBlankNextUrl.js'
 import {logger} from '../../devLog/logger.js' 
 logger.level = "debug"
 
@@ -11,7 +11,7 @@ export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInter
 
   // useEffect(() => {
   //   (async () => {
-  //   await replaceBlankNextUrl(dateLatestPub, setCheckedUrls)
+  //   await replaceBlankNextUrl(dateLatestPub, checkedUrls, setCheckedUrls)
   // })();
   // }, [dateLatestPub, hasInternet, checkedUrls])
 

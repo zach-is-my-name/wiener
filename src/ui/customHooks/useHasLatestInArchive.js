@@ -13,11 +13,12 @@ export function useHasLatestInArchive(hasInternet) {
   useEffect(() => {
     (async () => {
     const { dateWordFormat, dateNumberFormat} = await fetchDateCurrent()
+
     // logger.debug({dateNumberFormat, dateWordFormat})
     setDateWordFormat(dateWordFormat)
     setDateNumberFormat(dateNumberFormat)  
     setDateLatestPub(dateNumberFormat)
-    })()
+    })();
   }, [dateNumberFormat, dateWordFormat])
 
   useEffect(()=> {
@@ -29,9 +30,8 @@ export function useHasLatestInArchive(hasInternet) {
         } else {
           setHasLatestInArchive(Boolean(dateNumberFormat === latestArchiveDate))
         }
-      })();
+      })()
     }
   }, [hasInternet, dateNumberFormat])
   return {hasLatestInArchive, dateLatestPub} 
 }
-

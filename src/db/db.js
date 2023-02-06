@@ -52,13 +52,10 @@ export async function loadNewsletterFromDb(by, param) {
   }
 }
 
-export async function addNextUrl(index, newsletters) {
-    const nextUrl = newsletters[index+1].url 
-    const targetObj = {...newsletters[index], url: nextUrl} 
-    // logger.debug({url: newsletters[index].url, actualNextUrl:newsletters[index].nextUrl, proposedNextUrl: nextUrl})
-    // logger.debug(targetObj)
-    // newsletters = newsletters.splice(index, 1, targetObj) 
-    // await db.write()   
+export async function addNextUrl(obj, i, nl) {
+    nl = nl.splice(i, 1, obj) 
+    await db.write()   
+    logger.debug("added nextUrl", {index: i, writing_nextUrl: obj.nextUrl, currentUrl: nl[i].url})
 }
 
 export async function getDateLatestInArchive() {

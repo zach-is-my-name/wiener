@@ -24,7 +24,6 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasL
           return 
         }
 
-
         const $ = cheerio.load(data)
         const url = $('link[rel="canonical"]').attr('href')
         let prevUrl = $('.nav-previous').children('a').attr('href');

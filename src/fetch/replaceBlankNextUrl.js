@@ -1,4 +1,3 @@
-import {loadNewsletterFromDb, addNextUrl} from '../db/db.js'
 
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -16,16 +15,31 @@ const db = new Low(adapter)
 await db.read()
 db.data ||= { newsletters: [ ] }
 const { newsletters } = db.data
-//bad logic
-export async function replaceBlankNextUrl(dateLatestPub, checkedUrls, setCheckedUrls) {
-  if (newsletters.length > 1 && typeof dateLatestPub === 'string' && checkedUrls === false) {
-    let noNextUrl = newsletters.filter(obj => obj.date !== dateLatestPub && obj.nextUrl.length === 0)
-    logger.debug({noNextUrl})
-    for (let i = 0; i < noNextUrl.length; i++) {
-        await addNextUrl(i, noNextUrl[i])   
-        setCheckedUrls(true)
-      } 
+
+export async function replaceBlankNextUrl(dateLatestPub /*, checkedUrls, setCheckedUrls */) {
+
+  if (newsletters.length > 1 && typeof dateLatestPub === 'string' /*&& checkedUrls === false */) {
+    let nl = newsletters
+
+    for (let i = 0; i < nl.length; i++) {
+      try {
+      if ( nl[i].date !== dateLatestPub && !nl[i].nextUrl.length) {
+        await addNextUrl(nl[i-1].url, i, nl)   
+      }
+      } catch(error) {
+        logger.debug(`Error @ index ${i} ------ ${error}-------- ${Object.keys(nl[i])}`)
+        return
+      }
     }
+   // setCheckedUrls(true)
+  }
   return true
+}
+
+async function addNextUrl(nextUrl, i, nl) {
+    const newObj = {...nl[i], nextUrl}  
+    nl = nl.splice(i, 1, newObj) 
+    await db.write()   
+    logger.debug("added nextUrl", {index: i, writing_nextUrl: newObj.nextUrl, currentUrl: newObj.url})
 }
 

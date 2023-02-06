@@ -6,13 +6,14 @@ import got from 'got'
 import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
 import {getDateFromNewsletter, fetchPermaLinkCurrent, throttledGot} from '../utilities.js'
-import {loadNewsletterFromDb, addNextUrl} from '../db/db.js'
+import {loadNewsletterFromDb} from '../db/db.js'
 
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
+import {replaceBlankNextUrl} from './replaceBlankNextUrl.js'
 
 
 
@@ -23,6 +24,7 @@ let count = 0
 let reqCount = 0
 
 export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
+  logger.debug("inside fetch back")
   // const __dirname = dirname(fileURLToPath(import.meta.url));
   const __dirname = '/home/zmg/Tinker/wiener/src/db/'
   const file = join(__dirname, 'db.json')
@@ -53,8 +55,9 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     }
     count++
   }
-
-
+  
+  // replaceBlankNextUrl(dateLatestPub)
+  
   async function fetchAndAdd(url) {
     if (url) {
       let fetchedNewsletter 
@@ -86,5 +89,4 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
     return  
   }
 }
-
 
