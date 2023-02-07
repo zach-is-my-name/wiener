@@ -16,30 +16,43 @@ await db.read()
 db.data ||= { newsletters: [ ] }
 const { newsletters } = db.data
 
-export async function replaceBlankNextUrl(dateLatestPub /*, checkedUrls, setCheckedUrls */) {
-
-  if (newsletters.length > 1 && typeof dateLatestPub === 'string' /*&& checkedUrls === false */) {
+export async function replaceBlankNextUrl(dateLatestPub, setReplaceCycleInitd) {
+  logger.debug("replaceBlankNextUrl", {length_newsletters: newsletters.length})
+  if (newsletters.length > 1 && typeof dateLatestPub === 'string') {
     let nl = newsletters
-
+    // logger.debug("running replaceBlankNextUrl")
     for (let i = 0; i < nl.length; i++) {
       try {
-      if ( nl[i].date !== dateLatestPub && !nl[i].nextUrl.length) {
-        await addNextUrl(nl[i-1].url, i, nl)   
-      }
+        if ( nl[i].date !== dateLatestPub && !nl[i].nextUrl.length) {
+          await addNextUrl(nl[i-1].url, i, nl)   
+        }
       } catch(error) {
         logger.debug(`Error @ index ${i} ------ ${error}-------- ${Object.keys(nl[i])}`)
         return
       }
     }
-   // setCheckedUrls(true)
+    setReplaceCycleInitd(true)
+  } else if (newsletters.length <= 1) {
+    setReplaceCycleInitd(true)
   }
-  return true
 }
 
 async function addNextUrl(nextUrl, i, nl) {
-    const newObj = {...nl[i], nextUrl}  
-    nl = nl.splice(i, 1, newObj) 
-    await db.write()   
-    logger.debug("added nextUrl", {index: i, writing_nextUrl: newObj.nextUrl, currentUrl: newObj.url})
+  const newObj = {...nl[i], nextUrl}  
+  nl = nl.splice(i, 1, newObj) 
+  await db.write()   
+  logger.debug("added nextUrl", {index: i, writing_nextUrl: newObj.nextUrl, currentUrl: newObj.url})
 }
 
+export async function checkContinuity() {
+  let hasContinuity = []
+  for (let i = 0; i < newsletters.length -1; i++) {
+    // logger.debug({index: i, this_prevUrl:newsletters[i].prevUrl, next_url: newsletters[i + 1]?.url})
+    if (newsletters[i].prevUrl !== newsletters[i + 1]?.url) {
+      hasContinuity.push(false)
+    } else {
+      hasContinuity.push(true)
+    }
+  }
+  return hasContinuity.every((item) => item === true)
+}

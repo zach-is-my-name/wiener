@@ -13,8 +13,8 @@ logger.level = "debug"
 const MainBox = props =>  {
 
   const [ handlers, dispatch, refs, state] = useUiHooks(props.ctrDispatch, props.lineFromSearch, props.setLineFromSearch)
-
-  const [text, linkArray] = useTransformText(props.renderText, props.message)
+  
+  const [text, linkArray] = useTransformText(props.renderText, props.message, props.ctrDispatch)
 
   const [linkUrl, setLinkUrl] = useState("")
 
@@ -60,7 +60,7 @@ const MainBox = props =>  {
       width={"100%"}
       height={"100%"}  
       focused={props.searchPageHidden && props.helpPageHidden && linkBoxHidden}
-      hidden={!props.helpPageHidden || !props.searchPageHidden}
+      hidden={props.helpPageHidden === false || props.searchPageHidden === false}
       keyable={true}
       input={true}
       scrollable={true}
@@ -77,9 +77,9 @@ const MainBox = props =>  {
       <Cursor cursorRef={refs.cursorRef} cursorTop={state.cursorTop} cursorLeft={state.cursorLeft} savedCursorPos={props.savedCursorPos} />   
       </box>
       <HelpPage helpPageHidden={props.helpPageHidden} /> 
-      {!props.searchPageHidden ? searchPage : null}
-      {!linkBoxHidden ? linkBox : null}
-      {!refBoxHidden ? refBox : null}
+      {props.searchPageHidden  === false ? searchPage : null}
+      {linkBoxHidden === false ? linkBox : null}
+      {refBoxHidden === false ? refBox : null}
       </>
     )
 }

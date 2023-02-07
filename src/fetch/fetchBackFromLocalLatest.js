@@ -23,7 +23,7 @@ logger.level = "debug"
 let count = 0
 let reqCount = 0
 
-export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
+export async function fetchBackFromLocalLatest(dateLatestPub) {
   logger.debug("inside fetch back")
   // const __dirname = dirname(fileURLToPath(import.meta.url));
   const __dirname = '/home/zmg/Tinker/wiener/src/db/'
@@ -50,20 +50,18 @@ export async function fetchBackFromLocalLatest(dispatch, dateLatestPub) {
       targetUrl = newsletterObj.prevUrl
     } else {
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
-      logger.debug("writtenNewsletterObj", writtenNewsletterObj) 
       targetUrl = writtenNewsletterObj.prevUrl 
     }
     count++
   }
   
-  // replaceBlankNextUrl(dateLatestPub)
+  replaceBlankNextUrl(dateLatestPub)
   
   async function fetchAndAdd(url) {
     if (url) {
       let fetchedNewsletter 
       try {
         fetchedNewsletter = await throttledGot(url)
-        logger.debug("throttled fetch", fetchedNewsletter)
       } catch (error) {
         console.trace()
         logger.debug("error", error) 

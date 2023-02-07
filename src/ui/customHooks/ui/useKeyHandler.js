@@ -157,8 +157,8 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         }
 
         match = re.exec(text)
-        logger.debug("lastIndex", re.lastIndex)
-        logger.debug("match", match.slice(0,2))
+        // logger.debug("lastIndex", re.lastIndex)
+        // logger.debug("match", match.slice(0,2))
 
       }
     }

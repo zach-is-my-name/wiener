@@ -7,7 +7,8 @@ import {convertAndStore} from '../../transform/convert.js'
 import {logger} from '../../devLog/logger.js'
 logger.level = "debug"
 import {fetchPermaLinkCurrent} from '../../utilities.js'
-export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasLatestInArchive,*/  hasInternet, dateFromSearch, setHasLatest, setDateFromSearch) {
+
+export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasLatestInArchive,*/  hasInternet, dateFromSearch, setHasLatest, setDateFromSearch, dateLatestPub) {
   const [newsletterObj, setNewsletterObj] = useState(null)
   const [adjacentDates, setAdjacentDates] = useState(null)
 
@@ -36,49 +37,62 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasL
         // setHasLatestInArchive(true) 
         ctrDispatch({type: "loaded"})
       })();
-     
+
     } else if (loadState === "getArchiveMostRecent") {
       (async () => {
         const nlo = await loadNewsletterFromDb("first")
         if (nlo === "none") {
           ctrDispatch({type: "none"})
         } else {
-        let prevUrl 
-        let nextUrl 
-        if (nlo?.prevUrl){
-          prevUrl = nlo.prevUrl
-        } else { 
-          prevUrl = null
-        }
+          let prevUrl 
+          let nextUrl 
+          if (nlo?.prevUrl){
+            prevUrl = nlo.prevUrl
+          } else { 
+            prevUrl = null
+          }
 
-        if (nlo?.nextUrl){
-          nextUrl = nlo.nextUrl
-        } else { 
-          nextUrl = null
-        }
-        setAdjacentDates({prevUrl: prevUrl, nextUrl: nextUrl})
-        setNewsletterObj(nlo)
-        // if (hasLatestInArchive === true && hasInternet === true) {
-        //   setHasLatest(true) 
-        // }
-        ctrDispatch({type: "loaded"})
+          if (nlo?.nextUrl){
+            nextUrl = nlo.nextUrl
+          } else { 
+            nextUrl = null
+          }
+          setAdjacentDates({prevUrl: prevUrl, nextUrl: nextUrl})
+          setNewsletterObj(nlo)
+          // if (hasLatestInArchive === true && hasInternet === true) {
+          //   setHasLatest(true) 
+          // }
+          ctrDispatch({type: "loaded"})
         }
       })();
 
     } else if (loadState === "loadNextHook" && adjacentDates.nextUrl.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.nextUrl)
+        if (!nlo.prevUrl.length) {
+          ctrDispatch({type: "setMessage", payload: "Missing some newsletter data (prevUrl date)..."})
+          return
+        }
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
         ctrDispatch({type: "loaded"})
       })();
 
-    } else if (loadState === "loadPrevHook" && adjacentDates.prevUrl) {
+    } else if (loadState === "loadNextHook" && newsletterObj.date === dateLatestPub) {
+      ctrDispatch({type: "setMessage", payload: "Already at most recent published"})
+      return 
+
+    } else if (loadState === "loadPrevHook" && adjacentDates.prevUrl.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.prevUrl)
-        setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
-        setNewsletterObj(nlo)
-        ctrDispatch({type: "loaded"})
+        if (nlo.nextUrl.length === 0) {
+          ctrDispatch({type: "setMessage", payload: "Missing some newsletter data (nextUrl date)"})
+          return 
+        } else {
+          setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
+          setNewsletterObj(nlo)
+          ctrDispatch({type: "loaded"})
+        }
       })();
 
     } else if (dateFromSearch.length) {

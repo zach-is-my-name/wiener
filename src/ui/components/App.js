@@ -17,25 +17,22 @@ function App(props) {
   const [dateFromSearch, setDateFromSearch] = useState("") 
   const [lineFromSearch, setLineFromSearch] = useState(null) 
 
-  const [loadState, ctrDispatch, hasLatest, setHasLatest, savedCursorPos, helpPageHidden, searchPageHidden] = useCtrReducer()
+  const [loadState=false, ctrDispatch, hasLatest=false, setHasLatest, helpPageHidden=true, searchPageHidden=true, message=""] = useCtrReducer()
 
-  const [dateLatestPub, hasInternet, hasLatestInArchive/*, setHasLatestInArchive*/] = useInitLoad(ctrDispatch) 
+  const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch, loadState) 
 
-  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setHasLatest, setDateFromSearch) || {};
+  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setHasLatest, setDateFromSearch, dateLatestPub) || {};
 
   useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
 
-  const [message, setMessage] = useState("")
-
   useEffect(() => {
-    // logger.debug({loadState})
   if (!hasInternet && loadState === 'none') {
     setTimeout(() => null, 5000)
-    setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
+    ctrDispatch({type: "setMessage", payload: "Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db"})
   }
 
   if (loadState === 'loading') {
-   setMessage("Loading...") 
+   ctrDispatch({type: "setMessage", payload: "Loading..."}) 
   } 
 
   }, [hasInternet, loadState])

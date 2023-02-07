@@ -16,12 +16,10 @@ const db = new Low(adapter)
 export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl ) {
   await db.read()
   db.data ||= { newsletters: [] }             
-  logger.debug("before write", db.data.newsletters.length)
   db.data.newsletters.unshift({ date, text, url, prevUrl, nextUrl});
   await db.write()
   await db.read()
   db.data ||= { newsletters: [] }             // For Node >= 15.x
-  logger.debug("after write", db.data.newsletters.length)
   
   await db.read()
   db.data.newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -31,7 +29,7 @@ export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl ) {
   await db.read()
   
   const addedNewsletter = await loadNewsletterFromDb("date", date)
-
+  logger.debug("addedNewsletter.date", addedNewsletter.date) 
   return addedNewsletter 
 }
 
@@ -59,8 +57,15 @@ export async function addNextUrl(obj, i, nl) {
 }
 
 export async function getDateLatestInArchive() {
+   logger.debug("getDateLatestInArchive")
    const result = await loadNewsletterFromDb("first")
    const {date} = result || false 
   return date 
 }
 
+export async function getArchiveLength() {
+  await db.read()
+  db.data ||= { newsletters: [] }             
+  // logger.debug("archive length", db.data.newsletters.length)
+  return db.data.newsletters.length 
+}

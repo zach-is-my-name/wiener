@@ -4,11 +4,11 @@ import fs from 'fs'
 import {logger} from '../../../devLog/logger.js' 
 logger.level = "debug"
 
-export function useTransformText(renderText, message) {
+export function useTransformText(renderText, message, ctrDispatch) {
 
   const [text, setText] = useState("")
   const [linkArray, setLinkObjArr]= useState([])
-   
+
   let joinedText = useMemo(() => renderText && renderText.join('\n'), [renderText]) 
 
   let linkCount = -1
@@ -28,11 +28,12 @@ export function useTransformText(renderText, message) {
       setText(linkFormatedText)
     } else if (renderText === undefined && message.length) {
       setText(message)
-    } 
+    }
   }, [renderText, message, joinedText])
 
-  // logger.debug("debug linkArray", Array.isArray(linkArray))
-  // logger.debug("linkArray length",  linkArray?.length)
+  useEffect(() => {
+    if (text.length) ctrDispatch({type: "clearMessage"})
+  }, [text])
 
   return [text, linkArray]
 }
