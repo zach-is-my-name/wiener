@@ -33,6 +33,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasL
         setAdjacentDates({prevUrl, nextUrl})
 
         const nlo  = await convertAndStore(data, url, prevUrl, nextUrl)
+        logger.debug("fetchLatest: added newsletter; date: ", nlo.date)
         setNewsletterObj(nlo)
         // setHasLatestInArchive(true) 
         ctrDispatch({type: "loaded"})

@@ -13,9 +13,8 @@ export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInter
     // logger.debug({replaceCycleInitd, hasLatestInArchive, hasInternet});
 
     (async () => {
-      if (!replaceCycleInitd) {
+      if (hasLatestInArchive === true && hasInternet && text?.length && !replaceCycleInitd) {
         let hasContinuity = await checkContinuity()
-        // logger.debug({hasContinuity, typeof_dateLatestPub: typeof dateLatestPub})
         if (hasContinuity && typeof dateLatestPub === 'string') {
           await replaceBlankNextUrl(dateLatestPub, setReplaceCycleInitd)
         } else if (!hasContinuity) {
@@ -24,17 +23,16 @@ export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInter
       }
     })();
 
-  }, [replaceCycleInitd, dateLatestPub, hasLatestInArchive, hasInternet])
+  }, [replaceCycleInitd, dateLatestPub, hasLatestInArchive, hasInternet, text])
 
   useEffect(() => {
-  // logger.debug({hasLatestInArchive, hasInternet, textHasLength: text?.length, replaceCycleInitd})
-  if (hasLatestInArchive === true  && hasInternet && text?.length, replaceCycleInitd) {
+    if (hasLatestInArchive === true && hasInternet && text?.length, replaceCycleInitd) {
       (async () => {
-        if (dateLatestPub) {
+        // if (dateLatestPub ) {
           await fetchBackFromLocalLatest(dateLatestPub)
-        }
+        // }
       })();
-      }
-    }, [hasLatestInArchive, hasInternet, dateLatestPub, text, replaceCycleInitd])
+    }
+  }, [replaceCycleInitd])
 
 }

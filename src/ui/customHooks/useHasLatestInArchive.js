@@ -39,7 +39,6 @@ export function useHasLatestInArchive(hasInternet, loadState) {
         if (!latestArchiveDate) {
           setHasLatestInArchive(false)
         } else {
-          logger.debug("setHasLatestInArchive === true")
           setHasLatestInArchive(Boolean(dateNumberFormat === latestArchiveDate))
         }
       })()

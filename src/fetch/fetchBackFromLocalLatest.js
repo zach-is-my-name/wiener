@@ -15,47 +15,40 @@ import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 import {replaceBlankNextUrl} from './replaceBlankNextUrl.js'
 
-
-
 import {logger} from '../devLog/logger.js' 
 logger.level = "debug"
 
-let count = 0
-let reqCount = 0
-
+let reqCount
 export async function fetchBackFromLocalLatest(dateLatestPub) {
-  logger.debug("inside fetch back")
   // const __dirname = dirname(fileURLToPath(import.meta.url));
   const __dirname = '/home/zmg/Tinker/wiener/src/db/'
   const file = join(__dirname, 'db.json')
   const adapter = new JSONFile(file)
   const db = new Low(adapter)
-  await db.read()
 
-  db.data ||= { newsletters: [ ] }
-
-  const { newsletters } = db.data
-
-  let storedNewsletters  
-  storedNewsletters = newsletters.sort((a, b) => new Date(b.date) - new Date(a.date))
   let targetUrl = await fetchPermaLinkCurrent()
+  let count = -1
 
-
-  let count = 0 
   while (targetUrl) {
-
+    
     let storedNewsletters = await loadNewsletterFromDb("all")
+    // logger.debug("storedNewsletters", storedNewsletters.map(obj => ({date: obj.date, url: obj.url, nextUrl: obj.nextUrl  } ))  
+    count++
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
+      // logger.debug("next target: after find", newsletterObj.prevUrl)
       targetUrl = newsletterObj.prevUrl
     } else {
+      // logger.debug("about to fetchAndAdd: ", targetUrl)
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
+      logger.debug("write:", writtenNewsletterObj.date) 
+      // logger.debug("next target: after write", writtenNewsletterObj.prevUrl) 
       targetUrl = writtenNewsletterObj.prevUrl 
     }
     count++
   }
   
-  replaceBlankNextUrl(dateLatestPub)
+  // replaceBlankNextUrl(dateLatestPub)
   
   async function fetchAndAdd(url) {
     if (url) {
@@ -65,7 +58,6 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
       } catch (error) {
         console.trace()
         logger.debug("error", error) 
-        return 
       }
 
       reqCount++

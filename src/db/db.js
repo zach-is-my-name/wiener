@@ -29,7 +29,6 @@ export async function addNewsletterToDb(date, text, url, prevUrl, nextUrl ) {
   await db.read()
   
   const addedNewsletter = await loadNewsletterFromDb("date", date)
-  logger.debug("addedNewsletter.date", addedNewsletter.date) 
   return addedNewsletter 
 }
 
@@ -57,7 +56,6 @@ export async function addNextUrl(obj, i, nl) {
 }
 
 export async function getDateLatestInArchive() {
-   logger.debug("getDateLatestInArchive")
    const result = await loadNewsletterFromDb("first")
    const {date} = result || false 
   return date 

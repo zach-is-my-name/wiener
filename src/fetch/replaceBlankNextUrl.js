@@ -17,7 +17,6 @@ db.data ||= { newsletters: [ ] }
 const { newsletters } = db.data
 
 export async function replaceBlankNextUrl(dateLatestPub, setReplaceCycleInitd) {
-  logger.debug("replaceBlankNextUrl", {length_newsletters: newsletters.length})
   if (newsletters.length > 1 && typeof dateLatestPub === 'string') {
     let nl = newsletters
     // logger.debug("running replaceBlankNextUrl")

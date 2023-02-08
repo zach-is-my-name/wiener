@@ -21,7 +21,6 @@ export function useInitLoad(ctrDispatch, loadState) {
   const {hasLatestInArchive, dateLatestPub} = useHasLatestInArchive(hasInternet, loadState)
 
   useEffect(() =>  {
-    logger.debug("useInitLoad", {hasLatestInArchive})
     if (hasInternet === true) {
       if (hasLatestInArchive === true) {
         ctrDispatch({type: "getArchiveMostRecent"})
