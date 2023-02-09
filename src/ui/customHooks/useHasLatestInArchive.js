@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {getDateLatestInArchive} from '../../db/db.js' 
-import {fetchDateCurrent} from '../../utilities.js'
+import {fetchDateCurrent, parseDate} from '../../utilities.js'
 
 import {getArchiveLength} from '../../db/db.js'
 
@@ -25,9 +25,9 @@ export function useHasLatestInArchive(hasInternet, loadState) {
 
   useEffect(() => {
     if (hasLatestInArchive !== true) {
-       (async () => {
-         setArchiveLength(await getArchiveLength())
-       })();
+      (async () => {
+        setArchiveLength(await getArchiveLength())
+      })();
     }
   }, [loadState])
 
@@ -35,11 +35,15 @@ export function useHasLatestInArchive(hasInternet, loadState) {
     if (hasLatestInArchive !== true && hasInternet === true ) {
       (async () => {
         const latestArchiveDate = await getDateLatestInArchive();
-        if (!latestArchiveDate) {
-          setHasLatestInArchive(false)
-        } else {
-          setHasLatestInArchive(Boolean(dateNumberFormat === latestArchiveDate))
-        }
+        if (latestArchiveDate === []) setHasLatestInArchive(false)
+        let parsedLatestArchiveDate = parseDate(latestArchiveDate)
+        let parsedDateNumberFormat = parseDate(dateNumberFormat)
+
+        if (parsedLatestArchiveDate && parsedDateNumberFormat) {
+          let hasLatestBool = Boolean(dateNumberFormat === latestArchiveDate)
+          setHasLatestInArchive(hasLatestBool)
+        } 
+        
       })()
     }
   }, [hasInternet, dateNumberFormat, hasLatestInArchive, archiveLength])

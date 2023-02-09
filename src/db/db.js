@@ -46,6 +46,8 @@ export async function loadNewsletterFromDb(by, param) {
       return storedNewsletters.find(obj => obj.url === param)
     case "all": 
       return storedNewsletters.slice()
+    default: 
+      throw new Error()
   }
 }
 
@@ -57,12 +59,16 @@ export async function addNextUrl(obj, i, nl) {
 
 export async function getDateLatestInArchive() {
   let result
-  try {
-    result = await loadNewsletterFromDb("first")
-  } catch (error) {
-    result = await loadNewsletterFromDb("first")
+  let attemps = 0
+  while (attemps < 2) {
+    try {
+      result = await loadNewsletterFromDb("first")
+      return result.date
+    } catch (error) {
+      attempts++
+    }
   }
-  return result.date
+  if (await loadNewsletterFromDb("all") === []) return []
 }
 
 export async function getArchiveLength() {

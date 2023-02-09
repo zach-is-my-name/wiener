@@ -17,10 +17,8 @@ export async function fetchDateCurrent() {
   try {
     data = await got('https://weekinethereumnews.com').text();
   } catch (error) {
-    console.clear()
-    console.trace()
-     logger.debug("error", error) 
-     return 
+    logger.debug("error", error) 
+    return 
   }
   const { dateNumberFormat, dateWordFormat } = await getDate(data)  
   // logger.debug({dateNumberFormat, dateWordFormat})
@@ -32,10 +30,10 @@ export async function fetchPermaLinkCurrent() {
   try {
     data =  await got('https://weekinethereumnews.com').text();
   } catch (error) {
-     console.clear()
-     console.trace() 
-     logger.debug("error", error) 
-     return 
+    console.clear()
+    console.trace() 
+    logger.debug("error", error) 
+    return 
   }
   const $ = cheerio.load(data)
   return $('h2.entry-title').children('a').attr('href')
@@ -68,7 +66,7 @@ export function getNewsletterFromDate(date) {
   archiveFileNames = fs.readdirSync('./archive/markdownNewsletters/freshTest/')  
 
   newsletterFileName = archiveFileNames.find(element => element === date) 
- 
+
   if (newsletterFileName) { 
     const newsletter = fs.readFileSync('./archive/markdownNewsletters/freshTest/' + newsletterFileName, {encoding:'utf8', flag:'r'})
     return newsletter
@@ -98,89 +96,97 @@ export async function getDateFromNewsletter(newsletter) {
 }
 
 export function monthNameToNumber(monthName){ if (typeof monthName === 'number') {
-    return monthName
-  }
-    switch (monthName) {
-      case  "January": 
-      case "january":
-      case    "Jan":
-      case  "jan":
-        return "1"
-        break;
-      case  "February":
-      case  "february":
-      case  "Feb":
-      case "feb": 
-        return "2" 
-        break;
-      case  "March":
-      case  "march":
-      case  "Mar": 
-      case  "mar": 
-        return "3"
-        break;
-      case  "April":
-      case  "april":
-      case "Apr":
-      case "apr":
-        return "4"
-        break;
-      case  "May":
-      case  "may":
-      case "may" :
-        return "5" 
-        break;
-      case  "June":
-      case  "june":
-      case "Jun":  
-      case "jun":
-        return "6"
-        break;
-      case  "July":
-      case  "july":
-      case  "Jul":  
-      case  "jul":
-        return "7" 
-        break;
-      case  "August":
-      case  "august":
-      case "Aug":
-      case "aug":
-        return "8" 
-        break;
-      case  "September":  
-      case  "september":  
-      case "Sept":
-      case"sept":
-        return "9" 
-        break;
-      case"October":
-      case"october":
-      case "Oct" :
-      case "oct":
-        return "10" 
-        break;
-      case  "November":
-      case  "november":
-      case "Nov":  
-      case "nov":
-        return "11"
-        break;
-      case  "December":
-      case  "december":
-      case"Dec": 
-      case "dec":
-        return "12" 
-        break;
-    }
+  return monthName
+}
+switch (monthName) {
+  case  "January": 
+  case "january":
+  case    "Jan":
+  case  "jan":
+    return "1"
+    break;
+  case  "February":
+  case  "february":
+  case  "Feb":
+  case "feb": 
+    return "2" 
+    break;
+  case  "March":
+  case  "march":
+  case  "Mar": 
+  case  "mar": 
+    return "3"
+    break;
+  case  "April":
+  case  "april":
+  case "Apr":
+  case "apr":
+    return "4"
+    break;
+  case  "May":
+  case  "may":
+  case "may" :
+    return "5" 
+    break;
+  case  "June":
+  case  "june":
+  case "Jun":  
+  case "jun":
+    return "6"
+    break;
+  case  "July":
+  case  "july":
+  case  "Jul":  
+  case  "jul":
+    return "7" 
+    break;
+  case  "August":
+  case  "august":
+  case "Aug":
+  case "aug":
+    return "8" 
+    break;
+  case  "September":  
+  case  "september":  
+  case "Sept":
+  case"sept":
+    return "9" 
+    break;
+  case"October":
+  case"october":
+  case "Oct" :
+  case "oct":
+    return "10" 
+    break;
+  case  "November":
+  case  "november":
+  case "Nov":  
+  case "nov":
+    return "11"
+    break;
+  case  "December":
+  case  "december":
+  case"Dec": 
+  case "dec":
+    return "12" 
+    break;
+}
 }
 
 const throttle = pThrottle({
-	limit: 2,
-	interval: 5000
+  limit: 2,
+  interval: 5000
 });
 
 export const throttledGot = throttle( async url => {
- return got(url).text()  
+  return got(url).text()  
 })
+
+export function parseDate(strDate) {
+  if (strDate?.length && (/(\d+)-(\d+)-(\d+)/).test(strDate)) {
+    let _strDate = strDate.replace(/(\d+)-(\d+)-(\d+)/, "$1+$2+$3")
+    return parseInt(_strDate)
+  }         
+  return false
+}
 

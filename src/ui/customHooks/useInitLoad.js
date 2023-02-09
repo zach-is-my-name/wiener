@@ -1,20 +1,8 @@
 import {useHasInternet, useHasLatestInArchive } from './index.js'
-import {useReducer, useEffect} from 'react'
+import {useEffect} from 'react'
 
-const initialState = {loadState: false, savedCursorPos: null}
-const loadStates = ['fetchLatest','getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook',  'closeSearch'] 
 import {logger} from '../../devLog/logger.js'
 logger.level = 'debug'
-
-function reducer (state, action) {
-  if (loadStates.includes(action.type)) {
-    return ({loadState: action.type})
-  } else if (action.type === 'renderSearch') {
-    return ({...state, loadState: 'renderSearch', savedCursorPos: action.payload })
-  } else if (action.type === 'closeSearch') {
-    return ({...state, loadState: 'restoreWien'}) 
-  }
-}
 
 export function useInitLoad(ctrDispatch, loadState) {
   const hasInternet = useHasInternet()

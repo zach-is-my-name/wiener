@@ -49,6 +49,8 @@ export async function checkContinuity() {
     // logger.debug({index: i, this_prevUrl:newsletters[i].prevUrl, next_url: newsletters[i + 1]?.url})
     if (newsletters[i].prevUrl !== newsletters[i + 1]?.url) {
       hasContinuity.push(false)
+      logger.debug("Error: bad continuity", {index: i, this_prevUrl:newsletters[i].prevUrl, next_url: newsletters[i + 1]?.url} )
+      throw new Error()
     } else {
       hasContinuity.push(true)
     }

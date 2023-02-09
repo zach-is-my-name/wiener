@@ -13,15 +13,12 @@ import {
 } from '../customHooks/index.js'
 
 function App(props) {
-const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded', 'none'] 
-
 
   const [dateFromSearch, setDateFromSearch] = useState("") 
   const [lineFromSearch, setLineFromSearch] = useState(null) 
   const [message, setMessage] = useState("")
 
   const [{loadState, helpPageHidden, searchPageHidden, popUpMessage}, ctrDispatch] = useCtrReducer()
-
 
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch, loadState) 
 
@@ -31,7 +28,7 @@ const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevH
     logger.debug({loadState})
   })
 
-  // useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
+  useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
 
   useEffect(() => {
     if (!hasInternet && loadState === 'none') {

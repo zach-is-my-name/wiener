@@ -25,5 +25,6 @@ screen.key(['q', 'C-c' ], (ch, key) => {
 });
 
 export function start () {
-  render(<App  /> , screen);
+
+  render(<App  />, screen);
 }
