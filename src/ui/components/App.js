@@ -13,6 +13,7 @@ import {
 } from '../customHooks/index.js'
 
 function App(props) {
+  debugger;
 
   const [dateFromSearch, setDateFromSearch] = useState("") 
   const [lineFromSearch, setLineFromSearch] = useState(null) 
@@ -20,13 +21,14 @@ function App(props) {
 
   const [{loadState, helpPageHidden, searchPageHidden, popUpMessage}, ctrDispatch] = useCtrReducer()
 
+
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch, loadState) 
 
   const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setDateFromSearch, dateLatestPub) || {};
 
   useEffect(() => {
-    logger.debug({loadState})
-  })
+    // logger.debug({loadState})
+  }, [loadState])
 
   useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
 

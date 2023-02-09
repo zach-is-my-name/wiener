@@ -25,6 +25,7 @@ export function useHasLatestInArchive(hasInternet, loadState) {
 
   useEffect(() => {
     if (hasLatestInArchive !== true) {
+      logger.debug("run getArchiveLength");
       (async () => {
         setArchiveLength(await getArchiveLength())
       })();
@@ -35,7 +36,9 @@ export function useHasLatestInArchive(hasInternet, loadState) {
     if (hasLatestInArchive !== true && hasInternet === true ) {
       (async () => {
         const latestArchiveDate = await getDateLatestInArchive();
-        if (latestArchiveDate === []) setHasLatestInArchive(false)
+        logger.debug({latestArchiveDateType: Array.isArray(latestArchiveDate)})
+
+        if (Array.isArray(latestArchiveDate) && latestArchiveDate.length === 0) setHasLatestInArchive(false)
         let parsedLatestArchiveDate = parseDate(latestArchiveDate)
         let parsedDateNumberFormat = parseDate(dateNumberFormat)
 

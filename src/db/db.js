@@ -59,16 +59,20 @@ export async function addNextUrl(obj, i, nl) {
 
 export async function getDateLatestInArchive() {
   let result
-  let attemps = 0
-  while (attemps < 2) {
+  let attempts  = 0
+  while (attempts < 2) {
     try {
       result = await loadNewsletterFromDb("first")
+      if (result.length === 0)  {
+        return []
+      } else {
       return result.date
+      }
     } catch (error) {
       attempts++
     }
   }
-  if (await loadNewsletterFromDb("all") === []) return []
+ throw new Error("failed to getDateLatestInArchive") 
 }
 
 export async function getArchiveLength() {
