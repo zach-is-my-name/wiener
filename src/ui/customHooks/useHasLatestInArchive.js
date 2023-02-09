@@ -32,7 +32,6 @@ export function useHasLatestInArchive(hasInternet, loadState) {
   }, [loadState])
 
   useEffect(()=> {
-    // logger.debug("useHasLatest", {hasLatestInArchive})
     if (hasLatestInArchive !== true && hasInternet === true ) {
       (async () => {
         const latestArchiveDate = await getDateLatestInArchive();

@@ -70,8 +70,9 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasL
     } else if (loadState === "loadNextHook" && adjacentDates.nextUrl.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.nextUrl)
+
         if (!nlo.prevUrl.length) {
-          ctrDispatch({type: "setMessage", payload: "Missing some newsletter data (prevUrl date)..."})
+          ctrDispatch({type: "setPopUpMessage", payload: "Missing some newsletter data (prevUrl date)..."})
           return
         }
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
@@ -80,14 +81,14 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasL
       })();
 
     } else if (loadState === "loadNextHook" && newsletterObj.date === dateLatestPub) {
-      ctrDispatch({type: "setMessage", payload: "Already at most recent published"})
+      ctrDispatch({type: "setPopUpMessage", payload: "Already at most recent published"})
       return 
 
     } else if (loadState === "loadPrevHook" && adjacentDates.prevUrl.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.prevUrl)
         if (nlo.nextUrl.length === 0) {
-          ctrDispatch({type: "setMessage", payload: "Missing some newsletter data (nextUrl date)"})
+          ctrDispatch({type: "setPopUpMessage", payload: "Missing some newsletter data (nextUrl date)"})
           return 
         } else {
           setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})

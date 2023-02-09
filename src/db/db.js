@@ -56,9 +56,13 @@ export async function addNextUrl(obj, i, nl) {
 }
 
 export async function getDateLatestInArchive() {
-   const result = await loadNewsletterFromDb("first")
-   const {date} = result || false 
-  return date 
+  let result
+  try {
+    result = await loadNewsletterFromDb("first")
+  } catch (error) {
+    result = await loadNewsletterFromDb("first")
+  }
+  return result.date
 }
 
 export async function getArchiveLength() {

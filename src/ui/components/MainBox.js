@@ -4,7 +4,8 @@ import LinkBox from "./LinkBox.js"
 import HelpPage from './HelpPage.js'
 import SearchPage from './SearchPage.js'
 import RefBox from './RefBox.js' 
-import {useLayoutEffect, useEffect, useState, useMemo} from 'react';
+import PopUpBox from './PopUpBox.js';
+import {useEffect, useState} from 'react';
 import {useUiHooks} from '../customHooks/ui/useUiHooks.js' 
 import {useTransformText} from '../customHooks/ui/useTransformText.js'
 import {logger} from '../../devLog/logger.js' 
@@ -17,14 +18,21 @@ const MainBox = props =>  {
   const [text, linkArray] = useTransformText(props.renderText, props.message, props.ctrDispatch)
 
   const [linkUrl, setLinkUrl] = useState("")
-
   const [linkBoxHidden, setLinkBoxHidden] = useState(true)
+  const [refBoxHidden, setRefBoxHidden] = useState(true)
+  const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
   useEffect(() => {
     // logger.debug("linkIndex", state.openLinkIndex)
   // logger.debug("debug linkArray", Array.isArray(linkArray))
   // logger.debug("linkArray length",  linkArray?.length)
   }, [state.openLinkIndex, linkArray] )
+
+  useEffect(() => {
+    if (props.popUpMessage?.length) {
+      setPopUpBoxHidden(false)
+    }
+  }, [props.popUpMessage])
 
   useEffect(() => {
     if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkArray.length) {
@@ -35,10 +43,6 @@ const MainBox = props =>  {
     }
   }, [state.openLinkIndex, linkArray])
 
-  const linkBox = <LinkBox linkLine={state.linkLine} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
-
-  const [refBoxHidden, setRefBoxHidden] = useState(true)
-
   useEffect(() => {
     if (state.initialRefNum) {
       setRefBoxHidden(false)
@@ -47,10 +51,13 @@ const MainBox = props =>  {
     }
   }, [state.initialRefNum])
 
+  const linkBox = <LinkBox linkLine={state.linkLine} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
 
   const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkArray={linkArray?.length && linkArray} hidden={refBoxHidden} dispatch={dispatch} />
 
   const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
+
+  const popUpBox = <PopUpBox popUpMessage={props.popUpMessage} popUpBoxHidden={popUpBoxHidden} setPopUpBoxHidden={setPopUpBoxHidden} ctrDispatch={props.ctrDispatch} /> 
 
     return (
       <>
@@ -80,6 +87,7 @@ const MainBox = props =>  {
       {props.searchPageHidden  === false ? searchPage : null}
       {linkBoxHidden === false ? linkBox : null}
       {refBoxHidden === false ? refBox : null}
+      {popUpBoxHidden === false ? popUpBox : null}
       </>
     )
 }

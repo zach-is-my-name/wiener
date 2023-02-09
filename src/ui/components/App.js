@@ -13,33 +13,41 @@ import {
 } from '../customHooks/index.js'
 
 function App(props) {
+const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded', 'none'] 
+
 
   const [dateFromSearch, setDateFromSearch] = useState("") 
   const [lineFromSearch, setLineFromSearch] = useState(null) 
+  const [message, setMessage] = useState("")
 
-  const [loadState=false, ctrDispatch, hasLatest=false, setHasLatest, helpPageHidden=true, searchPageHidden=true, message=""] = useCtrReducer()
+  const [{loadState, helpPageHidden, searchPageHidden, popUpMessage}, ctrDispatch] = useCtrReducer()
+
 
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch, loadState) 
 
-  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setHasLatest, setDateFromSearch, dateLatestPub) || {};
-
-  useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
+  const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setDateFromSearch, dateLatestPub) || {};
 
   useEffect(() => {
-  if (!hasInternet && loadState === 'none') {
-    setTimeout(() => null, 5000)
-    ctrDispatch({type: "setMessage", payload: "Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db"})
-  }
+    logger.debug({loadState})
+  })
 
-  if (loadState === 'loading') {
-   ctrDispatch({type: "setMessage", payload: "Loading..."}) 
-  } 
+  // useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
+
+  useEffect(() => {
+    if (!hasInternet && loadState === 'none') {
+      setTimeout(() => null, 5000)
+      setMessage("Error: newsletter DB is empty and there is no internet. connect to internet to populate newsletter db")
+    }
+
+    if (loadState === 'loading') {
+      setMessage("Loading...") 
+    } 
 
   }, [hasInternet, loadState])
-    
-    return ( 
-      <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} /*linkObjArr={linkObjArr}*/ ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden}  message={message}/>
-    )
+
+  return ( 
+    <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} /*linkObjArr={linkObjArr}*/ ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden} message={message} popUpMessage={popUpMessage}/>
+  )
 }
 
 export default App
