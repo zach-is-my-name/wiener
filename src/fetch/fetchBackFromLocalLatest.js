@@ -8,11 +8,6 @@ import {convertAndStore} from '../transform/convert.js';
 import {getDateFromNewsletter, fetchPermaLinkCurrent, throttledGot} from '../utilities.js'
 import {loadNewsletterFromDb} from '../db/db.js'
 
-import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
 import {replaceBlankNextUrl} from './replaceBlankNextUrl.js'
 
 import {logger} from '../devLog/logger.js' 
@@ -20,19 +15,13 @@ logger.level = "debug"
 
 let reqCount
 export async function fetchBackFromLocalLatest(dateLatestPub) {
-  // const __dirname = dirname(fileURLToPath(import.meta.url));
-  const __dirname = '/home/zmg/Tinker/wiener/src/db/'
-  const file = join(__dirname, 'db.json')
-  const adapter = new JSONFile(file)
-  const db = new Low(adapter)
 
   let targetUrl = await fetchPermaLinkCurrent()
   let count = -1
-
+  // logger.debug({targetUrl})
   while (targetUrl) {
     
     let storedNewsletters = await loadNewsletterFromDb("all")
-    // logger.debug("storedNewsletters", storedNewsletters.map(obj => ({date: obj.date, url: obj.url, nextUrl: obj.nextUrl  } ))  
     count++
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
@@ -41,7 +30,7 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
     } else {
       // logger.debug("about to fetchAndAdd: ", targetUrl)
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
-      logger.debug("write:", writtenNewsletterObj.date) 
+      // logger.debug("write:", writtenNewsletterObj.date) 
       // logger.debug("next target: after write", writtenNewsletterObj.prevUrl) 
       targetUrl = writtenNewsletterObj.prevUrl 
     }

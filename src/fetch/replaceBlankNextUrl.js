@@ -12,11 +12,14 @@ const __dirname = '/home/zmg/Tinker/wiener/src/db/'
 const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
-await db.read()
-db.data ||= { newsletters: [ ] }
-const { newsletters } = db.data
 
 export async function replaceBlankNextUrl(dateLatestPub, setReplaceCycleInitd) {
+  await db.read()
+  db.data ||= { newsletters: [ ] }
+  const { newsletters } = db.data
+
+  // logger.debug({newsletters_length: newsletters.length, typeof_dateLatestPub: typeof dateLatestPub})
+
   if (newsletters.length > 1 && typeof dateLatestPub === 'string') {
     let nl = newsletters
     // logger.debug("running replaceBlankNextUrl")
@@ -44,6 +47,10 @@ async function addNextUrl(nextUrl, i, nl) {
 }
 
 export async function checkContinuity() {
+  await db.read()
+  db.data ||= { newsletters: [ ] }
+  const { newsletters } = db.data
+
   let hasContinuity = []
   for (let i = 0; i < newsletters.length -1; i++) {
     // logger.debug({index: i, this_prevUrl:newsletters[i].prevUrl, next_url: newsletters[i + 1]?.url})

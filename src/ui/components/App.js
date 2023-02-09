@@ -13,7 +13,9 @@ import {
 } from '../customHooks/index.js'
 
 function App(props) {
-  debugger;
+  useEffect(() => {
+    logger.debug({loadState})
+  }, [loadState])
 
   const [dateFromSearch, setDateFromSearch] = useState("") 
   const [lineFromSearch, setLineFromSearch] = useState(null) 
@@ -26,9 +28,6 @@ function App(props) {
 
   const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setDateFromSearch, dateLatestPub) || {};
 
-  useEffect(() => {
-    // logger.debug({loadState})
-  }, [loadState])
 
   useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text) 
 

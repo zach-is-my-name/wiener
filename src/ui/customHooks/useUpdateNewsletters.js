@@ -8,9 +8,7 @@ logger.level = "debug"
 export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text, ctrDispatch) {
 
   const [replaceCycleInitd, setReplaceCycleInitd] = useState(false)
-
   useEffect(() => {
-    // logger.debug({replaceCycleInitd, hasLatestInArchive, hasInternet});
 
     (async () => {
       if (hasLatestInArchive === true && hasInternet && text?.length && !replaceCycleInitd) {
@@ -28,9 +26,7 @@ export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInter
   useEffect(() => {
     if (hasLatestInArchive === true && hasInternet && text?.length, replaceCycleInitd) {
       (async () => {
-        // if (dateLatestPub ) {
           await fetchBackFromLocalLatest(dateLatestPub)
-        // }
       })();
     }
   }, [replaceCycleInitd])
