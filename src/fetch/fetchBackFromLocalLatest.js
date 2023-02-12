@@ -18,7 +18,6 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
 
   let targetUrl = await fetchPermaLinkCurrent()
   let count = -1
-  // logger.debug({targetUrl})
   while (targetUrl) {
     
     let storedNewsletters = await loadNewsletterFromDb("all")

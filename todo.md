@@ -1,4 +1,11 @@
+goto latest newsletter
+
+
+put cursor on line from Search 
+
+
 test out app. ship
+
 
 remove all references to date-based urls
 

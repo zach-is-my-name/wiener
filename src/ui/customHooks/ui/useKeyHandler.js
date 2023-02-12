@@ -13,6 +13,7 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const {cursorTop, cursorLeft} = state 
 
   async function keyHandler(ch, key) {
+    logger.debug({key: key.full})
     if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
     } else if (key.full === 'enter') {
@@ -109,8 +110,10 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
 
       } else if (input === "x") {
         mainBoxRef.current?.setScrollPerc(100)
-
+      } else if (input === 'backspace') {
+          ctrDispatch({type: "gotoLatestInArchive"})
       } else if (input === 'C-d' || input === 'd' || input === 'D') {
+
         let position = cursorTop + mainBoxRef?.current?.height 
         position = position >= mainBoxRef?.current?.getScrollHeight() ? mainBoxRef?.current?.getScrollHeight() - 1 : position  
 

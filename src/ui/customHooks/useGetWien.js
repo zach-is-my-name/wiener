@@ -8,7 +8,7 @@ import {logger} from '../../devLog/logger.js'
 logger.level = "debug"
 import {fetchPermaLinkCurrent} from '../../utilities.js'
 
-export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasLatestInArchive,*/  hasInternet, dateFromSearch, setHasLatest, setDateFromSearch, dateLatestPub) {
+export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setDateFromSearch, dateLatestPub) {
   const [newsletterObj, setNewsletterObj] = useState(null)
   const [adjacentDates, setAdjacentDates] = useState(null)
 
@@ -103,6 +103,13 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive,/* setHasL
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
         setDateFromSearch("")
+        ctrDispatch({type: "loaded"})
+      })();
+    } else if (loadState === "gotoLatestInArchive") {
+      (async () => {
+        const nlo = await loadNewsletterFromDb("first")
+        setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
+        setNewsletterObj(nlo)
         ctrDispatch({type: "loaded"})
       })();
     }

@@ -2,8 +2,7 @@ import {useReducer, useState} from 'react'
 import {logger} from '../../devLog/logger.js'
 logger.level = "debug"
 
-const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded', 'none'] 
-
+const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded', 'none', 'gotoLatestInArchive'] 
 
 export function useCtrReducer() {
 
