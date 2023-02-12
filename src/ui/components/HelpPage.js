@@ -24,6 +24,7 @@ enter ........................ follow link under cursor (opens default browser)
 H (shift-h) .................. goto prev. newsletter
 L (shift-l) .................. goto next newsletter
 S (shift-s) .................. search page
+Ctrl-h OR backspace........... goto most recent newsletter in archive 
 
 Search Page 
 
