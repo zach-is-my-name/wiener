@@ -22,8 +22,7 @@ export function useTransformText(renderText, message, ctrDispatch) {
         return replacement 
       }
 
-      const regEx2 = /\$\$([(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))\$\$/g 
-
+      const regEx2 = /\$\$([^$]*)\$\$/g
       const linkFormatedText = joinedText.replace(regEx2, replacer)
       setText(linkFormatedText)
     } else if (renderText === undefined && message.length) {
