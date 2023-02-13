@@ -23,8 +23,9 @@ const MainBox = props =>  {
   const [refBoxHidden, setRefBoxHidden] = useState(true)
   const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
-//   useEffect(() => {
-//   } )
+  // useEffect(() => {
+  //   logger.debug("linkArray", linkArray)
+  // }, [linkArray] )
 
   useEffect(() => {
     if (props.popUpMessage?.length) {
@@ -51,7 +52,7 @@ const MainBox = props =>  {
 
   const linkBox = <LinkBox linkLine={state.linkLine} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
 
-  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkArray={linkArray?.length && linkArray} hidden={refBoxHidden} dispatch={dispatch} />
+  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkArray={linkArray.length && linkArray || []} hidden={refBoxHidden} dispatch={dispatch} />
 
   const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
 

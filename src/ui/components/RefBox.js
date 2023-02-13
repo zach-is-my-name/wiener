@@ -3,7 +3,7 @@ import open from 'open'
 import {logger} from '../../devLog/logger.js' 
 logger.level = "debug"
 
-function RefBox({initialRefNum, dispatch, mainBoxRef, hidden}) {
+function RefBox({initialRefNum, dispatch, linkArray, mainBoxRef, hidden}) {
   const formRef = useRef(null)
   const textAreaRef = useRef(null)
   const [refNum, setRefNum] = useState(initialRefNum)
@@ -17,8 +17,8 @@ function RefBox({initialRefNum, dispatch, mainBoxRef, hidden}) {
   }
   const openPress = () => {
     const linkIndex = parseInt(refNum, 10)
-    // logger.debug({linkIndex, type: typeof linkIndex})
     if (typeof linkIndex === 'number') {
+      const linkUrl = linkArray[linkIndex]
       open(linkUrl)
       dispatch({type: "closeRefBox"})  
     } else {
