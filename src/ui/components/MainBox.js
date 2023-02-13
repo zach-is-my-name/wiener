@@ -24,16 +24,18 @@ const MainBox = props =>  {
   const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
   useEffect(() => {
-    logger.debug({popUpBoxHidden})
-  }, [popUpBoxHidden] )
-
-  useEffect(() => {
     if (props.popUpMessage?.length) {
       setPopUpBoxHidden(false)
     } else {
       setPopUpBoxHidden(true)
     }
   }, [props.popUpMessage])
+
+  useEffect(() => {
+    if (linkUrl) {
+      logger.debug({linkUrl})
+    }
+  },[linkUrl])
 
   useEffect(() => {
     if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkArray.length) {

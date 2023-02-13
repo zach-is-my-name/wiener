@@ -34,60 +34,51 @@ function RefBox({initialRefNum, dispatch, linkArray, mainBoxRef, hidden}) {
       if (key.name === 'escape' || key.name === 'c' || key.name === 'C'){
         cancelPress() 
       }
-        if (["0","1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9"].includes(key.full)) {
-          setRefNum(refNum + key.full) 
-        } else if (key.name === 'enter') {
-          openPress()
-        }
+      if (["0","1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9"].includes(key.full)) {
+        setRefNum(refNum + key.full) 
+      } else if (key.name === 'enter') {
+        openPress()
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (!hidden) {
+      formRef.current?.focus()
+      formRef.current?.key('escape', function(ch, key) {
+        cancelPress()
+      })
+      formRef.current?.key('o', function(ch, key) {
+      })
+
+      formRef.current?.key('O', function(ch, key) {
       })
     }
+  }, [])
 
-      useEffect(() => {
-        if (!hidden) {
-          formRef.current?.focus()
-          formRef.current?.key('escape', function(ch, key) {
-            cancelPress()
-          })
-          formRef.current?.key('o', function(ch, key) {
-            /*
-        open(linkUrl)
-        dispatch({type: "closeLinkBox"})  
-        */
-          })
+  return(
+    <> 
+    <form 
+    left={"left"} 
+    top={mainBoxRef.current?.height -1} 
+    onKeypress={handleKeyPressRefBox} 
+    hidden={hidden} 
+    ref={formRef} 
+    align={"left"} 
+    onSubmit={() => openPress()} 
+    onCancel={()=> cancelPress()}
+    content={"Enter link #:"}
+    height={1}
+    style={{bg: "blue", fg: "white"}}
+    >
+    <textarea ref={textAreaRef} width={4} style={{bg: "blue", fg: "white"}} left={15} content={initialRefNum} / > 
+    </form>
 
-          formRef.current?.key('O', function(ch, key) {
-            /*
-        open(linkUrl)
-        dispatch({type: "closeLinkBox"})  
-        */
-          })
-          // logger.debug({initialRefNum})
-        }
-      }, [])
-
-      return(
-        <> 
-        <form 
-        left={"left"} 
-        top={mainBoxRef.current?.height -1} 
-        onKeypress={handleKeyPressRefBox} 
-        hidden={hidden} 
-        ref={formRef} 
-        align={"left"} 
-        onSubmit={() => openPress()} 
-        onCancel={()=> cancelPress()}
-        content={"Enter link #:"}
-        height={1}
-        style={{bg: "blue", fg: "white"}}
-        >
-        <textarea ref={textAreaRef} width={4} style={{bg: "blue", fg: "white"}} left={15} content={initialRefNum} / > 
-        </form>
-
-        </>
+    </>
 
 
-      )
-  }
-  export default RefBox
+  )
+}
+export default RefBox
 
 

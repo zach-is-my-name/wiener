@@ -11,14 +11,29 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
   const cancelPress = () => {
     dispatch({type: "closeLinkBox"})  
   }
-  const openPress = () => {
+  const openPress = (linkUrl) => {
     open(linkUrl) 
     dispatch({type: "closeLinkBox"})  
-    logger.debug("called open on: ", linkUrl)
+    // logger.debug("called openPress: ", linkUrl)
+  }
+
+  const handleKeyPressLinkBox = (ch, key) => {
+    /* logger.debug("keypress: ", key)*/
+    setImmediate(() => {
+       if (key.full === 'C-c') {
+        process.exit(0)
+      } else if (key.name === 'escape' || key.name === 'c' || key.name === 'C'){
+        cancelPress()
+      } 
+      // else if (key.name === 'o' || key.name === 'O' || key.name === 'enter') {
+      //   logger.debug("called from handleKeyPressLinkBox")
+      //   openPress()
+      // }
+    })
   }
 
   useEffect(() => {
-    if (!hidden) {
+    if (!hidden && linkUrl.length) {
       formRef.current?.focus()
       formRef.current?.key('escape', function(ch, key) {
         cancelPress()
@@ -27,12 +42,13 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
         cancelPress()
       })
       formRef.current?.key('o', function(ch, key) {
-        open(linkUrl)
+        // logger.debug("called from useEffect()", {linkUrl})
+        openPress(linkUrl)
         dispatch({type: "closeLinkBox"})  
       })
 
       formRef.current?.key('O', function(ch, key) {
-        open(linkUrl)
+        openPress(linkUrl)
         dispatch({type: "closeLinkBox"})  
       })
     }
@@ -46,10 +62,11 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
       border={{type: 'line'}} 
       shrink={true}
       label={"esc to close"}
+      onKeypress={handleKeyPressLinkBox}
       hidden={hidden} 
       ref={formRef} 
       align={"center"} 
-      onSubmit={() => openPress()} 
+      onSubmit={() => openPress(linkUrl)} 
       onCancel={()=> cancelPress()}
       height={7}
     >

@@ -140,18 +140,17 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   async function activateLinkBox() {
     const lines = mainBoxRef.current?.getScreenLines()
     const before = lines?.slice(0, cursorTop)
-    const cursorIndex = before?.join('').length + cursorLeft
+    const cursorIndex = blessed.stripTags(before?.join('')).length + cursorLeft
     const cursorLine = lines[cursorTop]
     if (cursorLeft <= cursorLine.length) {
       const text = blessed.stripTags(lines.join(''))
       const re = /\[(\d+)\]/g
       let match = re.exec(text)
-      // logger.debug("lastIndex", re.lastIndex)
-      // logger.debug("match", match.slice(0,2))
       while (match) {
         const start = match.index
         const end = start + match[0].length
-
+        logger.debug({match_slice: match.slice(0,2), cursorIndex, start, end })
+        
         if (start <= cursorIndex && cursorIndex < end) {
           let openLinkIndex = match[1]
           openLinkIndex = stripAnsi(openLinkIndex)
@@ -161,8 +160,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         }
 
         match = re.exec(text)
-        // logger.debug("lastIndex", re.lastIndex)
-        // logger.debug("match", match.slice(0,2))
 
       }
     }
