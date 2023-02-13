@@ -7,10 +7,11 @@ package-lock.json
 oldSratch/*
 Session.vim
 *.stormdb
-dist
 src/devScripts
 gitHistoryFormatting_MainBox.js
 tmpEventsWithoutHooks.js
 **.swp
 **.json
 typescript
+dist/db/db.json
+backup.bundle

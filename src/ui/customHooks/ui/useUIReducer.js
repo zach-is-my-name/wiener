@@ -1,6 +1,4 @@
 import {useReducer} from 'react'
-import {logger} from '../../../devLog/logger.js' 
-logger.level = "debug"
 
 const initialState = { cursorTop: 0, cursorLeft: 0, wasMouseClicked: false, openLinkIndex: false, linkLine: null, initialRefNum: null}
 
@@ -22,7 +20,7 @@ function reducer(state, action) {
       return {...state, initialRefNum: null} 
 
     default:
-     // throw new Error("UI reducer error") 
+     throw new Error("UI reducer error") 
   }
 }
 

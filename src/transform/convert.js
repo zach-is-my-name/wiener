@@ -4,8 +4,6 @@ import {getDateFromNewsletter, validateInputDate} from '../utilities.js'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 dayjs.extend(customParseFormat)
-import {logger} from '../devLog/logger.js'
-logger.level = "debug"
 
 export async function convertAndStore(htmlNewsletter, url, prevUrl, nextUrl) {
   

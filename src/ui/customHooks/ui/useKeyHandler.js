@@ -1,14 +1,9 @@
-import fs from "fs"
 import blessed from 'blessed';
 import ansiRegex from 'ansi-regex';
 import stripAnsi from 'strip-ansi'
 import open from 'open'
 
-import {logger} from '../../../devLog/logger.js' 
-logger.level = "debug"
-
 export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
-  // logger.debug("refs", refs.mainBoxRef?.current)
   const {mainBoxRef, scrollToScrollHeightFlagRef} = refs
   const {cursorTop, cursorLeft} = state 
 
@@ -149,7 +144,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
       while (match) {
         const start = match.index
         const end = start + match[0].length
-        logger.debug({match_slice: match.slice(0,2), cursorIndex, start, end })
         
         if (start <= cursorIndex && cursorIndex < end) {
           let openLinkIndex = match[1]

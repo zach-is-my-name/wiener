@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import MainBox from './MainBox.js' 
 import SearchPage from './SearchPage.js'
 import HelpPage from './HelpPage.js'
-import {logger} from '../../devLog/logger.js' 
-logger.level = "debug"
 
 import {
   useCtrReducer,

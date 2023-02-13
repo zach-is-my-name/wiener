@@ -4,9 +4,8 @@ import {render} from 'react-blessed';
 import App from './components/App.js'
 import https from 'https'
 import fs from 'fs'
-https.globalAgent.options.ca = fs.readFileSync('./certs/weekinethereumnews.com');
-import {logger} from '../devLog/logger.js'
-logger.level = "debug"
+import {cert} from '../../certs/weekinethereumnews.com.js'
+https.globalAgent.options.ca = cert 
 
 
 const screen = blessed.screen({

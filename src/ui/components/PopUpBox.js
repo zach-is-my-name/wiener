@@ -1,6 +1,4 @@
 import React, {useEffect, useRef}from 'react';
-import {logger} from '../../devLog/logger.js'
-logger.level = "debug"
 
 function PopUpBox(props) {
   const boxRef = useRef(null) 

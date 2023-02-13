@@ -2,7 +2,6 @@ import cheerio from 'cheerio'
 import TurndownService from 'turndown';
 import chalk from 'chalk';
 import figures, {mainSymbols} from 'figures';
-import cfonts from 'cfonts'
 import blessed from 'blessed'
 import figlet from 'figlet'
 import stripAnsi from 'strip-ansi'

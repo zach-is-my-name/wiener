@@ -1,24 +1,35 @@
 import meow from 'meow'
-import figures, {mainSymbols} from 'figures';
 import {start} from './ui/start.js';
+import {text} from './ui/components/HelpPage.js'
 
 const help = `
-wienr is the (unofficial) Week in Ethereum News Reader
+Week in Ethereum News Reader 
 
-You can:
-  - Get the latest newsletter ${figures.arrowRight} $ wienr 
-  - Get previous newsletters ${figures.arrowRight} $ wienr ${figures.arrowRight} (see in app help: press 'h' ) 
-  - Search *all* newsletters ${figures.arrowRight} $ wienr -s 'search terms'
+$ wienr
+
+-  Read  
+-  Search archive 
+-  Jog recent 
+-  Launch urls
+-  (auto-updates)
+
+----------------------------
+${text}
+
 `   
 
-const cli = meow({
-	flags: {
-		search: {
-			type: 'boolean',
-			alias: 's'
-		}
-	}
+const cli = meow(help, {
+  flags: {
+    help: {
+      type: 'boolean',
+      alias: 'h'
+    }
+  }
 });
 
-
+if (cli.flags.help) {
+  console.log(cli.help);
+  process.exit(0);
+} else {
   start()
+}

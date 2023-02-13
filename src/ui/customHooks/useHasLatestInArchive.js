@@ -4,9 +4,6 @@ import {fetchDateCurrent, parseDate} from '../../utilities.js'
 
 import {getArchiveLength} from '../../db/db.js'
 
-import {logger} from '../../devLog/logger.js'
-logger.level = "debug"
-
 export function useHasLatestInArchive(hasInternet, loadState) {
   const [hasLatestInArchive, setHasLatestInArchive] = useState("loading") 
   const [dateLatestPub, setDateLatestPub] = useState(null) 

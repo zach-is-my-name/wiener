@@ -1,6 +1,4 @@
 import {useReducer, useState} from 'react'
-import {logger} from '../../devLog/logger.js'
-logger.level = "debug"
 
 const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'none', 'gotoLatestInArchive', 'gotoLatestInArchive', 'loadFromSearch' ] 
 
@@ -45,15 +43,6 @@ export function useCtrReducer() {
 
   const [state, ctrDispatch] = useReducer(reducer, initialState);
 
-  // if (typeof state !== 'object' || typeof state === null)  {
-  //   logger.debug("state no keys; typeof state", typeof state)
-  //   return [{loadState: false, helpPageHidden: true, searchPageHidden: true, popUpMessage: ""}, ctrDispatch]
-  // } else { 
-  //   if (isShallowEqual(initialState, state)){
-  //     logger.debug("state === initialState")
-  //   }     
-  //   return [state, ctrDispatch]
-  // } 
   return [state, ctrDispatch]
 }
 

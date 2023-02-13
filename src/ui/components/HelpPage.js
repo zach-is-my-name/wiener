@@ -1,9 +1,10 @@
+
 import React from 'react';
 import chalk from 'chalk'
 
-function HelpPage({helpPageHidden}) {
 
 const text = `
+?      ............... help
 q      ............... quit (usually)  
 Ctrl-c ............... quit (always) 
 esc    ............... back
@@ -25,7 +26,7 @@ enter ........................ confirm typed link ref # / follow link ref # unde
 H (shift-h) .................. goto prev. newsletter
 L (shift-l) .................. goto next newsletter
 S (shift-s) .................. search page
-Ctrl-h OR backspace........... goto most recent newsletter in archive 
+Ctrl-h / backspace........... goto most recent newsletter in archive 
 
 
 Search Page 
@@ -37,6 +38,7 @@ enter ........................ focus results
   Search Results
 j/k   ......................... up/down results
 enter ......................... select result (goto newsletter)`
+function HelpPage({helpPageHidden}) {
 
 return (
 <box
@@ -52,3 +54,4 @@ return (
 }
 
 export default HelpPage
+export {text}

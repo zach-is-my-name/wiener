@@ -1,11 +1,8 @@
-import fs from 'fs'
 import React, {useEffect, useState} from 'react'
 import got from 'got'
 import cheerio from 'cheerio' 
 import {loadNewsletterFromDb} from '../../db/db.js' 
 import {convertAndStore} from '../../transform/convert.js'
-import {logger} from '../../devLog/logger.js'
-logger.level = "debug"
 import {fetchPermaLinkCurrent} from '../../utilities.js'
 
 export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setDateFromSearch, dateLatestPub) {
@@ -21,7 +18,6 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
           data = await got(url).text();
         } catch (error) {
           console.trace()
-          logger.debug("error", error) 
           return 
         }
 
@@ -33,7 +29,6 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
         setAdjacentDates({prevUrl, nextUrl})
 
         const nlo  = await convertAndStore(data, url, prevUrl, nextUrl)
-        logger.debug("fetchLatest: added newsletter; date: ", nlo.date)
         setNewsletterObj(nlo)
         ctrDispatch({type: "loadedFromFetchLatest"})
       })();

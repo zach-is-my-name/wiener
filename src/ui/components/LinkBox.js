@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useRef, useLayoutEffect} from 'react';
 import open from 'open'
-import {logger} from '../../devLog/logger.js' 
-logger.level = "debug"
 
 function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
   const formRef = useRef(null)
@@ -14,21 +12,15 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
   const openPress = (linkUrl) => {
     open(linkUrl) 
     dispatch({type: "closeLinkBox"})  
-    // logger.debug("called openPress: ", linkUrl)
   }
 
   const handleKeyPressLinkBox = (ch, key) => {
-    /* logger.debug("keypress: ", key)*/
     setImmediate(() => {
        if (key.full === 'C-c') {
         process.exit(0)
       } else if (key.name === 'escape' || key.name === 'c' || key.name === 'C'){
         cancelPress()
       } 
-      // else if (key.name === 'o' || key.name === 'O' || key.name === 'enter') {
-      //   logger.debug("called from handleKeyPressLinkBox")
-      //   openPress()
-      // }
     })
   }
 
@@ -42,7 +34,6 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
         cancelPress()
       })
       formRef.current?.key('o', function(ch, key) {
-        // logger.debug("called from useEffect()", {linkUrl})
         openPress(linkUrl)
         dispatch({type: "closeLinkBox"})  
       })

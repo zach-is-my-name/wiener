@@ -1,4 +1,3 @@
-import fs from 'fs'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import duration from 'dayjs/plugin/duration.js'
@@ -7,21 +6,15 @@ dayjs.extend(customParseFormat)
 import cheerio from 'cheerio'
 import got from 'got';
 import pThrottle from 'p-throttle';
-import chalk from 'chalk';
-
-import {logger} from './devLog/logger.js'
-logger.level = "debug"
 
 export async function fetchDateCurrent() {
   let data 
   try {
     data = await got('https://weekinethereumnews.com').text();
   } catch (error) {
-    logger.debug("error", error) 
     return 
   }
   const { dateNumberFormat, dateWordFormat } = await getDate(data)  
-  // logger.debug({dateNumberFormat, dateWordFormat})
   return ({ dateNumberFormat, dateWordFormat })
 }
 
@@ -32,7 +25,6 @@ export async function fetchPermaLinkCurrent() {
   } catch (error) {
     console.clear()
     console.trace() 
-    logger.debug("error", error) 
     return 
   }
   const $ = cheerio.load(data)
@@ -56,23 +48,6 @@ export function getUrlOfNewsletter(markdownNewsletter) {
 
   const execResult = re.exec(markdownNewsletter)
   return execResult[1]+'/'
-}
-
-export function getNewsletterFromDate(date) {
-  validateInputDate(date)
-  let archiveFileNames = fs.readdirSync('./archive/markdownNewsletters/freshTest/') 
-
-  let newsletterFileName = archiveFileNames.find(element => element === date)
-  archiveFileNames = fs.readdirSync('./archive/markdownNewsletters/freshTest/')  
-
-  newsletterFileName = archiveFileNames.find(element => element === date) 
-
-  if (newsletterFileName) { 
-    const newsletter = fs.readFileSync('./archive/markdownNewsletters/freshTest/' + newsletterFileName, {encoding:'utf8', flag:'r'})
-    return newsletter
-  } else {
-    console.log("error")
-  }
 }
 
 //searches rendered text

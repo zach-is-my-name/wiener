@@ -1,8 +1,5 @@
 import {useEffect, useState, useMemo} from 'react'
 import blessed from "blessed"
-import fs from 'fs'
-import {logger} from '../../../devLog/logger.js' 
-logger.level = "debug"
 
 export function useTransformText(renderText, message, ctrDispatch) {
 

@@ -1,172 +1,57 @@
 {
-
-  "name": "wienrs",
-
+  "name": "wienr",
   "version": "1.0.0",
-
-  "description": "cli for searching https://weekinethereumnews.com",
-
+  "description": "Week in Ethereum News Reader CLI",
   "type": "module",
-
-  "exports": "./index.js",
-
   "bin": {
-
-    "wienr": "./index.js"
-
+    "wienr": "./dist/index.js"
   },
-
   "scripts": {
-
     "build": "npx babel src -d dist --extensions \".js\"  --source-maps --copy-files ",
-
     "build1": "npx babel src -d dist --extensions \".js\" --copy-files ",
-
     "go": "node --trace-exit dist/index.js",
-
     "dec": "rimraf dist && npm run build && node --inspect dist/index.js",
-
     "def": "rimraf dist && npm run build  && node --inspect-brk dist/index.js",
-
     "dev": "rimraf dist && npm run build && node --trace-warnings -r source-map-support/register dist/index.js",
-
     "test": "echo \"Error: no test specified\" && exit 1"
-
   },
-
   "author": "",
-
   "license": "ISC",
-
   "devDependencies": {
-
-    "@babel/cli": "^7.17.6",
-
-    "@babel/core": "^7.17.9",
-
-    "@babel/plugin-transform-flow-strip-types": "^7.16.7",
-
-    "@babel/plugin-transform-react-jsx-source": "^7.16.7",
-
-    "@babel/plugin-transform-runtime": "^7.17.0",
-
-    "@babel/preset-env": "^7.16.11",
-
-    "@babel/preset-react": "^7.16.7",
-
-    "@babel/runtime": "^7.17.9",
-
-    "@types/node": "^18.0.0",
-
-    "blessed": "latest",
-
-    "chalk": "^4.1.2",
-
-    "conf": "^10.0.3",
-
-    "console-log-to-file": "^1.0.3",
-
-    "fix-esm": "^1.0.1",
-
-    "flatted": "^3.2.5",
-
-    "log4js": "^6.6.1",
-
-    "parse5": "^7.1.2",
-
-    "react-devtools": "^4.27.0",
-
-    "react-error-boundary": "^3.1.4",
-
-    "source-map-support": "^0.5.21",
-
-    "utils-deep-clone": "^0.0.3",
-
-    "winston": "^3.3.3",
-
-    "winston-array-transport": "^1.1.5"
-
+    "react-devtools": "^4.27.0"
   },
-
   "dependencies": {
-
-    "@babel/node": "^7.18.9",
-
-    "@babel/runtime": "latest",
-
-    "ansi-escapes": "^4.3.2",
-
+    "source-map-support": "^0.5.21",
     "ansi-regex": "^5.0.1",
-
-    "boxen": "^7.0.0",
-
-    "cfonts": "^3.1.0",
-
     "cheerio": "^1.0.0-rc.12",
-
     "cli-truncate": "^3.1.0",
-
     "dayjs": "^1.10.7",
-
     "figlet": "^1.5.2",
-
     "figures": "^4.0.0",
-
-    "fs-jetpack": "^4.3.1",
-
     "fuse.js": "^6.6.2",
-
     "got": "^12.5.3",
-
-    "import-jsx": "^4.0.0",
-
-    "import-meta-resolve": "^1.1.1",
-
-    "is-online": "^10.0.0",
-
     "is-reachable": "^5.2.1",
-
-    "is-tmux": "^1.0.0",
-
     "lowdb": "^5.0.5",
-
-    "markdown-to-jsx": "^7.1.3",
-
     "meow": "^9.0.0",
-
-    "node-emoji": "^1.11.0",
-
-    "nodemon": "^2.0.19",
-
     "open": "^8.4.0",
-
     "p-throttle": "^5.0.0",
-
-    "ramda": "^0.27.1",
-
     "react": "^17.0.2",
-
     "react-blessed": "^0.7.2",
-
-    "react-process-string": "^1.2.0",
-
-    "react-string-replace": "^0.4.4",
-
-    "ssl-root-cas": "^1.3.1",
-
-    "string-replace-async": "^2.0.0",
-
     "strip-ansi": "^6.0.1",
-
     "terminal-link": "^3.0.0",
-
     "turndown": "^7.1.1",
-
-    "url-minify": "^2.2.12",
-
-    "wrap-ansi": "^8.0.1"
-
+    "wrap-ansi": "^8.0.1",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/node": "^7.18.9",
+    "@babel/plugin-transform-flow-strip-types": "^7.16.7",
+    "@babel/plugin-transform-react-jsx-source": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/runtime": "latest",
+    "@types/node": "^18.0.0",
+    "blessed": "latest",
+    "chalk": "^4.1.2"
   }
-
 }
-

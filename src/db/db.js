@@ -3,11 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
-import {logger} from '../devLog/logger.js'
-logger.level = "debug"
-
-// const __dirname = dirname(fileURLToPath(import.meta.url)); //production db file
-const __dirname = '/home/zmg/Tinker/wiener/src/db/'
+const __dirname = dirname(fileURLToPath(import.meta.url)); //production db file
 const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
@@ -54,7 +50,6 @@ export async function loadNewsletterFromDb(by, param) {
 export async function addNextUrl(obj, i, nl) {
     nl = nl.splice(i, 1, obj) 
     await db.write()   
-    logger.debug("added nextUrl", {index: i, writing_nextUrl: obj.nextUrl, currentUrl: nl[i].url})
 }
 
 export async function getDateLatestInArchive() {
@@ -78,6 +73,5 @@ export async function getDateLatestInArchive() {
 export async function getArchiveLength() {
   await db.read()
   db.data ||= { newsletters: [] }             
-  // logger.debug("archive length", db.data.newsletters.length)
   return db.data.newsletters.length 
 }

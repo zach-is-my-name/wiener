@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
 import open from 'open' 
-import {logger} from '../../devLog/logger.js' 
-logger.level = "debug"
 
 function RefBox({initialRefNum, dispatch, linkArray, mainBoxRef, hidden}) {
   const formRef = useRef(null)

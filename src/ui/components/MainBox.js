@@ -8,8 +8,6 @@ import PopUpBox from './PopUpBox.js';
 import {useEffect, useState} from 'react';
 import {useUiHooks} from '../customHooks/ui/useUiHooks.js' 
 import {useTransformText} from '../customHooks/ui/useTransformText.js'
-import {logger} from '../../devLog/logger.js' 
-logger.level = "debug"
 
 const MainBox = props =>  {
 
@@ -30,12 +28,6 @@ const MainBox = props =>  {
       setPopUpBoxHidden(true)
     }
   }, [props.popUpMessage])
-
-  useEffect(() => {
-    if (linkUrl) {
-      logger.debug({linkUrl})
-    }
-  },[linkUrl])
 
   useEffect(() => {
     if (typeof state.openLinkIndex === 'number' && state.openLinkIndex >= 0 && linkArray.length) {

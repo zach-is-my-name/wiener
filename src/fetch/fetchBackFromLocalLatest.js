@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import {resolve} from 'import-meta-resolve'
 import chalk from 'chalk';
 import url from 'url'
 import got from 'got'
@@ -9,9 +8,6 @@ import {getDateFromNewsletter, fetchPermaLinkCurrent, throttledGot} from '../uti
 import {loadNewsletterFromDb} from '../db/db.js'
 
 import {replaceBlankNextUrl} from './replaceBlankNextUrl.js'
-
-import {logger} from '../devLog/logger.js' 
-logger.level = "debug"
 
 let reqCount
 export async function fetchBackFromLocalLatest(dateLatestPub) {
@@ -24,19 +20,13 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
     count++
     const newsletterObj = storedNewsletters.find(obj => obj.url === targetUrl)  
     if (newsletterObj) {
-      // logger.debug("next target: after find", newsletterObj.prevUrl)
       targetUrl = newsletterObj.prevUrl
     } else {
-      // logger.debug("about to fetchAndAdd: ", targetUrl)
       const writtenNewsletterObj = await fetchAndAdd(targetUrl) 
-      // logger.debug("write:", writtenNewsletterObj.date) 
-      // logger.debug("next target: after write", writtenNewsletterObj.prevUrl) 
       targetUrl = writtenNewsletterObj.prevUrl 
     }
     count++
   }
-  
-  // replaceBlankNextUrl(dateLatestPub)
   
   async function fetchAndAdd(url) {
     if (url) {
@@ -45,7 +35,6 @@ export async function fetchBackFromLocalLatest(dateLatestPub) {
         fetchedNewsletter = await throttledGot(url)
       } catch (error) {
         console.trace()
-        logger.debug("error", error) 
       }
 
       reqCount++

@@ -1,9 +1,6 @@
 import {useHasInternet, useHasLatestInArchive } from './index.js'
 import {useEffect} from 'react'
 
-import {logger} from '../../devLog/logger.js'
-logger.level = 'debug'
-
 export function useInitLoad(ctrDispatch, loadState) {
   const hasInternet = useHasInternet()
   const {hasLatestInArchive, dateLatestPub} = useHasLatestInArchive(hasInternet, loadState)

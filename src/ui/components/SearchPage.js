@@ -1,9 +1,6 @@
 import React, {useLayoutEffect, useEffect, useState, useRef} from 'react'
 import {useSearchWien} from '../customHooks/useSearchWien.js' 
 
-import {logger} from '../../devLog/logger.js'
-logger.level = 'debug'
-
 function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctrDispatch} ) {
   const textBoxRef = useRef(null) 
   const listRef = useRef(null)

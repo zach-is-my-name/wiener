@@ -1,7 +1,5 @@
 import {useEffect} from 'react'
 import stripAnsi from 'strip-ansi'
-import {logger} from '../../../devLog/logger.js'
-logger.level = "debug"
 
 export function useScroll(refs, state, dispatch, lineFromSearch, setLineFromSearch, loadState) {
   const {mainBoxRef, scrollToZeroFlag, scrollToScrollHeightFlagRef} = refs
