@@ -17,16 +17,15 @@ const MainBox = props =>  {
   
   const [text, linkArray] = useTransformText(props.renderText, props.message, props.ctrDispatch)
 
+  const [mainBoxHidden, setMainBoxHidden] = useState(false)
   const [linkUrl, setLinkUrl] = useState("")
   const [linkBoxHidden, setLinkBoxHidden] = useState(true)
   const [refBoxHidden, setRefBoxHidden] = useState(true)
   const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
   useEffect(() => {
-    // logger.debug("linkIndex", state.openLinkIndex)
-  // logger.debug("debug linkArray", Array.isArray(linkArray))
-  // logger.debug("linkArray length",  linkArray?.length)
-  }, [state.openLinkIndex, linkArray] )
+    logger.debug("refs.mainBoxRef.current.hidden", refs.mainBoxRef.current.hidden)
+  } )
 
   useEffect(() => {
     if (props.popUpMessage?.length) {
@@ -58,6 +57,15 @@ const MainBox = props =>  {
   const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
 
   const popUpBox = <PopUpBox popUpMessage={props.popUpMessage} popUpBoxHidden={popUpBoxHidden} setPopUpBoxHidden={setPopUpBoxHidden} ctrDispatch={props.ctrDispatch} /> 
+  const helppage = <HelpPage helpPageHidden={props.helpPageHidden} /> 
+  
+  useEffect(() => {
+    if (props.helpPageHidden === false ||  props.searchPageHidden === false) {
+      setMainBoxHidden(true)
+    } else if (props.helpPageHidden === true ||  props.searchPageHidden === true) {
+      setMainBoxHidden(false)
+    }
+  }, [props.helpPageHidden, props.searchPageHidden])
 
     return (
       <>
@@ -67,7 +75,7 @@ const MainBox = props =>  {
       width={"100%"}
       height={"100%"}  
       focused={props.searchPageHidden && props.helpPageHidden && linkBoxHidden}
-      hidden={props.helpPageHidden === false || props.searchPageHidden === false}
+      hidden={mainBoxHidden}
       keyable={true}
       input={true}
       scrollable={true}
@@ -83,8 +91,8 @@ const MainBox = props =>  {
       > 
       <Cursor cursorRef={refs.cursorRef} cursorTop={state.cursorTop} cursorLeft={state.cursorLeft} savedCursorPos={props.savedCursorPos} />   
       </box>
-      <HelpPage helpPageHidden={props.helpPageHidden} /> 
       {props.searchPageHidden  === false ? searchPage : null}
+      {props.helpPageHidden === false ? helppage : null}
       {linkBoxHidden === false ? linkBox : null}
       {refBoxHidden === false ? refBox : null}
       {popUpBoxHidden === false ? popUpBox : null}

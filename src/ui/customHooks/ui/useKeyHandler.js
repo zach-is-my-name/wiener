@@ -13,8 +13,8 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const {cursorTop, cursorLeft} = state 
 
   async function keyHandler(ch, key) {
-    logger.debug({key: key.full})
-    if (key.full === 'escape' || key.full === 'q' || key.full === 'C-c') {
+    logger.debug("key", key.full)
+    if (key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
     } else if (key.full === 'enter') {
       await activateLinkBox()     //followLinkUnderCursor()
@@ -128,7 +128,9 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         setCursorTop(mainBoxRef.current?.getScreenLines().length - 1)
         mainBoxRef.current?.scrollTo(cursorTop)
         setCursorLeft(0)
-      } 
+      } else if (input === '?') {
+        ctrDispatch({type: "toggleHelpPage"})
+      }
     }
   }
 

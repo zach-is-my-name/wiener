@@ -20,9 +20,9 @@ function App(props) {
 
   const [{loadState, helpPageHidden, searchPageHidden, popUpMessage}, ctrDispatch] = useCtrReducer()
 
-  useEffect(() => {
-    logger.debug({loadState})
-  }, [loadState])
+  // useEffect(() => {
+  //   logger.debug({lineFromSearch, dateFromSearch})
+  // }, [loadState])
 
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch, loadState) 
 

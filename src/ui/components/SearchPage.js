@@ -1,6 +1,9 @@
 import React, {useLayoutEffect, useEffect, useState, useRef} from 'react'
 import {useSearchWien} from '../customHooks/useSearchWien.js' 
 
+import {logger} from '../../devLog/logger.js'
+logger.level = 'debug'
+
 function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctrDispatch} ) {
   const textBoxRef = useRef(null) 
   const listRef = useRef(null)
@@ -36,6 +39,7 @@ function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctr
     if (items.length) {
       const res = dateIndex.find(obj => obj.index === index) 
       const {date, line} = res
+      logger.debug("SearchPage", {lineFromSearch:line, dateFromSearch:date})
       setDateFromSearch(date)
       setLineFromSearch(line)
       ctrDispatch({type:"toggleRenderSearch"})
@@ -97,3 +101,4 @@ function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctr
 
 
 export default SearchPage
+

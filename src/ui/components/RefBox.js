@@ -28,7 +28,7 @@ function RefBox({initialRefNum, dispatch, mainBoxRef, hidden}) {
 
   const handleKeyPressRefBox = (ch, key) => {
     setImmediate(() => {
-      if (key.full === 'C-c') {
+      if (key.full === 'escape') {
         dispatch({type: "closeRefBox"})  
       }
       if (key.name === 'escape' || key.name === 'c' || key.name === 'C'){
