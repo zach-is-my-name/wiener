@@ -9,10 +9,10 @@ Ctrl-c ............... quit (always)
 esc    ............... back
 
 Move
-j/k .......................... up/down
-h/l .......................... left/right
-w/b .......................... 10 chars. right/left
-{/} .......................... 10 chars. up/down 
+j / k .......................... up/down
+h / l .......................... left/right
+w / b .......................... 10 chars. right/left
+{ / } .......................... 10 chars. up/down 
 g  ........................... top  
 G  ........................... bottom 
 0  ........................... begin. line
@@ -20,11 +20,13 @@ $  ........................... end line
 Ctrl-u/Ctrl-d ................ 20 chars. up/down
 
 Nav
-enter ........................ follow link under cursor (opens default browser)
+0-99  ........................ type link ref #  
+enter ........................ confirm typed link ref # / follow link ref # under cursor (opens link in default browser)
 H (shift-h) .................. goto prev. newsletter
 L (shift-l) .................. goto next newsletter
 S (shift-s) .................. search page
 Ctrl-h OR backspace........... goto most recent newsletter in archive 
+
 
 Search Page 
 
