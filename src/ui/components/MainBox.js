@@ -23,13 +23,15 @@ const MainBox = props =>  {
   const [refBoxHidden, setRefBoxHidden] = useState(true)
   const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
-  // useEffect(() => {
-  //   logger.debug("linkArray", linkArray)
-  // }, [linkArray] )
+  useEffect(() => {
+    logger.debug({popUpBoxHidden})
+  }, [popUpBoxHidden] )
 
   useEffect(() => {
     if (props.popUpMessage?.length) {
       setPopUpBoxHidden(false)
+    } else {
+      setPopUpBoxHidden(true)
     }
   }, [props.popUpMessage])
 
@@ -56,7 +58,7 @@ const MainBox = props =>  {
 
   const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
 
-  const popUpBox = <PopUpBox popUpMessage={props.popUpMessage} popUpBoxHidden={popUpBoxHidden} setPopUpBoxHidden={setPopUpBoxHidden} ctrDispatch={props.ctrDispatch} /> 
+  const popUpBox = <PopUpBox popUpMessage={props.popUpMessage} popUpBoxHidden={popUpBoxHidden} setPopUpBoxHidden={setPopUpBoxHidden} ctrDispatch={props.ctrDispatch}/> 
   const helppage = <HelpPage helpPageHidden={props.helpPageHidden} /> 
   
   useEffect(() => {

@@ -63,7 +63,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
         }
       })();
 
-    } else if (loadState === "loadNextHook" && adjacentDates?.nextUrl.length) {
+    } else if (loadState === "loadNextHook" && adjacentDates?.nextUrl?.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.nextUrl)
 
@@ -80,7 +80,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
       ctrDispatch({type: "setPopUpMessage", payload: "Already at most recent published"})
       return 
 
-    } else if (loadState === "loadPrevHook" && adjacentDates?.prevUrl.length) {
+    } else if (loadState === "loadPrevHook" && adjacentDates?.prevUrl?.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("url", adjacentDates.prevUrl)
         if (nlo.nextUrl.length === 0) {

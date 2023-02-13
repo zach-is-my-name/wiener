@@ -16,23 +16,14 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
     dispatch({type: "closeLinkBox"})  
     logger.debug("called open on: ", linkUrl)
   }
-  const handleKeyPressLinkBox = (ch, key) => {
-    /* logger.debug("keypress: ", key)*/
-    setImmediate(() => {
-       if (key.full === 'C-c') {
-        process.exit(0)
-      }
-      if (key.name === 'escape' || key.name === 'c' || key.name === 'C'){
-        cancelPress() 
-      } else if (key.name === 'o' || key.name === 'O' || key.name === 'enter')
-        openPress()
-    })
-  }
 
   useEffect(() => {
     if (!hidden) {
       formRef.current?.focus()
       formRef.current?.key('escape', function(ch, key) {
+        cancelPress()
+      })
+      formRef.current?.key('c', function(ch, key) {
         cancelPress()
       })
       formRef.current?.key('o', function(ch, key) {
@@ -44,10 +35,6 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
         open(linkUrl)
         dispatch({type: "closeLinkBox"})  
       })
-
-      // logger.debug("form focused?: ", formRef.current?.height)
-      // logger.debug("button 1: ", {top:button1Ref.current?.top,left: button1Ref.current?.left })
-      //logger.debug("form focused?: ", formRef.current?.height)
     }
   }, [])
 
@@ -59,7 +46,6 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
       border={{type: 'line'}} 
       shrink={true}
       label={"esc to close"}
-      onKeypress={handleKeyPressLinkBox} 
       hidden={hidden} 
       ref={formRef} 
       align={"center"} 
@@ -81,17 +67,4 @@ function LinkBox({hidden, linkUrl, linkBoxRef, linkLine, dispatch}) {
   )
 }
   export default LinkBox
-  // <question  focused={hidden ? false : true} shrink={true} left={"center"} align={"left"} hidden={hidden} autoPadding={true} border={{type: 'line'}} bg={'white'}>{url}</question>
-
-   // useEffect(() => {
-   //    if (!hidden) {
-   //     linkBoxRef.current?.ask(`Open: ${url}`, open(url)) 
-   //    }
-   //    return dispatch({type: "closeLinkBox"})
-   // })
-  // useEffect(() => {
-  //   // logger.debug("line: ", line)
-  //   // logger.debug("form top: ", formRef.current?.top)
-  //   // logger.debug("form focused?: ", formRef.current?.focused)
-  // })
 

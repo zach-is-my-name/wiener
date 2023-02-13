@@ -1,18 +1,18 @@
-import React from 'react';
+import React, {useEffect, useRef}from 'react';
+import {logger} from '../../devLog/logger.js'
+logger.level = "debug"
 
 function PopUpBox(props) {
-  const handleKeyPress = (ch, key) => {
-    /* logger.debug("keypress: ", key)*/
-    setImmediate(() => {
-       if (key.full === 'C-c') {
-        process.exit(0)
-      }
-      if (key.name === 'escape' || key.name === 'c' || key.name === 'C'){
+  const boxRef = useRef(null) 
+  useEffect(() => {
+    if (!props.popUpBoxHidden) {
+      boxRef.current?.focus()
+      boxRef.current?.key('escape', function(ch, key) {
         props.ctrDispatch({type: "clearPopUpMessage"})
-        props.setPopUpBoxHidden(true)
-      } 
-    })
-  }
+      })
+     setTimeout(() => props.ctrDispatch({type: "clearPopUpMessage"}), 2000)
+    }
+  }, [])
 
   return (
     <> 
@@ -23,7 +23,7 @@ function PopUpBox(props) {
     left={"center"}
     height={"15%"}
     content={props.popUpMessage}
-    onKeypress={handleKeyPress}
+    ref={boxRef} 
     >
     </box>
     </> 
@@ -31,3 +31,4 @@ function PopUpBox(props) {
 }
 
 export default PopUpBox 
+
