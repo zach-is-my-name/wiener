@@ -13,7 +13,6 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   const {cursorTop, cursorLeft} = state 
 
   async function keyHandler(ch, key) {
-    logger.debug("key", key.full)
     if (key.full === 'q' || key.full === 'C-c') {
       return process.exit(0);
     } else if (key.full === 'enter') {

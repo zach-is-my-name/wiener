@@ -35,8 +35,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
         const nlo  = await convertAndStore(data, url, prevUrl, nextUrl)
         logger.debug("fetchLatest: added newsletter; date: ", nlo.date)
         setNewsletterObj(nlo)
-        // setHasLatestInArchive(true) 
-        ctrDispatch({type: "loaded"})
+        ctrDispatch({type: "loadedFromFetchLatest"})
       })();
 
     } else if (loadState === "getArchiveMostRecent") {
@@ -60,10 +59,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
           }
           setAdjacentDates({prevUrl: prevUrl, nextUrl: nextUrl})
           setNewsletterObj(nlo)
-          // if (hasLatestInArchive === true && hasInternet === true) {
-          //   setHasLatest(true) 
-          // }
-          ctrDispatch({type: "loaded"})
+          ctrDispatch({type: "loadedFromGetArchiveMostRecent"})
         }
       })();
 
@@ -77,7 +73,7 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
         }
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
-        ctrDispatch({type: "loaded"})
+        ctrDispatch({type: "loadedFromNextButton"})
       })();
 
     } else if (loadState === "loadNextHook" && newsletterObj.date === dateLatestPub) {
@@ -93,27 +89,30 @@ export function useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasIntern
         } else {
           setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
           setNewsletterObj(nlo)
-          ctrDispatch({type: "loaded"})
+          ctrDispatch({type: "loadedFromBackButton"})
         }
       })();
 
-    } else if (dateFromSearch.length) {
+    } else if (loadState === 'loadFromSearch' && dateFromSearch?.length) {
       (async () => {
         const nlo = await loadNewsletterFromDb("date", dateFromSearch)
+        if (!nlo.date.length) throw new Error()
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
         setDateFromSearch("")
-        ctrDispatch({type: "loaded"})
+        ctrDispatch({type: "loadedFromSearch"})
       })();
     } else if (loadState === "gotoLatestInArchive") {
       (async () => {
         const nlo = await loadNewsletterFromDb("first")
         setAdjacentDates({prevUrl: nlo.prevUrl, nextUrl: nlo.nextUrl})
         setNewsletterObj(nlo)
-        ctrDispatch({type: "loaded"})
+        ctrDispatch({type: "loadedFromGotoLatest"})
       })();
     }
   }, [loadState, dateFromSearch])
 
   return newsletterObj
 }
+
+

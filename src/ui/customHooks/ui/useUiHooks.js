@@ -3,7 +3,7 @@ import {useKeyHandler, useScroll, useMouseClick, useUIReducer, useGetRefs} from 
 import {logger} from '../../../devLog/logger.js' 
 logger.level = "debug"
 
-export function useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch) {
+export function useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch, loadState) {
 
   const [state, dispatch] = useUIReducer()
 
@@ -11,7 +11,7 @@ export function useUiHooks(ctrDispatch, lineFromSearch, setLineFromSearch) {
 
   const [{followLinkUnderCursor, keyHandler}] = useKeyHandler(refs, state, dispatch, ctrDispatch)
 
-  useScroll(refs, state, dispatch, lineFromSearch, setLineFromSearch)
+  useScroll(refs, state, dispatch, lineFromSearch, setLineFromSearch, loadState)
 
   const [{clickHandler}] = useMouseClick(refs, state, dispatch, followLinkUnderCursor)
   

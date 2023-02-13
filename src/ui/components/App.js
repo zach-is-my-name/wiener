@@ -20,10 +20,6 @@ function App(props) {
 
   const [{loadState, helpPageHidden, searchPageHidden, popUpMessage}, ctrDispatch] = useCtrReducer()
 
-  // useEffect(() => {
-  //   logger.debug({lineFromSearch, dateFromSearch})
-  // }, [loadState])
-
   const [dateLatestPub, hasInternet, hasLatestInArchive] = useInitLoad(ctrDispatch, loadState) 
 
   const {text, date} = useGetWien(loadState, ctrDispatch, hasLatestInArchive, hasInternet, dateFromSearch, setDateFromSearch, dateLatestPub) || {};
@@ -43,7 +39,7 @@ function App(props) {
   }, [hasInternet, loadState])
 
   return ( 
-    <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden} message={message} popUpMessage={popUpMessage}/>
+    <MainBox setDateFromSearch={setDateFromSearch} setLineFromSearch={setLineFromSearch} lineFromSearch={lineFromSearch} searchPageHidden={searchPageHidden} renderText={text} ctrDispatch={ctrDispatch} helpPageHidden={helpPageHidden} message={message} popUpMessage={popUpMessage} loadState={loadState}/>
   )
 }
 

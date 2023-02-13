@@ -13,7 +13,7 @@ logger.level = "debug"
 
 const MainBox = props =>  {
 
-  const [ handlers, dispatch, refs, state] = useUiHooks(props.ctrDispatch, props.lineFromSearch, props.setLineFromSearch)
+  const [ handlers, dispatch, refs, state] = useUiHooks(props.ctrDispatch, props.lineFromSearch, props.setLineFromSearch, props.loadState)
   
   const [text, linkArray] = useTransformText(props.renderText, props.message, props.ctrDispatch)
 
@@ -23,9 +23,8 @@ const MainBox = props =>  {
   const [refBoxHidden, setRefBoxHidden] = useState(true)
   const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
-  useEffect(() => {
-    logger.debug("refs.mainBoxRef.current.hidden", refs.mainBoxRef.current.hidden)
-  } )
+//   useEffect(() => {
+//   } )
 
   useEffect(() => {
     if (props.popUpMessage?.length) {

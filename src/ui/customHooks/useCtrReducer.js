@@ -2,13 +2,19 @@ import {useReducer, useState} from 'react'
 import {logger} from '../../devLog/logger.js'
 logger.level = "debug"
 
-const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'loaded', 'none', 'gotoLatestInArchive'] 
+const loadStates = ['fetchLatest', 'getArchiveMostRecent', 'loading', 'loadPrevHook', 'loadNextHook', 'none', 'gotoLatestInArchive', 'gotoLatestInArchive', 'loadFromSearch' ] 
+
+const loadedStates = ['loadedFromSearch', 'loadedFromBackButton', 'loadedFromNextButton',  'loadedFromFetchLatest' , 'loadedFromGotoLatest']
 
 export function useCtrReducer() {
+
 
   function reducer (prevState, action) {
 
     if (loadStates.includes(action.type)) {
+      return ({...prevState, loadState: action.type})
+
+    } else if (loadedStates.includes(action.type)) {
       return ({...prevState, loadState: action.type})
 
     } else if (action.type === 'setHasContinuity') {

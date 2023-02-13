@@ -1,6 +1,8 @@
 
 put cursor on line from Search 
 
+why sept 24 2022 is not replacing url 
+
 test out app. ship
 
 

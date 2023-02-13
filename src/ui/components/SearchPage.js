@@ -39,9 +39,9 @@ function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctr
     if (items.length) {
       const res = dateIndex.find(obj => obj.index === index) 
       const {date, line} = res
-      logger.debug("SearchPage", {lineFromSearch:line, dateFromSearch:date})
       setDateFromSearch(date)
       setLineFromSearch(line)
+      ctrDispatch({type: "loadFromSearch"})
       ctrDispatch({type:"toggleRenderSearch"})
     }
   }
