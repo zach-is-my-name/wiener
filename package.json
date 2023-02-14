@@ -1,6 +1,6 @@
 {
   "name": "wienr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Week in Ethereum News Reader CLI",
   "type": "module",
   "bin": {
@@ -21,8 +21,19 @@
     "react-devtools": "^4.27.0"
   },
   "dependencies": {
-    "source-map-support": "^0.5.21",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/node": "^7.18.9",
+    "@babel/plugin-transform-flow-strip-types": "^7.16.7",
+    "@babel/plugin-transform-react-jsx-source": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/runtime": "latest",
+    "@types/node": "^18.0.0",
     "ansi-regex": "^5.0.1",
+    "blessed": "latest",
+    "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "cli-truncate": "^3.1.0",
     "dayjs": "^1.10.7",
@@ -37,21 +48,10 @@
     "p-throttle": "^5.0.0",
     "react": "^17.0.2",
     "react-blessed": "^0.7.2",
+    "source-map-support": "^0.5.21",
     "strip-ansi": "^6.0.1",
     "terminal-link": "^3.0.0",
     "turndown": "^7.1.1",
-    "wrap-ansi": "^8.0.1",
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.9",
-    "@babel/node": "^7.18.9",
-    "@babel/plugin-transform-flow-strip-types": "^7.16.7",
-    "@babel/plugin-transform-react-jsx-source": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "@babel/runtime": "latest",
-    "@types/node": "^18.0.0",
-    "blessed": "latest",
-    "chalk": "^4.1.2"
+    "wrap-ansi": "^8.0.1"
   }
 }

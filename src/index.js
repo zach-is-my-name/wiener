@@ -1,11 +1,15 @@
+#!/usr/bin/env node
 import meow from 'meow'
 import {start} from './ui/start.js';
 import {text} from './ui/components/HelpPage.js'
-
+import chalk from 'chalk' 
 const help = `
-Week in Ethereum News Reader 
 
-$ wienr
+${text}
+
+${chalk.blue('Week in Ethereum News Reader')}
+
+${chalk.blue('$')} wienr
 
 -  Read  
 -  Search archive 
@@ -13,8 +17,9 @@ $ wienr
 -  Launch urls
 -  (auto-updates)
 
-----------------------------
-${text}
+${chalk.blue('$')} wienr --help 
+
+
 
 `   
 
