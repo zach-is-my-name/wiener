@@ -46,15 +46,6 @@ const MainBox = props =>  {
     }
   }, [state.initialRefNum])
 
-  const linkBox = <LinkBox linkLine={state.linkLine} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
-
-  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkArray={linkArray.length && linkArray || []} hidden={refBoxHidden} dispatch={dispatch} />
-
-  const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
-
-  const popUpBox = <PopUpBox popUpMessage={props.popUpMessage} popUpBoxHidden={popUpBoxHidden} setPopUpBoxHidden={setPopUpBoxHidden} ctrDispatch={props.ctrDispatch}/> 
-  const helppage = <HelpPage helpPageHidden={props.helpPageHidden} /> 
-  
   useEffect(() => {
     if (props.helpPageHidden === false ||  props.searchPageHidden === false) {
       setMainBoxHidden(true)
@@ -62,6 +53,18 @@ const MainBox = props =>  {
       setMainBoxHidden(false)
     }
   }, [props.helpPageHidden, props.searchPageHidden])
+
+
+
+  const linkBox = <LinkBox linkLine={state.linkLine} linkBoxRef={refs.linkBoxRef} hidden={linkBoxHidden} linkUrl={linkUrl} dispatch={dispatch} />  
+
+  const refBox = <RefBox mainBoxRef={refs.mainBoxRef} initialRefNum={state.initialRefNum} linkArray={linkArray.length && linkArray || []} hidden={refBoxHidden} dispatch={dispatch} />
+
+  const searchPage = <SearchPage searchPageHidden={props.searchPageHidden} setLineFromSearch={props.setLineFromSearch} setDateFromSearch={props.setDateFromSearch} ctrDispatch={props.ctrDispatch}/>
+
+  const popUpBox = <PopUpBox popUpMessage={props.popUpMessage} popUpBoxHidden={popUpBoxHidden} setPopUpBoxHidden={setPopUpBoxHidden} ctrDispatch={props.ctrDispatch}/> 
+  const helppage = <HelpPage helpPageHidden={props.helpPageHidden} ctrDispatch={props.ctrDispatch}/> 
+  
 
     return (
       <>

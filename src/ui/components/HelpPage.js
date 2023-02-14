@@ -1,9 +1,7 @@
-
 import React from 'react';
 import chalk from 'chalk'
 
-
-const text = `
+let text = `
 ?      ............... help
 q      ............... quit (usually)  
 Ctrl-c ............... quit (always) 
@@ -22,7 +20,9 @@ Ctrl-u/Ctrl-d ................ 20 chars. up/down
 
 Nav
 0-99  ........................ type link ref #  
-enter ........................ confirm typed link ref # / follow link ref # under cursor (opens link in default browser)
+enter ........................ confirm typed link ref # /
+                               follow link ref # under cursor                   
+                               (opens link in default browser)
 H (shift-h) .................. goto prev. newsletter
 L (shift-l) .................. goto next newsletter
 S (shift-s) .................. search page
@@ -38,7 +38,8 @@ enter ........................ focus results
   Search Results
 j/k   ......................... up/down results
 enter ......................... select result (goto newsletter)`
-function HelpPage({helpPageHidden}) {
+function HelpPage({helpPageHidden, ctrDispatch}) {
+
 
 return (
 <box
@@ -46,8 +47,13 @@ return (
   left={"15%"}
   width={"100%"}
   height={"100%"}  
+  focused={true}
   hidden={helpPageHidden}
   content={text}
+  scrollable={true}
+  alwaysScroll={true}
+  keys={true}
+  vi={true}
   /> 
 
 )

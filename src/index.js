@@ -3,9 +3,11 @@ import meow from 'meow'
 import {start} from './ui/start.js';
 import {text} from './ui/components/HelpPage.js'
 import chalk from 'chalk' 
-const help = `
+import boxen from 'boxen' 
+let _text = boxen(text, {width: 80, padding: 1, borderStyle: 'classic'})
 
-${text}
+const help = `
+${_text}
 
 ${chalk.blue('Week in Ethereum News Reader')}
 
@@ -18,9 +20,6 @@ ${chalk.blue('$')} wienr
 -  (auto-updates)
 
 ${chalk.blue('$')} wienr --help 
-
-
-
 `   
 
 const cli = meow(help, {

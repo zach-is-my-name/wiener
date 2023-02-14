@@ -63,6 +63,13 @@ var MainBox = function MainBox(props) {
       setRefBoxHidden(true);
     }
   }, [state.initialRefNum]);
+  useEffect(function () {
+    if (props.helpPageHidden === false || props.searchPageHidden === false) {
+      setMainBoxHidden(true);
+    } else if (props.helpPageHidden === true || props.searchPageHidden === true) {
+      setMainBoxHidden(false);
+    }
+  }, [props.helpPageHidden, props.searchPageHidden]);
   var linkBox = /*#__PURE__*/React.createElement(LinkBox, {
     linkLine: state.linkLine,
     linkBoxRef: refs.linkBoxRef,
@@ -90,15 +97,9 @@ var MainBox = function MainBox(props) {
     ctrDispatch: props.ctrDispatch
   });
   var helppage = /*#__PURE__*/React.createElement(HelpPage, {
-    helpPageHidden: props.helpPageHidden
+    helpPageHidden: props.helpPageHidden,
+    ctrDispatch: props.ctrDispatch
   });
-  useEffect(function () {
-    if (props.helpPageHidden === false || props.searchPageHidden === false) {
-      setMainBoxHidden(true);
-    } else if (props.helpPageHidden === true || props.searchPageHidden === true) {
-      setMainBoxHidden(false);
-    }
-  }, [props.helpPageHidden, props.searchPageHidden]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("box", {
     top: "top",
     left: "left",
