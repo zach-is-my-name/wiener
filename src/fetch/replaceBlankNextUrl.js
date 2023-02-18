@@ -1,20 +1,11 @@
+// import {logger} from '../logger.js' 
+// logger.level = "debug"
 
-import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const file = join(__dirname, 'db.json')
-const adapter = new JSONFile(file)
-const db = new Low(adapter)
+import { loadNewsletterFromDb } from '../db/db.js';
 
 export async function replaceBlankNextUrl(dateLatestPub, setReplaceCycleInitd) {
-  await db.read()
-  db.data ||= { newsletters: [ ] }
-  const { newsletters } = db.data
 
+  let newsletters = await loadNewsletterFromDb("all")
   if (newsletters.length > 1 && typeof dateLatestPub === 'string') {
     let nl = newsletters
     for (let i = 0; i < nl.length; i++) {
@@ -39,15 +30,12 @@ async function addNextUrl(nextUrl, i, nl) {
 }
 
 export async function checkContinuity() {
-  await db.read()
-  db.data ||= { newsletters: [ ] }
-  const { newsletters } = db.data
+  const newsletters = await loadNewsletterFromDb("all")
 
   let hasContinuity = []
   for (let i = 0; i < newsletters.length -1; i++) {
     if (newsletters[i].prevUrl !== newsletters[i + 1]?.url) {
       hasContinuity.push(false)
-      throw new Error()
     } else {
       hasContinuity.push(true)
     }

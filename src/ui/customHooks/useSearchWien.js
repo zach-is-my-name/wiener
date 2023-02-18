@@ -1,22 +1,16 @@
+import {useEffect} from 'react'
 import cliTruncate from 'cli-truncate'
 import fs from 'fs'
 import chalk from 'chalk';
 import stripAnsi from 'strip-ansi'
 import Fuse from 'fuse.js'
-import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import {loadNewsletterFromDb} from '../../db/db.js' 
 
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
 
-const __dirname = dirname(fileURLToPath(import.meta.url)); //production db file
-const file = join(__dirname, 'db.json')
-const adapter = new JSONFile(file)
-const db = new Low(adapter)
+export async function useSearchWien(textBoxInput, setItems, setDateIndex, ctrDispatch) {
 
-await db.read()
+let newsletters = await loadNewsletterFromDb("all")
 
-export function useSearchWien(textBoxInput, setItems, setDateIndex) {
   const options = {
     includeMatches: true,
     findAllMatches: true,
@@ -26,12 +20,13 @@ export function useSearchWien(textBoxInput, setItems, setDateIndex) {
     shouldSort: false,
     keys: ['text']
   }
-  let newsletters
-  if (db.data?.newsletters && db.data.newsletters.length) {
-   newsletters = db.data.newsletters 
-  } else {
+  if (!newsletters?.length) {
     newsletters = []
+    console.clear()
+    ctrDispatch({type: "setPopUpMessage", payload: "Wait for newsletters to sync before searching"})
+    // ctrDispatch({type: "exitSearchPage"}) 
   }
+
   const index = Fuse.createIndex(options.keys, newsletters) 
   const fuse = new Fuse(newsletters, options, index)
   let searchResults = fuse.search(textBoxInput) || []

@@ -8,7 +8,7 @@ function PopUpBox(props) {
       boxRef.current?.key('escape', function(ch, key) {
         props.ctrDispatch({type: "clearPopUpMessage"})
       })
-     setTimeout(() => props.ctrDispatch({type: "clearPopUpMessage"}), 2000)
+     setTimeout(() => props.ctrDispatch({type: "clearPopUpMessage"}), 4000)
     }
   }, [])
 

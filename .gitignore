@@ -2,7 +2,6 @@
 src/db/db.json
 scrapes
 archive
-logs
 package-lock.json
 oldSratch/*
 Session.vim
@@ -16,3 +15,4 @@ typescript
 dist/db/db.json
 backup.bundle
 todo.md
+dist/**
