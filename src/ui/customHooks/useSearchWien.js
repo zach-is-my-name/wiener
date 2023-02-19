@@ -7,8 +7,9 @@ import Fuse from 'fuse.js'
 import {loadNewsletterFromDb} from '../../db/db.js' 
 
 
-export async function useSearchWien(textBoxInput, setItems, setDateIndex, ctrDispatch) {
+export async function useSearchWien(textBoxInput, setItems, setDateIndex, ctrDispatch, isMounted) {
 
+if (isMounted.current === false) return 
 let newsletters = await loadNewsletterFromDb("all")
 
   const options = {
@@ -24,8 +25,10 @@ let newsletters = await loadNewsletterFromDb("all")
     newsletters = []
     console.clear()
     ctrDispatch({type: "setPopUpMessage", payload: "Wait for newsletters to sync before searching"})
-    // ctrDispatch({type: "exitSearchPage"}) 
+    ctrDispatch({type: "exitSearchPage"}) 
   }
+
+  
 
   const index = Fuse.createIndex(options.keys, newsletters) 
   const fuse = new Fuse(newsletters, options, index)

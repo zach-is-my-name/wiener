@@ -2,6 +2,7 @@ import React, {useLayoutEffect, useEffect, useState, useRef} from 'react'
 import {useSearchWien} from '../customHooks/useSearchWien.js' 
 
 function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctrDispatch} ) {
+  const isMounted = useRef(false)
   const textBoxRef = useRef(null) 
   const listRef = useRef(null)
 
@@ -9,6 +10,13 @@ function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctr
   const [items, setItems] = useState([])
   const [dateIndex, setDateIndex] = useState([])
   const [focus, setFocus] = useState('textBox')
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    }
+  }, [])
 
   useEffect(()=> {
     if (focus === 'textBox' && !searchPageHidden) {
@@ -24,8 +32,10 @@ function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctr
         setFocus("list")
       } else if (key.full === 'C-c') {
         process.exit(0)
+      } 
+      else if (isMounted.current === true) { 
+        useSearchWien(textBoxRef.current.value, setItems, setDateIndex, ctrDispatch, isMounted)
       }
-      useSearchWien(textBoxRef.current.value, setItems, setDateIndex)
       if (key.name === 'escape'){
         ctrDispatch({type: "exitSearchPage"})  
       }
