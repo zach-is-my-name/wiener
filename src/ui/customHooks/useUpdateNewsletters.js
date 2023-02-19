@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {applyMarkdown} from '../../transform/applyMarkdown.js'
 import {fetchBackFromLocalLatest} from '../../fetch/fetchBackFromLocalLatest.js'
-import {replaceBlankNextUrl, checkContinuity} from '../../fetch/replaceBlankNextUrl.js'
+import {replaceBlankNextUrl, checkContinuity} from '../../db/db.js'
 
 export function useUpdateNewsletters(dateLatestPub, hasLatestInArchive, hasInternet, text, ctrDispatch) {
 

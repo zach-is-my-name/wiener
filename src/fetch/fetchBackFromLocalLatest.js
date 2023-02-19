@@ -5,9 +5,7 @@ import got from 'got'
 import cheerio from 'cheerio'
 import {convertAndStore} from '../transform/convert.js';
 import {getDateFromNewsletter, fetchPermaLinkCurrent, throttledGot} from '../utilities.js'
-import {loadNewsletterFromDb} from '../db/db.js'
-
-import {replaceBlankNextUrl} from './replaceBlankNextUrl.js'
+import {loadNewsletterFromDb, replaceBlankNextUrl} from '../db/db.js'
 
 let reqCount
 export async function fetchBackFromLocalLatest(dateLatestPub) {
