@@ -1,6 +1,4 @@
-import {useEffect} from 'react'
 import cliTruncate from 'cli-truncate'
-import fs from 'fs'
 import chalk from 'chalk';
 import stripAnsi from 'strip-ansi'
 import Fuse from 'fuse.js'
