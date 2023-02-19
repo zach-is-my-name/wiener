@@ -41,9 +41,6 @@ var MainBox = function MainBox(props) {
     popUpBoxHidden = _useState10[0],
     setPopUpBoxHidden = _useState10[1];
   useEffect(function () {
-    // logger.debug("linkArray", linkArray.map((link, index) => index + "-" + link  ))
-  }, [linkArray]);
-  useEffect(function () {
     var _props$popUpMessage;
     if ((_props$popUpMessage = props.popUpMessage) !== null && _props$popUpMessage !== void 0 && _props$popUpMessage.length) {
       setPopUpBoxHidden(false);

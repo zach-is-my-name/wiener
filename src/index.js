@@ -6,7 +6,7 @@ import chalk from 'chalk'
 import boxen from 'boxen' 
 let _text = boxen(text, {width: 80, padding: 1, borderStyle: 'classic'})
 
-const version = '1.0.6' 
+const version = '1.0.7' 
 
 const help = `
 ${_text}

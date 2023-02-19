@@ -11,10 +11,6 @@ export function useTransformText(renderText, message, ctrDispatch) {
   let linkCount = -1
 
   useEffect(() => {
-    logger.debug(linkArray.slice(0, 5))
-  }, [linkArray])
-
-  useEffect(() => {
     if (joinedText?.length) {
         setLinkObjArr([])
       const replacer = (match, linkUrl) => {

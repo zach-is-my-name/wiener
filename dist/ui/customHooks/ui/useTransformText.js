@@ -16,9 +16,6 @@ export function useTransformText(renderText, message, ctrDispatch) {
   }, [renderText]);
   var linkCount = -1;
   useEffect(function () {
-    logger.debug(linkArray.slice(0, 5));
-  }, [linkArray]);
-  useEffect(function () {
     if (joinedText !== null && joinedText !== void 0 && joinedText.length) {
       setLinkObjArr([]);
       var replacer = function replacer(match, linkUrl) {
