@@ -4,6 +4,15 @@ var text = "\n?      ............... help\nq      ............... quit (usually)
 function HelpPage(_ref) {
   var helpPageHidden = _ref.helpPageHidden,
     ctrDispatch = _ref.ctrDispatch;
+  var handleKeyPress = function handleKeyPress(ch, key) {
+    setImmediate(function () {
+      if (key.full === 'escape') {
+        ctrDispatch({
+          type: "toggleHelpPage"
+        });
+      }
+    });
+  };
   return /*#__PURE__*/React.createElement("box", {
     top: "top",
     left: "15%",
@@ -11,6 +20,7 @@ function HelpPage(_ref) {
     height: "100%",
     focused: true,
     hidden: helpPageHidden,
+    onKeypress: handleKeyPress,
     content: text,
     scrollable: true,
     alwaysScroll: true,

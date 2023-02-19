@@ -40,23 +40,31 @@ j/k   ......................... up/down results
 enter ......................... select result (goto newsletter)`
 function HelpPage({helpPageHidden, ctrDispatch}) {
 
+  const handleKeyPress = (ch, key) => {
+    setImmediate(() => {
+      if (key.full === 'escape') {
+        ctrDispatch({type: "toggleHelpPage"})  
+      }
+    })
+  }
 
-return (
-<box
-  top={"top"}
-  left={"15%"}
-  width={"100%"}
-  height={"100%"}  
-  focused={true}
-  hidden={helpPageHidden}
-  content={text}
-  scrollable={true}
-  alwaysScroll={true}
-  keys={true}
-  vi={true}
-  /> 
+  return (
+    <box
+    top={"top"}
+    left={"15%"}
+    width={"100%"}
+    height={"100%"}  
+    focused={true}
+    hidden={helpPageHidden}
+    onKeypress={handleKeyPress}
+    content={text}
+    scrollable={true}
+    alwaysScroll={true}
+    keys={true}
+    vi={true}
+    /> 
 
-)
+  )
 }
 
 export default HelpPage
