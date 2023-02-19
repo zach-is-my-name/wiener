@@ -1,7 +1,7 @@
-**/node_modules
+node_modules/
 src/db/db.json
-scrapes
-archive
+scrapes/
+archive/
 package-lock.json
 oldSratch/*
 Session.vim
@@ -12,7 +12,6 @@ tmpEventsWithoutHooks.js
 **.swp
 **.json
 typescript
-dist/db/db.json
 backup.bundle
 todo.md
-dist/**
+dist/
