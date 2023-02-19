@@ -10,9 +10,7 @@ src/devScripts
 gitHistoryFormatting_MainBox.js
 tmpEventsWithoutHooks.js
 **.swp
-**.json
 typescript
 backup.bundle
 todo.md
-dist/
 logs
