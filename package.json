@@ -1,6 +1,6 @@
 {
   "name": "wienr",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Week in Ethereum News Reader CLI",
   "type": "module",
   "bin": {
@@ -19,11 +19,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "log4js": "^6.6.1",
-    "module": "^1.2.5",
-    "react-devtools": "^4.27.2",
-    "winston": "^3.3.3",
-    "winston-array-transport": "^1.1.5",
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",
     "@babel/node": "^7.18.9",
@@ -32,7 +27,12 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@babel/runtime": "latest"
+    "@babel/runtime": "latest",
+    "log4js": "^6.7.1",
+    "module": "^1.2.5",
+    "react-devtools": "^4.27.2",
+    "winston": "^3.3.3",
+    "winston-array-transport": "^1.1.5"
   },
   "dependencies": {
     "@types/node": "^18.0.0",

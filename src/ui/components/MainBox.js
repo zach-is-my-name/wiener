@@ -22,6 +22,10 @@ const MainBox = props =>  {
   const [popUpBoxHidden, setPopUpBoxHidden] = useState(true)
 
   useEffect(() => {
+    // logger.debug("linkArray", linkArray.map((link, index) => index + "-" + link  ))
+  }, [linkArray])
+
+  useEffect(() => {
     if (props.popUpMessage?.length) {
       setPopUpBoxHidden(false)
     } else {

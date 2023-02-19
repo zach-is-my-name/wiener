@@ -11,7 +11,12 @@ export function useTransformText(renderText, message, ctrDispatch) {
   let linkCount = -1
 
   useEffect(() => {
+    logger.debug(linkArray.slice(0, 5))
+  }, [linkArray])
+
+  useEffect(() => {
     if (joinedText?.length) {
+        setLinkObjArr([])
       const replacer = (match, linkUrl) => {
         setLinkObjArr(current => [...current, linkUrl])
         linkCount++
@@ -22,10 +27,14 @@ export function useTransformText(renderText, message, ctrDispatch) {
       const regEx2 = /\$\$([^$]*)\$\$/g
       const linkFormatedText = joinedText.replace(regEx2, replacer)
       setText(linkFormatedText)
-    } else if (renderText === undefined && message.length) {
+    } 
+  }, [joinedText])
+
+  useEffect(() => {
+    if (renderText === undefined && message.length) {
       setText(message)
     }
-  }, [renderText, message, joinedText])
+  },[renderText, message])
 
   useEffect(() => {
     if (text.length) ctrDispatch({type: "clearMessage"})

@@ -16,7 +16,11 @@ export function useTransformText(renderText, message, ctrDispatch) {
   }, [renderText]);
   var linkCount = -1;
   useEffect(function () {
+    logger.debug(linkArray.slice(0, 5));
+  }, [linkArray]);
+  useEffect(function () {
     if (joinedText !== null && joinedText !== void 0 && joinedText.length) {
+      setLinkObjArr([]);
       var replacer = function replacer(match, linkUrl) {
         setLinkObjArr(function (current) {
           return [].concat(_toConsumableArray(current), [linkUrl]);
@@ -28,10 +32,13 @@ export function useTransformText(renderText, message, ctrDispatch) {
       var regEx2 = /\$\$([^$]*)\$\$/g;
       var linkFormatedText = joinedText.replace(regEx2, replacer);
       setText(linkFormatedText);
-    } else if (renderText === undefined && message.length) {
+    }
+  }, [joinedText]);
+  useEffect(function () {
+    if (renderText === undefined && message.length) {
       setText(message);
     }
-  }, [renderText, message, joinedText]);
+  }, [renderText, message]);
   useEffect(function () {
     if (text.length) ctrDispatch({
       type: "clearMessage"
