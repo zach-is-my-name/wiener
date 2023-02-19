@@ -9,18 +9,26 @@ var _text = boxen(text, {
   padding: 1,
   borderStyle: 'classic'
 });
-var help = "\n".concat(_text, "\n\n").concat(chalk.blue('Week in Ethereum News Reader'), "\n\n").concat(chalk.blue('$'), " wienr\n\n-  Read  \n-  Search archive \n-  Jog recent \n-  Launch urls\n-  (auto-updates)\n\n").concat(chalk.blue('$'), " wienr --help \n");
+var version = '1.0.6';
+var help = "\n".concat(_text, "\n\n").concat(chalk.blue('Week in Ethereum News Reader'), "\n\n").concat(chalk.blue('$'), " wienr\n\n-  Read  \n-  Search archive \n-  Jog recent \n-  Launch urls\n-  (auto-updates)\n\n").concat(chalk.blue('$'), " wienr --help \n").concat(chalk.blue('$'), " wienr --version \n");
 var cli = meow(help, {
   flags: {
     help: {
       type: 'boolean',
       alias: 'h'
+    },
+    version: {
+      type: 'boolean',
+      alias: 'v'
     }
-  }
+  },
+  version: "wienr version: " + version
 });
 if (cli.flags.help) {
   console.log(cli.help);
   process.exit(0);
+} else if (cli.flags.version) {
+  console.log(version);
 } else {
   start();
 }
