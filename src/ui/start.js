@@ -3,7 +3,6 @@ import React from 'react'
 import {render} from 'react-blessed';
 import App from './components/App.js'
 import https from 'https'
-import fs from 'fs'
 import {cert} from '../../certs/weekinethereumnews.com.js'
 https.globalAgent.options.ca = cert 
 
