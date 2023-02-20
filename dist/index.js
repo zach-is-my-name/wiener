@@ -9,7 +9,7 @@ var _text = boxen(text, {
   padding: 1,
   borderStyle: 'classic'
 });
-var version = '1.0.7';
+var version = '1.0.9';
 var help = "\n".concat(_text, "\n\n").concat(chalk.blue('Week in Ethereum News Reader'), "\n\n").concat(chalk.blue('$'), " wienr\n\n-  Read  \n-  Search archive \n-  Jog recent \n-  Launch urls\n-  (auto-updates)\n\n").concat(chalk.blue('$'), " wienr --help \n").concat(chalk.blue('$'), " wienr --version \n");
 var cli = meow(help, {
   flags: {
