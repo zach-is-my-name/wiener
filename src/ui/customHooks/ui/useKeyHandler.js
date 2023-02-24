@@ -46,19 +46,19 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
     }
 
     function updateCoordinate(input)  {
-      if (input === 'j' || input === 'k') {
+      if (input === 'j' || input === 'k' || input === 'down' || input === 'up') {
         dispatch({type: "setCursorTop", payload: nextCursorPosition(
           cursorTop,
-          input === 'j',
+          input === 'j' || input === 'down',
           mainBoxRef?.current?.getScrollHeight(),
           1,
         )})
         mainBoxRef.current?.scrollTo(cursorTop)
 
-      } else if (input === 'h' || input === 'l') {
+      } else if (input === 'h' || input === 'l' || input === 'left' || input ==='right') {
         dispatch({type:"setCursorLeft", payload: nextCursorPosition(
           cursorLeft,
-          input === 'l',
+          input === 'l' || input === 'right',
           mainBoxRef.current?.width,
           3,
         )})
@@ -85,14 +85,14 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
           9,
         )})
 
-      }  else if (input === 'g') {
+      }  else if (input === 'g' || input === 'home') {
         dispatch({type:"setCursorTop", payload:0}) 
         mainBoxRef.current?.scrollTo(cursorTop)
         if (cursorTop > mainBoxRef.current.getScrollHeight()) {
           scrollToScrollHeightFlag.current = true;
         } 
 
-      } else if (input === 'S-g') {
+      } else if (input === 'S-g' || input === 'end') {
         dispatch({type:"setCursorTop", payload: mainBoxRef.current.getScreenLines().length - 1})
         mainBoxRef.current?.scrollTo(cursorTop)
 
@@ -106,14 +106,14 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
         mainBoxRef.current?.setScrollPerc(100)
       } else if (input === 'backspace') {
           ctrDispatch({type: "gotoLatestInArchive"})
-      } else if (input === 'C-d' || input === 'd' || input === 'D') {
+      } else if (input === 'C-d' || input === 'd' || input === 'D' || input === 'pagedown' || input === 'S-d') {
 
         let position = cursorTop + mainBoxRef?.current?.height 
         position = position >= mainBoxRef?.current?.getScrollHeight() ? mainBoxRef?.current?.getScrollHeight() - 1 : position  
 
         dispatch({type: "setCursorTop", payload: position })
 
-      } else if (input === 'C-u' || input ==='u' || input === 'U') {
+      } else if (input === 'C-u' || input ==='u' || input === 'U' || input === 'pageup' || input === 'S-u') {
         let position = cursorTop - mainBoxRef?.current?.height - 2 
         position = position < 0 ? 0 : position
         dispatch({type:"setCursorTop", payload: position})
@@ -189,3 +189,5 @@ export function useKeyHandler(refs, state, dispatch, ctrDispatch) {
   }
   return [{followLinkUnderCursor, keyHandler}] 
 }
+
+

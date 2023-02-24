@@ -35,6 +35,7 @@ $ wienr --help
 
 $ wienr --version
 
+$ wienr --bug
 
 ?      ............... help
 q      ............... quit (usually)  
@@ -42,15 +43,17 @@ Ctrl-c ............... quit (always)
 esc    ............... back
 
 Move
-j / k .......................... up/down
+j / up ......................... up
+k / down ....................... down
 h / l .......................... left/right
 w / b .......................... 10 chars. right/left
 { / } .......................... 10 chars. up/down 
-g  ........................... top  
-G  ........................... bottom 
-0  ........................... begin. line
-$  ........................... end line
-Ctrl-u/Ctrl-d ................ 20 chars. up/down
+g / home  ...................... top  
+G / end   ...................... bottom 
+0  ............................. begin. line
+$  ............................. end line
+Ctrl-u / Pg Up.................. 20 chars. up/down
+Ctrl-d / Pg Dn ................. 20 chars. up/down
 
 Nav
 0-99  ........................ type link ref #  
@@ -60,7 +63,7 @@ enter ........................ confirm typed link ref # /
 H (shift-h) .................. goto prev. newsletter
 L (shift-l) .................. goto next newsletter
 S (shift-s) .................. search page
-Ctrl-h / backspace........... goto most recent newsletter in archive 
+Ctrl-h / backspace............ goto most recent newsletter in archive 
 
 
 Search Page 
@@ -77,3 +80,4 @@ enter ......................... select result (goto newsletter)
 **ALL CREDIT GOES TO EVAN VAN NESS THE CREATOR OF WIEN.  I JUST ADDED THE (R)**
 Follow me on twitter:  @_zach_michaels
 
+MIT

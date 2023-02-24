@@ -1,6 +1,6 @@
 {
   "name": "wienr",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Week in Ethereum News Reader CLI",
   "type": "module",
   "bin": {
@@ -14,10 +14,18 @@
     "def": "rimraf dist && npm run build  && node --inspect-brk dist/index.js",
     "dev": "rimraf dist && npm run build && node --trace-warnings --trace-uncaught -r source-map-support/register dist/index.js",
     "dbuild": "rimraf dist && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "alpine": "docker run -it --rm -w /usr/src/app node:alpine sh -c \"apk add --update npm && npm i -g wienr && wienr -v && wienr\"",
+    "ubuntu": "docker run -it --rm -w /usr/src/app node sh -c \"apt-get update && apt-get install -y npm && npm i -g wienr && wienr\""
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zach-is-my-name/wiener"
+  },
+  "homepage": "https://github.com/zach-is-my-name/wiener/blob/master/README.md",
+  "bugs": "https://github.com/zach-is-my-name/wiener/issues/new",
+  "author": "@_zach_michaels",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",
@@ -34,9 +42,9 @@
     "winston-array-transport": "^1.1.5"
   },
   "dependencies": {
+    "@babel/runtime": "latest",
     "@types/node": "^18.0.0",
     "ansi-regex": "^5.0.1",
-    "@babel/runtime": "latest",
     "blessed": "latest",
     "boxen": "^7.0.1",
     "chalk": "^4.1.2",
