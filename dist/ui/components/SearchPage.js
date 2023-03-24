@@ -135,7 +135,7 @@ function SearchPage(_ref) {
     },
     style: {
       selected: {
-        fg: 'white',
+        fg: 'black',
         bg: 'yellow'
       },
       border: {
