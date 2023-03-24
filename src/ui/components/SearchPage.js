@@ -98,7 +98,7 @@ function SearchPage({searchPageHidden, setDateFromSearch, setLineFromSearch, ctr
     vi
     name={"list"}
     border={{type: 'line'}}
-    style={{selected:{fg:'white',bg:'black' },border:{fg: 'white'}}}
+    style={{selected:{fg:'white',bg:'yellow' },border:{fg: 'white'}}}
     ref={listRef}
     /> 
     </form>

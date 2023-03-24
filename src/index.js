@@ -8,7 +8,7 @@ import open from 'open'
 
 let _text = boxen(text, {width: 80, padding: 1, borderStyle: 'classic'})
 
-const version = '1.0.10' 
+const version = '1.0.11' 
 
 const help = `
 ${_text}

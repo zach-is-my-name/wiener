@@ -136,7 +136,7 @@ function SearchPage(_ref) {
     style: {
       selected: {
         fg: 'white',
-        bg: 'black'
+        bg: 'yellow'
       },
       border: {
         fg: 'white'

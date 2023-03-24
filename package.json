@@ -1,6 +1,6 @@
 {
   "name": "wienr",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Week in Ethereum News Reader CLI",
   "type": "module",
   "bin": {
